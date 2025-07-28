@@ -19,7 +19,7 @@ jobs:
 
       - name: Authenticate to Salesforce Org
         run: |
-          sfdx auth:jwt:grant \
+          sfdx force:auth:password \
             --username ${{ secrets.SALESFORCE_USERNAME }} \
             --password ${{ secrets.SALESFORCE_PASSWORD_WITH_TOKEN }} \
             --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY }} \
