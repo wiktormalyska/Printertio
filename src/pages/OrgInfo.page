@@ -1,9 +1,7 @@
 <apex:page controller="OrganizationInfoController">
     <script>
-        // Display the component when page loads
         document.getElementById('orgInfoComponent').style.display = 'block';
-        
-        // Function to copy session ID
+
         function copySessionId() {
             var sessionId = document.getElementById('sessionIdValue').innerText;
             navigator.clipboard.writeText(sessionId).then(function() {
@@ -15,7 +13,6 @@
 
         function openLightningView(userId) {
             if (userId) {
-                // Base URL pattern for Lightning Experience view
                 var baseUrl = "https://curious-unicorn-n3um3x-dev-ed.trailblaze.lightning.force.com/lightning/r/User/";
                 var fullUrl = baseUrl + userId + "/view";
                 window.open(fullUrl, '_blank');
@@ -39,7 +36,7 @@
             align-items: center;
             margin-top: 20px;
             padding: 12px 20px;
-            background-color: #1C2733; /* Ciemne tło, spójne z poprzednim stylem */
+            background-color: #1C2733;
             border: 1px solid #444;
             border-radius: 6px;
             color: #AEB1B5;
@@ -48,15 +45,15 @@
 
         .session-id-content {
             margin-right: 20px;
-            font-family: monospace; /* Monospace jest idealny dla ID */
-            word-break: break-all; /* Zachowujemy łamanie długich ciągów */
-            flex-grow: 1; /* Pozwala sekcji ID rosnąć i zajmować dostępną przestrzeń */
+            font-family: monospace;
+            word-break: break-all;
+            flex-grow: 1;
         }
 
         .session-id-content strong {
-            display: block; /* Etykieta w osobnej linii */
+            display: block;
             margin-bottom: 5px;
-            color: #ffffff; /* Lepszy kontrast dla etykiety */
+            color: #ffffff;
             font-weight: 600;
         }
 
@@ -68,10 +65,9 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            white-space: nowrap; /* Zapobiega łamaniu tekstu na przycisku */
+            white-space: nowrap;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
-
         .copy-btn:hover {
             background-color: #00aaff;
             color: #fff;
@@ -81,7 +77,6 @@
             margin: 0 auto;
             max-width: 1200px;
         }
-        /* Style dla niestandardowego div wokół pageBlock */
         .custom-pageblock-wrapper {
             background: #1C2733;
             border: 1px solid #333;
@@ -125,65 +120,60 @@
         }
 
         .table-responsive {
-            overflow-x: auto; /* To jest najważniejsza reguła! */
+            overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             width: 100%;
         }
-    
-    /* Optional: to keep table layout fixed rather than auto-adjusting */
         .pageBlockTable {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* Lepsza kontrola nad szerokością kolumn */
+            table-layout: fixed;
         }
 
          .pageBlockTable th {
-        background: #1C2733;
-        color: #AEB1B5;
-        font-weight: bold;
-        text-align: left;
-        padding: 12px 15px;
-        border-bottom: 2px solid #444;
-    }
-    .pageBlockTable td {
-        padding: 10px 15px;
-        border-bottom: 1px solid #333;
-        vertical-align: middle;
-        color: #ccc;
-        /* Domyślne zawijanie tekstu */
-        word-wrap: break-word; 
-        overflow-wrap: break-word;
-    }
-    .pageBlockTable tr:hover {
-        background-color: #183259;
-    }
+            background: #1C2733;
+            color: #AEB1B5;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #444;
+        }
+        .pageBlockTable td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+            vertical-align: middle;
+            color: #ccc;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .pageBlockTable tr:hover {
+            background-color: #183259;
+        }
+        .col-username, .col-email {
 
-    /* 4. Style dla poszczególnych kolumn (nowość) */
-    .col-username, .col-email {
-        /* Pozwól tym kolumnom być szerszymi */
-    }
-    .col-is-active {
-        width: 10%; /* Wąska kolumna dla 'Tak/Nie' */
-    }
-    .col-user-type {
-        width: 18%;
-    }
-    .col-last-login {
-        width: 20%;
-    }
-    .col-actions {
-        width: 15%; /* Stała szerokość dla akcji */
-        white-space: nowrap; /* Zapobiega łamaniu linków */
-    }
+        }
+        .col-is-active {
+            width: 10%;
+        }
+        .col-user-type {
+            width: 18%;
+        }
+        .col-last-login {
+            width: 20%;
+        }
+        .col-actions {
+            width: 15%;
+            white-space: nowrap;
+        }
 
-    .pageBlockTable .actionColumn a {
-        color: #00aaff;
-        text-decoration: none;
-        margin-right: 5px;
-    }
-    .pageBlockTable .actionColumn a:hover {
-        text-decoration: underline;
-    }
+        .pageBlockTable .actionColumn a {
+            color: #00aaff;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .pageBlockTable .actionColumn a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         // Display the component when page loads
