@@ -1,0 +1,213 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap');
+            
+            html, body {
+                margin: 0;
+                padding: 0;
+                min-height: 100%;
+                width: 100%;
+                box-sizing: border-box;
+                font-family: "Inter", serif;
+            }
+            
+            body {
+                background-color: #0a0f16;
+                overflow-y: auto; /* Enable vertical scrolling for the entire page */
+                overflow-x: hidden;
+            }
+            
+            .content-container {
+                position: relative;
+                z-index: 1;
+                color: white;
+                padding: 0;
+                min-height: 100vh;
+            }
+            
+            .header-wrapper {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background-color: rgba(10, 15, 22, 0.95); /* Semi-transparent background */
+                backdrop-filter: blur(5px); /* Blur effect for modern browsers */
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            .content {
+                padding: 0 0 50px 0; /* Add padding at the top and bottom */
+            }
+            
+            @media (max-width: 768px) {
+                .content-container {
+                    padding: 0;
+                }
+                
+                .header-wrapper {
+                    position: relative; /* Change from sticky to relative on mobile */
+                }
+                
+                .content {
+                    padding: 1rem 0 50px 0;
+                }
+            }
+
+            .footer {
+                background-color: #1a1f26;
+                color: #ffffff;
+                padding: 40px 20px;
+                text-align: center;
+                border-top: 1px solid #2d3748;
+                margin-top: auto;
+            }
+            
+            .footer-content {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .footer h3 {
+                color: #ffffff;
+                margin-bottom: 15px;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+            
+            .footer p {
+                color: #a0aec0;
+                margin: 5px 0;
+                font-size: 0.9rem;
+            }
+            
+            .footer-links {
+                margin: 20px 0;
+            }
+            
+            .footer-links a {
+                color: #4299e1;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 0.9rem;
+            }
+            
+            .footer-links a:hover {
+                color: #63b3ed;
+                text-decoration: underline;
+            }
+            
+            .copyright {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid #2d3748;
+                color: #718096;
+                font-size: 0.8rem;
+            }
+            
+            @media (max-width: 768px) {
+                .content-container {
+                    padding: 0;
+                }
+                
+                .header-wrapper {
+                    position: relative; /* Change from sticky to relative on mobile */
+                }
+                
+                .content {
+                    padding: 1rem 0 50px 0;
+                }
+
+                .footer {
+                    padding: 30px 15px;
+                }
+                
+                .footer-links a {
+                    display: block;
+                    margin: 10px 0;
+                }
+            }
+
+        </style>
+    </head>
+    
+<c:DefaultBackground />
+
+
+
+<div class="content-container">
+    <div class="header-wrapper">
+        <c:Header title="Printerio" 
+        />
+    </div>
+
+    <apex:outputPanel id="contentArea">
+        <div class="content">
+            <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh; padding: 2rem 1rem;">
+            <div style="max-width: 600px; text-align: center; background-color: rgba(30, 40, 50, 0.8); padding: 3rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                <div style="margin-bottom: 2rem;">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto;">
+                        <circle cx="12" cy="12" r="10" stroke="#0070d2" stroke-width="2" fill="none"/>
+                        <path d="m9 12 2 2 4-4" stroke="#0070d2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <h1 style="color: #0070d2; margin-bottom: 1rem; font-size: 2.5rem; font-weight: bold;">Thank You!</h1>
+                
+                <h2 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 600;">Your information has been successfully submitted</h2>
+                
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+                    We appreciate you taking the time to contact us. Our team will review your inquiry and get back to you within 24-48 hours.
+                </p>
+                
+                <div style="margin-bottom: 2rem;">
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 1rem; margin: 0.5rem 0;">
+                        <strong>What happens next?</strong>
+                    </p>
+                    <ul style="color: rgba(255, 255, 255, 0.7); text-align: left; max-width: 400px; margin: 0 auto; padding-left: 1.5rem;">
+                        <li style="margin: 0.5rem 0;">Our team will review your submission</li>
+                        <li style="margin: 0.5rem 0;">We'll reach out to discuss your needs</li>
+                        <li style="margin: 0.5rem 0;">We'll provide you with a customized solution</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <a href="/apex/WebToLead" style="display: inline-block; background-color: #0070d2; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-right: 1rem; transition: background-color 0.3s ease;">
+                        Return to Homepage
+                    </a>
+                    <a href="/apex/WebToLead" style="display: inline-block; border: 2px solid #0070d2; color: #0070d2; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+                        Contact Us Again
+                    </a>
+                </div>
+                
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin: 0;">
+                        Need immediate assistance? Call us at <strong style="color: #0070d2;">+1 (555) 123-4567</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </apex:outputPanel>
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Printerio</h3>
+            <p>Your trusted partner for professional printing solutions</p>
+            <p>📍 123 Business Avenue, Suite 100, City, State 12345</p>
+            <p>📞 (555) 123-4567 | ✉️ info@printerio.com</p>
+            
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Printerio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+</apex:page>

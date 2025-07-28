@@ -1,0 +1,23 @@
+<template>
+    <lightning-modal-header label="Create Account"></lightning-modal-header>
+    <lightning-modal-body onclose={handleCancel}>
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <lightning-combobox
+                name="orgOptions"
+                label="Pick Organization in which to create Account"
+                value={selectedOrg}
+                placeholder="Select Organization"
+                options={orgOptions}
+                onchange={handleOrgChange}
+                style="width: 40%;"
+            ></lightning-combobox>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button-group>
+            <lightning-button variant="brand" label="Pick Type" onclick={handlePickType}></lightning-button>
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+        </lightning-button-group>
+        
+    </lightning-modal-footer>
+</template>

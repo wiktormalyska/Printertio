@@ -1,0 +1,77 @@
+<template>
+    <lightning-card title="Create New Order" icon-name="standard:orders">
+        <lightning-record-edit-form object-api-name="Order">
+            <div style="margin: 12px;">
+                <lightning-input-field 
+                    field-name="AccountId"
+                    value={accountId}
+                    onchange={handleAccountChange}
+                    ></lightning-input-field>
+                <lightning-input 
+                    type="date" 
+                    label="Order Start Date" 
+                    style="margin: 0 4px 0 4px;"
+                    value={startDate}
+                    onchange={handleStartDateChange}
+                ></lightning-input>
+                <hr style="margin: 16px 4px 0 4px;">
+                <lightning-card title="Contract Info" icon-name="standard:contract">
+                    <lightning-input 
+                        type="number" 
+                        name="contract-term" 
+                        label="Contract Term (months)"
+                        style="margin: 0 4px 0 16px;" 
+                        value={contractTerm}
+                        onchange={handleContractTermChange}
+                    ></lightning-input>
+                </lightning-card>
+                <hr style="margin: 16px 4px 8px 4px;">
+                <lightning-input-address
+                    show-address-lookup
+                    address-label="Shipping Address"
+                    street-label="Street"
+                    city-label="City"
+                    country-label="Country"
+                    province-label="Province"
+                    postal-code-label="PostalCode"
+                    style="margin: 0 4px 0 4px;"
+                    value={shippingAddress}
+                    onchange={handleShippingAddressChange}
+                    field-level-help="Shipping Address" >
+                </lightning-input-address>
+                <template if:false={useSameAddress}>
+                    <lightning-input-address
+                        show-address-lookup
+                        address-label="Billing Address"
+                        street-label="Street"
+                        city-label="City"
+                        country-label="Country"
+                        province-label="Province"
+                        postal-code-label="PostalCode"
+                        field-level-help="Billing Address"
+                        value={billingAddress}
+                        onchange={handleBillingAddressChange}
+                        style="margin: 0 4px 0 4px;"
+                        >
+                    </lightning-input-address>
+                </template>
+                <lightning-input 
+                    type="checkbox" 
+                    label="Use same address for Billing Address" 
+                    name="input1"
+                    style="margin: 0 4px 0 4px;"
+                    checked={useSameAddress}
+                    onchange={handleAddressCheckboxChange}
+                ></lightning-input>
+                <div style="margin-top: 8px;">
+                    <lightning-button 
+                    variant="brand"
+                    label="Create New Order"
+                    style="margin: 0 4px 0 4px;" 
+                    onclick={handleSubmit}
+                    ></lightning-button>   
+                </div>
+            </div>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>

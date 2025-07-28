@@ -1,0 +1,168 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script>
+            function timestamp() { 
+                var response = document.getElementById("g-recaptcha-response");
+                if (response == null || response.value.trim() == "") {
+                    var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);
+                    elems["ts"] = JSON.stringify(new Date().getTime());
+                    document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems);
+                }
+            } setInterval(timestamp, 500);
+        </script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap');
+            
+            html, body {
+                margin: 0;
+                padding: 0;
+                min-height: 100%;
+                width: 100%;
+                box-sizing: border-box;
+                font-family: "Inter", serif;
+            }
+            
+            body {
+                background-color: #0a0f16;
+                overflow-y: auto; /* Enable vertical scrolling for the entire page */
+                overflow-x: hidden;
+            }
+            
+            .content-container {
+                position: relative;
+                z-index: 1;
+                color: white;
+                padding: 0;
+                min-height: 100vh;
+            }
+            
+            .header-wrapper {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background-color: rgba(10, 15, 22, 0.95); /* Semi-transparent background */
+                backdrop-filter: blur(5px); /* Blur effect for modern browsers */
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            .content {
+                padding: 0 0 50px 0; /* Add padding at the top and bottom */
+            }
+
+            .footer {
+                background-color: #1a1f26;
+                color: #ffffff;
+                padding: 40px 20px;
+                text-align: center;
+                border-top: 1px solid #2d3748;
+                margin-top: auto;
+            }
+            
+            .footer-content {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .footer h3 {
+                color: #ffffff;
+                margin-bottom: 15px;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+            
+            .footer p {
+                color: #a0aec0;
+                margin: 5px 0;
+                font-size: 0.9rem;
+            }
+            
+            .footer-links {
+                margin: 20px 0;
+            }
+            
+            .footer-links a {
+                color: #4299e1;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 0.9rem;
+            }
+            
+            .footer-links a:hover {
+                color: #63b3ed;
+                text-decoration: underline;
+            }
+            
+            .copyright {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid #2d3748;
+                color: #718096;
+                font-size: 0.8rem;
+            }
+            
+            @media (max-width: 768px) {
+                .content-container {
+                    padding: 0;
+                }
+                
+                .header-wrapper {
+                    position: relative; /* Change from sticky to relative on mobile */
+                }
+                
+                .content {
+                    padding: 1rem 0 50px 0;
+                }
+
+                .footer {
+                    padding: 30px 15px;
+                }
+                
+                .footer-links a {
+                    display: block;
+                    margin: 10px 0;
+                }
+            }
+
+        </style>
+    </head>
+    
+<c:DefaultBackground />
+
+
+
+<div class="content-container">
+    <div class="header-wrapper">
+        <c:Header title="Printerio" 
+        />
+    </div>
+
+    <apex:outputPanel id="contentArea">
+        <div class="content">
+            <c:WebToLeadComponent />
+        </div>
+    </apex:outputPanel>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Printerio</h3>
+            <p>Your trusted partner for professional printing solutions</p>
+            <p>📍 123 Business Avenue, Suite 100, City, State 12345</p>
+            <p>📞 (555) 123-4567 | ✉️ info@printerio.com</p>
+            
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Printerio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+</apex:page>

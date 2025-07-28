@@ -1,0 +1,64 @@
+<apex:component >
+    <style>
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            filter: blur(3rem);
+            z-index: -1; /* Ensure it stays behind content */
+            pointer-events: none; /* Prevent interference with interactions */
+        }
+        
+        @media (max-width: 640px) {
+            .background-container {
+                filter: blur(2rem);
+            }
+        }
+        
+        .animated-background {
+            aspect-ratio: 1.7;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(to right, #3b82f6, rgba(255, 255, 255, 0.1));
+            opacity: 0.6;
+            transition: clip-path 6s ease-in-out;
+        }
+    </style>
+
+    <script>
+        function generatePolygon() {
+            var points = [];
+            for (var i = 0; i < 24; i++) {
+                points.push(Math.random() * 100 + '% ' + Math.random() * 100 + '%');
+            }
+            return 'polygon(' + points.join(', ') + ')';
+        }
+        
+        function updatePolygon() {
+            var element = document.getElementById('animatedBackground');
+            if (element) {
+                element.style.clipPath = generatePolygon();
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', function() {
+            var element = document.getElementById('animatedBackground');
+            if (element) {
+                element.style.clipPath = generatePolygon();
+                
+                // Update every 6 seconds
+                setInterval(updatePolygon, 6000);
+            }
+        });
+    </script>
+    
+    <div class="background-container">
+        <div id="animatedBackground" class="animated-background"></div>
+    </div>
+</apex:component>

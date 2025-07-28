@@ -1,0 +1,26 @@
+<template>
+    <lightning-modal-header label="Create External Account Form"></lightning-modal-header>
+    <lightning-modal-body onclose={handleCancel}>
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <lightning-input style="width: 40%;" label="Account Name" value={accountName} onchange={handleAccountNameChange} data-id="accountName" required="true"></lightning-input>
+            <lightning-input style="width: 40%;" label="Phone" value={phone} onchange={handlePhoneChange} data-id="phone" type="tel"></lightning-input>
+            <lightning-combobox 
+                style="width: 40%;" 
+                label="Industry" 
+                value={industry} 
+                options={industryOptions} 
+                onchange={handleIndustryChange} 
+                data-id="industry"
+                placeholder="Select an industry">
+            </lightning-combobox>
+            <lightning-input style="width: 40%;" label="Owner Email" value={ownerEmail} onchange={handleOwnerEmailChange} data-id="ownerEmail" type="email"></lightning-input>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button-group>
+            <lightning-button variant="brand" label="Create" onclick={handleCreate}></lightning-button>
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+        </lightning-button-group>
+        
+    </lightning-modal-footer>
+</template>

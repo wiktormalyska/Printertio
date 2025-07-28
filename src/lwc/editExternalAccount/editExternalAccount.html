@@ -1,0 +1,66 @@
+<template>
+    <lightning-modal-header label="Edit External Account"></lightning-modal-header>
+    <lightning-modal-body onclose={handleCancel}>
+        <template if:true={isLoading}>
+            <lightning-spinner 
+                alternative-text="Updating account..." 
+                size="medium">
+            </lightning-spinner>
+        </template>
+
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <lightning-input 
+                style="width: 40%;" 
+                label="Account Name" 
+                value={accountName} 
+                onchange={handleAccountNameChange} 
+                data-id="accountName" 
+                required="true"
+                disabled={isLoading}>
+            </lightning-input>
+            <lightning-input 
+                style="width: 40%;" 
+                label="Phone" 
+                value={phone} 
+                onchange={handlePhoneChange} 
+                data-id="phone" 
+                type="tel"
+                disabled={isLoading}>
+            </lightning-input>
+            <lightning-combobox 
+                style="width: 40%;" 
+                label="Industry" 
+                value={industry} 
+                options={industryOptions} 
+                onchange={handleIndustryChange} 
+                data-id="industry"
+                placeholder="Select an industry"
+                disabled={isLoading}>
+            </lightning-combobox>
+            <lightning-input 
+                style="width: 40%;" 
+                label="Owner Email" 
+                value={ownerEmail} 
+                onchange={handleOwnerEmailChange} 
+                data-id="ownerEmail" 
+                type="email"
+                disabled={isLoading}>
+            </lightning-input>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button-group>
+            <lightning-button 
+                variant="brand" 
+                label="Update" 
+                onclick={handleUpdate}
+                disabled={isLoading}>
+            </lightning-button>
+            <lightning-button 
+                label="Cancel" 
+                onclick={handleCancel}
+                disabled={isLoading}>
+            </lightning-button>
+        </lightning-button-group>
+    </lightning-modal-footer>
+</template>

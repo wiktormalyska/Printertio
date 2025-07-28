@@ -1,0 +1,89 @@
+<apex:component >
+    <apex:attribute name="title" description="The title of the page" type="String" default="Web to Lead Form"/>
+    <apex:attribute name="selectedSection" description="Currently selected navigation section" type="String" default="home"/>
+    <apex:attribute name="changeSection" description="Action to change the selected section" type="ApexPages.Action"/>
+    
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 15, 22, 0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            flex-direction: row;
+        }
+        
+        .header-text {
+            flex: 1;
+        }
+        
+        .header-text h1 {
+            margin: 0 0 0.3rem 0;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-text p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+        }
+
+        .header-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 10%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-right: 1.5rem;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: row;
+                text-align: center;
+                padding: 0.5rem;
+            }
+            
+            .header > div {
+                align-items: center !important;
+            }
+            
+            .header-image {
+                margin-right: 0;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .header-text h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header-text p {
+                font-size: 0.8rem;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <div class="header">
+        <div style="display: flex; align-items: center; flex-direction: row; justify-content: center; gap: 1rem;">
+            <img src="https://i.postimg.cc/ZqZLcB9d/logo.png"
+                    alt="Company Logo" 
+                    class="header-image" />
+            <div class="header-text">
+                <h1>{!title}</h1>
+            </div>
+        </div>
+        <!-- <c:NavBar selected="{!selectedSection}" action="{!changeSection}" /> -->
+    </div>
+</apex:component>

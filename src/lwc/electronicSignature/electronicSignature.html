@@ -1,0 +1,60 @@
+<template>
+    <lightning-quick-action-panel header="Electronic Signature">
+        <div class="slds-p-around_medium" style="display: flex; width: 100%; justify-content: center; ">
+            <div class="slds-form-element">
+                <div class="slds-m-bottom_small">
+                    <strong>Order Number: {orderNumber}</strong>
+                </div>
+                <label class="slds-form-element__label" for="signature-canvas">
+                    Please sign below to complete the order:
+                </label>
+                <div class="slds-form-element__control">
+                    <canvas 
+                        lwc:ref="signatureCanvas"
+                        id="signature-canvas"
+                        width="450" 
+                        height="200" 
+                        style="border: 2px solid #0176d3; cursor: crosshair; border-radius: 4px; background-color: #fafaf9;"
+                        onmousedown={startDrawing}
+                        onmousemove={draw}
+                        onmouseup={stopDrawing}
+                        onmouseout={stopDrawing}
+                        ontouchstart={startDrawing}
+                        ontouchmove={draw}
+                        ontouchend={stopDrawing}>
+                    </canvas>
+                </div>
+                <div class="slds-form-element__help slds-m-top_x-small">
+                    Use your mouse or finger to draw your signature above
+                </div>
+            </div>
+            
+            <div if:true={showSpinner} class="slds-m-top_medium slds-align_absolute-center">
+                <lightning-spinner alternative-text="Generating PDF..." size="medium"></lightning-spinner>
+                <p class="slds-m-top_small">Generating PDF with your signature...</p>
+            </div>
+        </div>
+        
+        <div slot="footer">
+            <lightning-button 
+                variant="neutral" 
+                label="Clear" 
+                onclick={clearSignature}
+                disabled={showSpinner}>
+            </lightning-button>
+            <lightning-button 
+                variant="neutral" 
+                label="Cancel" 
+                onclick={handleCancel}
+                disabled={showSpinner}>
+            </lightning-button>
+            <lightning-button 
+                variant="brand" 
+                label="Sign & Generate PDF" 
+                onclick={saveSignature}
+                disabled={showSpinner}
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>
