@@ -12,7 +12,6 @@ jobs:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
 
-      # ✅ POPRAWIONY KROK INSTALACJI
       - name: 'Install Salesforce CLI'
         run: |
           npm install @salesforce/cli --global

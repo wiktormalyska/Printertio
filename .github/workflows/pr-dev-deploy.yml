@@ -11,10 +11,24 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy on ${{ vars.SALESFORCE_DEVELOPERORG_SERVER_URL }}
-        uses: jawills/sf-deploy@v1.0
-        with:
-          SFDX_AUTH_URL`: ${{ secrets.SFDX_AUTH_URL }}
-          DRY_RUN: false
-          TEST_LEVEL: RunLocalTests
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+
+      - name: 'Install Salesforce CLI'
+        run: |
+          npm install @salesforce/cli --global
+
+      - name: 'Authenticate to Salesforce Org'
+        run: |
+          echo "${{ secrets.SF_SECRET_KEY }}" > server.key
+          sf org login jwt \
+            --client-id ${{ secrets.SF_CONSUMER_KEY_DEVELOPER }} \
+            --jwt-key-file server.key \
+            --username ${{ secrets.SF_USERNAME_DEVELOPER }} \
+            --instance-url ${{ secrets.SF_SERVER_URL }} \
+            --alias SFDC_v1 \
+            --set-default
+
+      - name: 'Validate Deployment to Salesforce Org'
+        run: |
+          sf project deploy start --source-dir force-app
