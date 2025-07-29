@@ -20,7 +20,7 @@ jobs:
       - name: 'Authenticate to Salesforce Org'
         run: |
           echo "${{ secrets.SF_SECRET_KEY }}" > server.key
-          sfdx auth:jwt:grant \
+          sfdx force:auth:jwt:grant \
             --client-id ${{ secrets.SF_CONSUMER_KEY }} \
             --jwt-key-file server.key \
             --username ${{ secrets.SF_USERNAME }} \
