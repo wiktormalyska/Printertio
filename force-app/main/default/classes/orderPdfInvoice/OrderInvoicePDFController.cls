@@ -1,19 +1,21 @@
 public class OrderInvoicePDFController {
     
     private final Order orderRecord;
+    private String signatureUrl;
+
     
     public OrderInvoicePDFController(ApexPages.StandardController controller) {
         this.orderRecord = (Order) controller.getRecord();
-    }
-    
-    public String getSignatureUrl() {
         String signatureVersionId = ApexPages.currentPage().getParameters().get('signatureVersionId');
 
         if (String.isBlank(signatureVersionId)) {
-            return null;
+            this.signatureUrl = null;
         }
-        String finalUrl = 'https://orgfarm-6963239606-dev-ed--c.develop.vf.force.com/sfc/servlet.shepherd/version/download/' + signatureVersionId;
-        return finalUrl;
+        this.signatureUrl = 'https://orgfarm-6963239606-dev-ed--c.develop.vf.force.com/sfc/servlet.shepherd/version/download/' + signatureVersionId;
+    }
+    
+    public String getSignatureUrl() {
+        return this.signatureUrl;
     }
     
     public String getCompanySignatureName() {
