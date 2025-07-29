@@ -95,12 +95,6 @@ public with sharing class AccountSearchController {
             
             if (errorResponse.containsKey('message')) {
                 errorMessage = (String) errorResponse.get('message');
-            } else if (errorResponse.containsKey('errors')) {
-                List<Object> errors = (List<Object>) errorResponse.get('errors');
-                if (!errors.isEmpty()) {
-                    Map<String, Object> firstError = (Map<String, Object>) errors[0];
-                    errorMessage = (String) firstError.get('message');
-                }
             }
             
             throw new AuraHandledException(errorMessage);
