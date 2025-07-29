@@ -29,6 +29,6 @@ jobs:
             --alias SFDC_v1 \
             --set-default
 
-      - name: 'Validate Deployment to Salesforce Org'
+      - name: 'Deploy to Salesforce Developer Org'
         run: |
           sf project deploy start --source-dir force-app
