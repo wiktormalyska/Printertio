@@ -134,44 +134,7 @@ public class GenerateOrderPdfAction {
         
         return new List<FlowOutputs>{ result };
     }
-    
-    
-    @AuraEnabled
-    public static String generatePdfWithSignature(Id orderId, String signatureBase64) {
-        try {
-            // Save signature as ContentVersion first
-            ContentVersion signatureFile = new ContentVersion();
-            signatureFile.Title = 'Customer_Signature_' + orderId;
-            signatureFile.PathOnClient = 'Customer_Signature_' + orderId + '.png';
-            signatureFile.VersionData = EncodingUtil.base64Decode(signatureBase64);
-            signatureFile.FirstPublishLocationId = orderId;
-            insert signatureFile;
-            
-            // Get the ContentDocument ID for the signature
-            // ContentVersion signatureFile = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :signatureFile.Id];
-            
-            // Generate PDF with signature ContentVersion ID
-            List<Id> orderIds = new List<Id>{orderId};
-            List<FlowOutputs> results = generatePdfWithCustomerSignature(orderIds, signatureFile.Id);
-            
-            if (results[0].isSuccess) {
-                // After PDF generation, get the latest PDF version ID for this order
-                String latestPdfVersionId = getLatestPdfVersionIdForOrder(orderId);
-                
-                if (String.isNotBlank(latestPdfVersionId)) {
-                    return 'PDF generated successfully with electronic signature. Latest PDF Version ID: ' + latestPdfVersionId;
-                } else {
-                    return 'PDF generated successfully with electronic signature';
-                }
-            } else {
-                throw new AuraHandledException(results[0].errorMessage);
-            }
-            
-        } catch (Exception e) {
-            throw new AuraHandledException('Error generating PDF with signature: ' + e.getMessage());
-        }
-    }
-    
+
     // Helper method to get the latest PDF version ID for a given order
     private static String getLatestPdfVersionIdForOrder(Id orderId) {
         try {
