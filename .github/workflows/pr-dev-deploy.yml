@@ -4,11 +4,9 @@ on:
     types: [closed]
     branches:
       - develop
-    paths:
-        - 'feature/**'
 jobs:
   merge_job:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout source code'
