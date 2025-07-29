@@ -20,14 +20,14 @@ jobs:
       - name: 'Authenticate to Salesforce Org'
         run: |
           echo "${{ secrets.SF_SECRET_KEY }}" > server.key
-          sfdx auth:jwt:grant \
+          sf org login jwt \
             --client-id ${{ secrets.SF_CONSUMER_KEY }} \
             --jwt-key-file server.key \
             --username ${{ secrets.SF_USERNAME }} \
             --instance-url ${{ secrets.SF_SERVER_URL }} \
-            --set-default-dev-hub \
-            --alias FeatureOrg
+            --alias SFDC_v1 \
+            --set-default
 
       - name: 'Validate Deployment to Salesforce Org'
         run: |
-          sfdx force:source:deploy -p force-app --testlevel RunLocalTests -u FeatureOrg --checkonly
+          sfdx force:source:deploy -p force-app --testlevel RunLocalTests --checkonly
