@@ -1,3 +1,0 @@
-<aura:component implements="force:hasRecordId,force:hasSObjectName,lightning:actionOverride">
-    <c:customOrderLwcForm />
-</aura:component>
