@@ -1,6 +1,6 @@
 public class OrderInvoicePDFController {
     
-    private Order orderRecord;
+    private final Order orderRecord;
     
     public OrderInvoicePDFController(ApexPages.StandardController controller) {
         this.orderRecord = (Order) controller.getRecord();
@@ -12,15 +12,8 @@ public class OrderInvoicePDFController {
         if (String.isBlank(signatureVersionId)) {
             signatureVersionId = '';
         }
-        try {
-            String finalUrl = 'https://orgfarm-6963239606-dev-ed--c.develop.vf.force.com/sfc/servlet.shepherd/version/download/' + signatureVersionId;
-            return finalUrl;
-        } catch (Exception e) {
-            System.debug('Error retrieving signature: ' + e.getMessage());
-        }
-        
-        System.debug('Returning null - no signature available');
-        return null;
+        String finalUrl = 'https://orgfarm-6963239606-dev-ed--c.develop.vf.force.com/sfc/servlet.shepherd/version/download/' + signatureVersionId;
+        return finalUrl;
     }
     
     public String getCompanySignatureName() {

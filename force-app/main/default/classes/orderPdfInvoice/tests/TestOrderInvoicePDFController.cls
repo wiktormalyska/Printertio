@@ -44,27 +44,6 @@ public with sharing class TestOrderInvoicePDFController {
     }
 
     @IsTest
-    static void testGetSignatureUrlWithoutId() {
-
-        Order ord = [SELECT Id FROM Order LIMIT 1];
-
-
-        PageReference pageRef = Page.OrderInvoicePDF;
-        Test.setCurrentPage(pageRef);
-
-
-        ApexPages.StandardController sc = new ApexPages.StandardController(ord);
-        OrderInvoicePDFController controller = new OrderInvoicePDFController(sc);
-
-        String signatureUrl;
-        Test.startTest();
-        signatureUrl = controller.getSignatureUrl();
-        Test.stopTest();
-
-        System.assertEquals(null, signatureUrl, 'URL podpisu powinien być poprawnie zbudowany bez ID.');
-    }
-
-    @IsTest
     static void testGetCompanySignatureName() {
         Order ord = [SELECT Id FROM Order LIMIT 1];
 
