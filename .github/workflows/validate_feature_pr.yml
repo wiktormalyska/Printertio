@@ -30,4 +30,4 @@ jobs:
 
       - name: 'Validate Deployment to Salesforce Org'
         run: |
-          sfdx force:source:deploy -p force-app --testlevel RunLocalTests --checkonly
+          sf project deploy validate --source-dir force-app
