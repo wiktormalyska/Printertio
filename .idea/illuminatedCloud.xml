@@ -6,7 +6,7 @@
         <IlluminatedCloudConnection>
           <option name="connectionName" value="devOrg" />
           <option name="connectionType" value="OAUTH" />
-          <option name="defaultModuleName" value="devOrg" />
+          <option name="defaultModuleName" value="printerio-dev" />
           <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/devOrg/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>

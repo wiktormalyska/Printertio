@@ -1,0 +1,282 @@
+<apex:page controller="OrganizationInfoController">
+    <script>
+        document.getElementById('orgInfoComponent').style.display = 'block';
+
+        function copySessionId() {
+            var sessionId = document.getElementById('sessionIdValue').innerText;
+            navigator.clipboard.writeText(sessionId).then(function() {
+                alert('Session ID copied to clipboard');
+            }, function() {
+                alert('Failed to copy session ID');
+            });
+        }
+
+        function openLightningView(userId) {
+            if (userId) {
+                var baseUrl = "https://curious-unicorn-n3um3x-dev-ed.trailblaze.lightning.force.com/lightning/r/User/";
+                var fullUrl = baseUrl + userId + "/view";
+                window.open(fullUrl, '_blank');
+            } else {
+                alert('Error: User ID is not available');
+            }
+        }
+
+    </script>
+    <style>
+        .info-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #1C2733;
+        }
+        .session-info-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #1C2733;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #AEB1B5;
+            font-family: sans-serif;
+        }
+
+        .session-id-content {
+            margin-right: 20px;
+            font-family: monospace;
+            word-break: break-all;
+            flex-grow: 1;
+        }
+
+        .session-id-content strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            padding: 8px 16px;
+            border: 1px solid #00aaff;
+            background-color: transparent;
+            color: #00aaff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .copy-btn:hover {
+            background-color: #00aaff;
+            color: #fff;
+        }
+        .centered-container {
+            width: 80%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .custom-pageblock-wrapper {
+            background: #1C2733;
+            border: 1px solid #333;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 1px;
+        }
+        .pageBlockTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pageBlockTable th {
+            background: #1C2733;
+            color: #AEB1B5;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+        .pageBlockTable td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .mainTitle {
+            padding-left: 1.5rem;
+            color: #AEB1B5;
+        }
+        .pageBlockTable tr:hover {
+            background-color: #183259;
+        }
+        .pageBlockTable .actionColumn a {
+            color: #0070d2;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .pageBlockTable .actionColumn a:hover {
+            text-decoration: underline;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+        .pageBlockTable {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+         .pageBlockTable th {
+            background: #1C2733;
+            color: #AEB1B5;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #444;
+        }
+        .pageBlockTable td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+            vertical-align: middle;
+            color: #ccc;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .pageBlockTable tr:hover {
+            background-color: #183259;
+        }
+        .col-username, .col-email {
+
+        }
+        .col-is-active {
+            width: 10%;
+        }
+        .col-user-type {
+            width: 18%;
+        }
+        .col-last-login {
+            width: 20%;
+        }
+        .col-actions {
+            width: 15%;
+            white-space: nowrap;
+        }
+
+        .pageBlockTable .actionColumn a {
+            color: #00aaff;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .pageBlockTable .actionColumn a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        // Display the component when page loads
+        document.getElementById('orgInfoComponent').style.display = 'block';
+        
+        // Function to copy session ID
+        function copySessionId() {
+            var sessionId = document.getElementById('sessionIdValue').innerText;
+            navigator.clipboard.writeText(sessionId).then(function() {
+                alert('Session ID copied to clipboard');
+            }, function() {
+                alert('Failed to copy session ID');
+            });
+        }
+        
+        // Function to open user record in Lightning Experience
+        function openLightningView(userId) {
+            if (userId) {
+                // Base URL pattern for Lightning Experience view
+                var baseUrl = "https://curious-unicorn-n3um3x-dev-ed.trailblaze.lightning.force.com/lightning/r/User/";
+                var fullUrl = baseUrl + userId + "/view";
+                window.open(fullUrl, '_blank');
+            } else {
+                alert('Error: User ID is not available');
+            }
+        }
+    </script>
+    <div class="centered-container" id="orgInfoComponent">
+        <apex:form >
+            <!-- License Information Section -->
+            <div class="custom-pageblock-wrapper">
+                <apex:pageBlock title="License Information">
+                    <apex:pageBlockTable value="{!licenseInfo}" var="lic" styleClass="pageBlockTable">
+                        <apex:column headerValue="License Type" value="{!lic.name}"/>
+                        <apex:column headerValue="Total Licenses" value="{!lic.total}"/>
+                        <apex:column headerValue="Used Licenses" value="{!lic.used}"/>
+                        <apex:column headerValue="Available Licenses" value="{!lic.available}"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>
+            
+            <!-- Metadata Information Section -->
+            <div class="custom-pageblock-wrapper">
+                <apex:pageBlock title="Organization Metadata">
+                    <apex:pageBlockTable value="{!metadataItems}" var="item" styleClass="pageBlockTable">
+                        <apex:column headerValue="Metadata Type" value="{!item.name}"/>
+                        <apex:column headerValue="Count" value="{!item.count}"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>
+            
+            <!-- Users Table Section -->
+        <div class="custom-pageblock-wrapper">
+            <apex:pageBlock title="User Information">
+                <apex:pageBlockButtons location="top" style="padding-left: 1rem;">
+                    <!-- <apex:commandButton value="Refresh Users" action="{!refreshUsers} " reRender="usersTable,messages" /> -->
+                </apex:pageBlockButtons>
+                
+                <div class="table-responsive">
+                    <apex:pageBlockTable value="{!usersList}" var="u" id="usersTable" styleClass="pageBlockTable">
+                        
+                        <apex:column headerValue="Username" value="{!u.Username}" styleClass="col-username"/>
+                        
+                        <apex:column headerValue="Email" value="{!u.Email}" styleClass="col-email"/>
+                        
+                        <apex:column headerValue="Is Active" styleClass="col-is-active">
+                            <apex:outputText value="{!IF(u.IsActive, 'Yes', 'No')}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="User Type" value="{!u.UserType}" styleClass="col-user-type"/>
+                        
+                        <apex:column headerValue="Last Login Date" styleClass="col-last-login">
+                            <apex:outputText value="{!IF(ISNULL(u.LastLoginDate), 'N/A', '')}">
+                                <apex:param value="{!u.LastLoginDate}" />
+                            </apex:outputText>
+                        </apex:column>
+                        
+                        <apex:column headerValue="Actions" styleClass="col-actions actionColumn">
+                            <a href="javascript:void(0)" onclick="openLightningView('{!u.Id}')" class="lightning-link">
+                                View
+                            </a>&nbsp;|&nbsp;
+                            <apex:commandLink action="{!deleteUser}" reRender="usersTable,messages" 
+                                            onclick="return confirm('Are you sure you want to deactivate this user?');">
+                                Delete
+                                <apex:param name="userId" value="{!u.Id}" assignTo="{!selectedUserId}"/>
+                            </apex:commandLink>
+                        </apex:column>
+                        
+                    </apex:pageBlockTable>
+                </div>
+            </apex:pageBlock>
+        </div>
+            
+            <!-- Session ID Display -->
+            <div class="session-info-box">
+                <div class="session-id-content">
+                    <strong>Current Session ID:</strong>
+                    <span id="sessionIdValue">{!sessionId}</span>
+                </div>
+                <button onclick="copySessionId()" class="copy-btn">Copy</button>
+            </div>
+            
+            <apex:pageMessages id="messages"/>
+        </apex:form>
+    </div>
+</apex:page>

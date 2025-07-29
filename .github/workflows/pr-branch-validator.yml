@@ -1,0 +1,33 @@
+name: 'PR Branch Validator'
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - develop
+      - qa
+      - master
+
+jobs:
+  validate-pr-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate correct base and head branch
+        run: |
+          HEAD_BRANCH="${{ github.head_ref }}"
+          BASE_BRANCH="${{ github.base_ref }}"
+
+          echo "Pull Request from '${HEAD_BRANCH}' to '${BASE_BRANCH}'"
+
+          if [[ "${BASE_BRANCH}" == "develop" && ! "${HEAD_BRANCH}" =~ ^feature/.*$ ]]; then
+            echo "ERROR: Only 'feature/*' branches can be merged into 'develop'."
+            exit 1
+          elif [[ "${BASE_BRANCH}" == "qa" && "${HEAD_BRANCH}" != "develop" ]]; then
+            echo "ERROR: Only the 'develop' branch can be merged into 'qa'."
+            exit 1
+          elif [[ "${BASE_BRANCH}" == "master" && "${HEAD_BRANCH}" != "qa" ]]; then
+            echo "ERROR: Only the 'qa' branch can be merged into 'master'."
+            exit 1
+          fi
+
+          echo "Branch validation successful."
