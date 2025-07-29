@@ -5,7 +5,7 @@
     <option name="apexLogLevel" value="DEBUG" />
     <option name="calloutsLogLevel" value="INFO" />
     <option name="changedOnly" value="false" />
-    <option name="connectionName" value="devOrg" />
+    <option name="connectionName" value="featureOrg" />
     <option name="connectionType" value="OAUTH" />
     <option name="contextConfiguration" value="false" />
     <option name="dataAccessLogLevel" value="INFO" />
@@ -36,7 +36,7 @@
     <option name="apexLogLevel" value="DEBUG" />
     <option name="calloutsLogLevel" value="INFO" />
     <option name="changedOnly" value="false" />
-    <option name="connectionName" value="devOrg" />
+    <option name="connectionName" value="featureOrg" />
     <option name="connectionType" value="OAUTH" />
     <option name="contextConfiguration" value="false" />
     <option name="dataAccessLogLevel" value="INFO" />

@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Validate on ${{ vars.SALESFORCE_SERVER_URL }}
+      - name: Validate on ${{ vars.SALESFORCE_FEATUREORG_SERVER_URL }}
         uses: jawills/sf-deploy@v1.0
         with:
-          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+          SFDX_AUTH_URL: ${{ secrets.SFDX_FEATUREORG_AUTH_URL }}
           DRY_RUN: true

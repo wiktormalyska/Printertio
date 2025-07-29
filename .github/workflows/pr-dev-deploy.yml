@@ -1,0 +1,20 @@
+name: Deploy to DeveloperOrg after PR Merge
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+    paths:
+        - 'feature/**'
+jobs:
+  merge_job:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy on ${{ vars.SALESFORCE_DEVELOPERORG_SERVER_URL }}
+        uses: jawills/sf-deploy@v1.0
+        with:
+          SFDX_AUTH_URL`: ${{ secrets.SFDX_AUTH_URL }}
+          DRY_RUN: false
+          TEST_LEVEL: RunLocalTests
