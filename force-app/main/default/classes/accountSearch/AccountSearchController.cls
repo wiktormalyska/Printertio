@@ -1,5 +1,5 @@
 public with sharing class AccountSearchController {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(Cacheable=true)
     public static List<Account> getDamianOrgAccounts(String searchKeys) {
         String searchKey = '%' + searchKeys + '%';
         List<Account> accounts = new List<Account>();
@@ -43,7 +43,7 @@ public with sharing class AccountSearchController {
         return accounts;
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(Cacheable=true)
     public static List<Account> findAccounts(String searchKeys) {
         String searchKey = '%' + searchKeys + '%';
         List<Account> accounts = [
@@ -153,4 +153,6 @@ public with sharing class AccountSearchController {
             throw new AuraHandledException(errorMessage);
         }
     }
+
+
 }
