@@ -1,0 +1,18 @@
+name: Validate PR from Feature Branch
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  validate-salesforce-code:
+    if: startsWith(github.head_ref, 'feature/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate on ${{ vars.SALESFORCE_SERVER_URL }}
+        uses: jawills/sf-deploy@v1.0
+        with:
+          SFDX_AUTH_URL: ${{ secrets.SFDX_AUTH_URL }}
+          DRY_RUN: true
