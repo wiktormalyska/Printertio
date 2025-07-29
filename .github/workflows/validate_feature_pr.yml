@@ -10,9 +10,24 @@ jobs:
     if: startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Validate on ${{ vars.SALESFORCE_FEATUREORG_SERVER_URL }}
-        uses: jawills/sf-deploy@v1.0
-        with:
-          SFDX_AUTH_URL: ${{ secrets.SFDX_FEATUREORG_AUTH_URL }}
-          DRY_RUN: true
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+
+      - name: 'Install Salesforce CLI'
+        run: |
+          npm install sfdx-cli --global
+
+      - name: 'Authenticate to Salesforce Org'
+        run: |
+          echo "${{ secrets.SF_SECRET_KEY }}" > server.key
+          sfdx auth:jwt:grant \
+            --client-id ${{ secrets.SF_CONSUMER_KEY }} \
+            --jwt-key-file server.key \
+            --username ${{ secrets.SF_USERNAME }} \
+            --instance-url ${{ secrets.SF_SERVER_URL }} \
+            --set-default-dev-hub \
+            --alias FeatureOrg
+
+      - name: 'Deploy to Salesforce Org'
+        run: |
+          sfdx force:source:deploy -p force-app --testlevel RunLocalTests -u FeatureOrg --checkonly
