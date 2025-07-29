@@ -5,7 +5,6 @@ public with sharing class TestGenerateOrderPdfAction {
         Account acc = new Account(Name = 'Test Account');
         insert acc;
 
-        // CORRECTED PART: Use Test.getStandardPricebookId() instead of a query
         Id standardPricebookId = Test.getStandardPricebookId();
 
         Pricebook2 customPricebook = new Pricebook2(Name = 'Custom Pricebook', IsActive = true);
@@ -14,7 +13,6 @@ public with sharing class TestGenerateOrderPdfAction {
         Product2 prod = new Product2(Name = 'Test Product', IsActive = true);
         insert prod;
 
-        // Use the standardPricebookId obtained above
         PricebookEntry pbeStd = new PricebookEntry(
                 Pricebook2Id = standardPricebookId,
                 Product2Id = prod.Id,

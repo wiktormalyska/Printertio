@@ -10,7 +10,7 @@ public class OrderInvoicePDFController {
         String signatureVersionId = ApexPages.currentPage().getParameters().get('signatureVersionId');
 
         if (String.isBlank(signatureVersionId)) {
-            signatureVersionId = '';
+            return null;
         }
         String finalUrl = 'https://orgfarm-6963239606-dev-ed--c.develop.vf.force.com/sfc/servlet.shepherd/version/download/' + signatureVersionId;
         return finalUrl;
