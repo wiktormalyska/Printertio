@@ -6,21 +6,21 @@ on:
       - develop
 
 jobs:
-  validate-salesforce-code:
-    if: startsWith(github.head_ref, 'feature/')
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout source code'
         uses: actions/checkout@v3
 
+      # ✅ POPRAWIONY KROK INSTALACJI
       - name: 'Install Salesforce CLI'
         run: |
-          npm install sfdx-cli --global
+          npm install @salesforce/cli --global
 
       - name: 'Authenticate to Salesforce Org'
         run: |
           echo "${{ secrets.SF_SECRET_KEY }}" > server.key
-          sfdx force:auth:jwt:grant \
+          sfdx auth:jwt:grant \
             --client-id ${{ secrets.SF_CONSUMER_KEY }} \
             --jwt-key-file server.key \
             --username ${{ secrets.SF_USERNAME }} \
@@ -28,6 +28,6 @@ jobs:
             --set-default-dev-hub \
             --alias FeatureOrg
 
-      - name: 'Deploy to Salesforce Org'
+      - name: 'Validate Deployment to Salesforce Org'
         run: |
           sfdx force:source:deploy -p force-app --testlevel RunLocalTests -u FeatureOrg --checkonly
