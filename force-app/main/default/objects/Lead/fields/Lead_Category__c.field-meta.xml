@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Category__c</fullName>
+    <description>If annual revenue exceeds 5000000, then Category will be Huge</description>
+    <externalId>false</externalId>
+    <formula>IF(AnnualRevenue &gt; 5000000, &quot;Huge&quot;, &quot;Standard&quot;)</formula>
+    <label>Lead Category</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

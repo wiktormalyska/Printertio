@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Block_New_Lead_Creation</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ ISNEW(),
+ $Setup.Lock_From_Creating_Leads__c.Block_New_Leads__c 
+)</errorConditionFormula>
+    <errorMessage>Creation of Leads is currently blocked</errorMessage>
+</ValidationRule>
