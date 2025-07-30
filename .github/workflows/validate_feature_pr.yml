@@ -45,7 +45,7 @@ jobs:
 
       - name: 'Authenticate to Developer Org'
         run: |
-          echo "${{ secrets.SF_SECRET_KEY_DEVELOPER }}" > server.key.dev
+          echo "${{ secrets.SF_SECRET_KEY }}" > server.key.dev
           sf org login jwt \
             --client-id ${{ secrets.SF_CONSUMER_KEY_DEVELOPER }} \
             --jwt-key-file server.key.dev \
