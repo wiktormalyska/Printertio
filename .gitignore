@@ -55,7 +55,6 @@ target/
 manifest/package.xml
 config
 
-*.iml
 package.json
 jest.config.js
 eslint.config.js
