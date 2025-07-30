@@ -26,7 +26,8 @@ jobs:
             --username ${{ secrets.SF_USERNAME }} \
             --instance-url ${{ secrets.SF_SERVER_URL }} \
             --alias FeatureOrg \
-            --set-default-dev-hub
+            --set-default-dev-hub \
+            --test-level RunLocalTests
 
       - name: 'Validate Deployment to Feature Org'
         run: |
@@ -51,7 +52,8 @@ jobs:
             --jwt-key-file server.key.dev \
             --username ${{ secrets.SF_USERNAME_DEVELOPER }} \
             --instance-url ${{ secrets.SF_SERVER_URL }} \
-            --alias DeveloperOrg
+            --alias DeveloperOrg \
+            --test-level RunLocalTests
 
       - name: 'Validate Deployment to Developer Org'
         run: |
