@@ -50,7 +50,7 @@ jobs:
             --client-id ${{ secrets.SF_CONSUMER_KEY_DEVELOPER }} \
             --jwt-key-file server.key.dev \
             --username ${{ secrets.SF_USERNAME_DEVELOPER }} \
-            --instance-url ${{ secrets.SF_SERVER_URL_DEVELOPER }} \
+            --instance-url ${{ secrets.SF_SERVER_URL }} \
             --alias DeveloperOrg
 
       - name: 'Validate Deployment to Developer Org'
