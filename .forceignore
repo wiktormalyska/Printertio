@@ -17,3 +17,4 @@ package.xml
 **/tsconfig*.json
 **/*.tsbuildinfo
 **/eslint.config.mjs
+**/objects/Applied_Discount__c/fields/Ammount_Discounted__c.field-meta.xml

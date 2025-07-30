@@ -24,7 +24,8 @@
       <excludeFolder url="file://$MODULE_DIR$/.sf" />
       <excludeFolder url="file://$MODULE_DIR$/.sfdx" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (printerio-dev/featureOrg)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (Printertio/featureOrg)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Printertio/lwc_types" level="project" />
   </component>
 </module>
