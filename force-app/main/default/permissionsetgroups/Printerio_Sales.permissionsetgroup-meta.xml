@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Printerio Sales</label>
+    <permissionSets>Force_Lightning_Experience</permissionSets>
+    <permissionSets>Printerio_Account_Access</permissionSets>
+    <permissionSets>Printerio_Contact_Access</permissionSets>
+    <permissionSets>Printerio_Lead_Access</permissionSets>
+    <permissionSets>Printerio_Opportunity_Access</permissionSets>
+    <permissionSets>Printerio_Order_Access</permissionSets>
+    <permissionSets>Printerio_Price_Book_Access</permissionSets>
+    <permissionSets>Printerio_Product_Access</permissionSets>
+    <permissionSets>Printerio_Read_Access</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>
