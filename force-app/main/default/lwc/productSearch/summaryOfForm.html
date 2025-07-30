@@ -1,0 +1,25 @@
+<template>
+    <lightning-modal-header label="Summary for Selected Products"></lightning-modal-header>
+    <lightning-modal-body>
+        <div style="width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <div if:true={showSpinner}
+                 style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+                <lightning-spinner alternative-text="Loading Products..." size="large"></lightning-spinner>
+            </div>
+
+
+            <div style="border: 1px solid #d8dde6; border-radius: 4px; overflow: hidden;">
+                <lightning-datatable key-field="Id" data={selectedProducts} columns={columns}
+                                     hide-checkbox-column="true"></lightning-datatable>
+            </div>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <div style="width: 100%; display: flex; justify-content: flex-end; align-items: flex-end; flex-direction: row; gap: 0.5rem;">
+            <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+            <lightning-button variant="neutral" label="Previous" onclick={handleGoToProductForm}></lightning-button>
+            <lightning-button variant="brand" label="Create Order" onclick={handleCreateOrder}
+                              class="slds-m-top_small"></lightning-button>
+        </div>
+    </lightning-modal-footer>
+</template>

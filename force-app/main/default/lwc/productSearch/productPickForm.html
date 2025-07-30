@@ -1,0 +1,52 @@
+<template>
+    <lightning-modal-header label="Search for Products"></lightning-modal-header>
+    <lightning-modal-body>
+        <div style="width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <div if:true={showSpinner}
+                 style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+                <lightning-spinner alternative-text="Loading Products..." size="large"></lightning-spinner>
+            </div>
+
+            <div style="width: 80%;margin-bottom: 1rem;display: flex;align-content: center;justify-content: center;align-items: flex-end;flex-direction: row;gap: 0.5rem;">
+                <lightning-input type="search" label="Search Products by Name or Product Code"
+                                 onchange={handleSearchFieldChange} onkeyup={handleKeyUp}
+                                 value={searchFieldValue}></lightning-input>
+                <lightning-combobox name="family" label="Category" value={selectedFamily} placeholder="Select Category"
+                                    options={familyOptions} onchange={handleFamilyChange}
+                                    style="flex: 1;margin-bottom: 2px;"></lightning-combobox>
+                <lightning-button label="Search" onclick={searchProducts} variant="brand"
+                                  style="margin-bottom: 2px;"></lightning-button>
+            </div>
+
+            <div style="border: 1px solid #d8dde6; border-radius: 4px; overflow: hidden;">
+                <lightning-datatable key-field="Id" data={products} columns={columns}
+                                     onrowselection={handleRowSelection}></lightning-datatable>
+            </div>
+
+            <div style="width: 80%; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 14px; color: #706e6b;">
+                    {paginationInfo}
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <lightning-button label="Previous" onclick={handlePreviousPage}
+                                      disabled={isPreviousDisabled}></lightning-button>
+                    <span style="font-size: 14px; color: #706e6b;">Page {currentPage} of {totalPages}</span>
+                    <lightning-button label="Next" onclick={handleNextPage}
+                                      disabled={isNextDisabled}></lightning-button>
+                </div>
+            </div>
+
+            <div
+                 style="width: 80%; margin-top: 0.5rem; text-align: center; font-size: 14px; color: #706e6b;">
+                Selected products: {selectedProductsCount}
+            </div>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <div style="width: 100%; display: flex; justify-content: flex-end; align-items: flex-end; flex-direction: row; gap: 0.5rem;">
+            <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+            <lightning-button variant="brand" label="Next" onclick={handleGoToSummary} disabled={isNextButtonDisabled}
+                              class="slds-m-top_small"></lightning-button>
+        </div>
+    </lightning-modal-footer>
+</template>
