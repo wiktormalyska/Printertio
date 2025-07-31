@@ -21,9 +21,13 @@
         <members>TestOrderInvoicePDFController</members>
         <members>TestOrgConnector</members>
         <members>TestOrganizationInfoController</members>
-        <members>CronValidator</members>
         <members>ConditionLogicValidator</members>
         <members>ConditionLogicValidatorTests</members>
+        <members>TimeBoundValidator</members>
+        <members>RecurringDateValidator</members>
+        <members>RecurringDateValidatorTests</members>
+        <members>TimeBoundValidatorTests</members>
+        <members>DiscountCalculatorHandlerTests</members>
         <name>ApexClass</name>
     </types>
     <types>

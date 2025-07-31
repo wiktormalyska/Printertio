@@ -10,7 +10,7 @@ trigger DiscountTrigger on Discount__c (before update) {
                     newDiscount.Value_Type__c != oldDiscount.Value_Type__c ||
                     newDiscount.Discount_Value__c != oldDiscount.Discount_Value__c) {
                 if (onlyIsActiveChanged == false) {
-                    newDiscount.addError('Nie można edytować tej zniżki, ponieważ została już użyta. Możesz ją jedynie dezaktywować.');
+                    newDiscount.addError('You cannot edit this discount because it has already been used. You can only deactivate it.');
                 }
             }
         }

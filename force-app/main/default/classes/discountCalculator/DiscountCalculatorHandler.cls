@@ -24,48 +24,82 @@ public with sharing class DiscountCalculatorHandler {
 
     //Triggered after insert to apply discounts
     public static void applyDiscountsAfterInsert(List<Order> insertedOrders) {
+
         DiscountSettings settings = new DiscountSettings();
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
-                        Start_Date__c, End_Date__c, Cron_Expression__c, Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c
+                        Start_Date__c, End_Date__c,
+                        Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c,
+                        Recurring_Date_Start__c, Recurring_Date_End__c, Recurring_Date_Repeat_By__c
                 FROM Discount__c
                 WHERE Is_Active__c = TRUE
         ];
         for (Order order : insertedOrders) {
-            List<Discount__c> filteredDiscounts = filterDiscounts(activeDiscounts, settings, order);
-        }
+            List<Applied_Discount__c> existingDiscounts = [
+                    SELECT Id FROM Applied_Discount__c WHERE Order__c = :order.Id
+            ];
+            if (!existingDiscounts.isEmpty()) {
+                delete existingDiscounts;
+            }
 
+            List<Discount__c> filteredDiscounts = filterDiscounts(activeDiscounts, settings, order);
+            System.debug('Filtered Discounts: ' + filteredDiscounts);
+            if (filteredDiscounts.isEmpty()) {
+                return;
+            }
+            Decimal bestDiscountValue = 0;
+            Discount__c bestDiscount = null;
+            for (Discount__c discount : filteredDiscounts) {
+                Decimal discountValue = 0;
+                if (discount.Value_Type__c == 'Percentage') {
+                    discountValue = (order.TotalAmount * discount.Discount_Value__c/100);
+                } else if (discount.Value_Type__c == 'Fixed Amount') {
+                    discountValue = discount.Discount_Value__c;
+                }
+
+                if (settings.strategy == 'Highest' && discountValue > bestDiscountValue) {
+                    bestDiscountValue = discountValue;
+                    bestDiscount = discount;
+                } else if (settings.strategy == 'Lowest' && (bestDiscount == null || discountValue < bestDiscountValue)) {
+                    bestDiscountValue = discountValue;
+                    bestDiscount = discount;
+                }
+            }
+            System.debug('Best Discount Value: ' + bestDiscountValue);
+            System.debug('Best Discount: ' + bestDiscount);
+
+            Applied_Discount__c appliedDiscount = new Applied_Discount__c(
+                Order__c = order.Id,
+                Discount__c = bestDiscount != null ? bestDiscount.Id : null,
+                Amount_Discounted__c = bestDiscountValue,
+                Name = bestDiscount != null ? bestDiscount.Name : 'No Discount Applied'
+            );
+            insert appliedDiscount;
+            System.debug('Applied Discount: ' + appliedDiscount);
+        }
     }
 
     private static List<Discount__c> filterDiscounts(List<Discount__c> discounts, DiscountSettings settings, Order order) {
         List<Discount__c> filteredDiscounts = new List<Discount__c>();
 
         for (Discount__c discount : discounts) {
+            System.debug('Evaluating Discount: ' + discount.Name + ' of type ' + discount.Discount_Type__c);
             switch on discount.Discount_Type__c {
                 //From date to date
                 when 'Time-Bound' {
-                    Datetime startDate = Datetime.newInstance(discount.Start_Date__c, Time.newInstance(0, 0, 0, 0));
-                    Datetime endDate = Datetime.newInstance(discount.End_Date__c, Time.newInstance(0, 0, 0, 0));
-                    if (discount.Start_Date__c == null || discount.End_Date__c == null) {
-                        continue;
-                    }
-                    if (Datetime.now() >= startDate && Datetime.now() <= endDate) {
+                    if (TimeBoundValidator.isValidTimeBoundDiscount(discount)) {
                         filteredDiscounts.add(discount);
                     }
                 }
                 //Cron activated
                 when 'Recurring' {
-                    String cronExpression = discount.Cron_Expression__c;
-                    if (String.isBlank(cronExpression)) {
-                        continue;
-                    }
-                    Boolean canRunNow = CronValidator.isDue(discount.Cron_Expression__c, UserInfo.getTimeZone());
-                    if (canRunNow) {
+                    if (RecurringDateValidator.isRecurringDateValidForToday(discount)) {
                         filteredDiscounts.add(discount);
                     }
                 }
                 //Only if order is eligible
                 when 'Conditional' {
+                    order = [SELECT Id, TotalAmount, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order WHERE Id = :order.Id];
                     if (ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order)) {
                         filteredDiscounts.add(discount);
                     }

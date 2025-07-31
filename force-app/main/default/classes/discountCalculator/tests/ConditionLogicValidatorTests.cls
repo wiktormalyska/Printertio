@@ -87,7 +87,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -111,7 +111,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -135,7 +135,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -159,7 +159,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -183,7 +183,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -207,7 +207,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
@@ -231,7 +231,7 @@ public with sharing class ConditionLogicValidatorTests {
         );
         insert discount;
 
-        Order order = [SELECT Id FROM Order LIMIT 1];
+        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
         System.debug('Order : ' + order);
 
         Test.startTest();
