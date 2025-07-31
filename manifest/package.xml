@@ -22,6 +22,8 @@
         <members>TestOrgConnector</members>
         <members>TestOrganizationInfoController</members>
         <members>CronValidator</members>
+        <members>ConditionLogicValidator</members>
+        <members>ConditionLogicValidatorTests</members>
         <name>ApexClass</name>
     </types>
     <types>

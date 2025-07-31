@@ -77,8 +77,8 @@ public class CronValidator {
         if (cronPart.contains('-')) {
             List<String> rangeParts = cronPart.split('-');
             Integer start = Integer.valueOf(rangeParts[0]);
-            Integer end = Integer.valueOf(rangeParts[1]);
-            return (value >= start && value <= end);
+            Integer endVal = Integer.valueOf(rangeParts[1]); // changed from 'end' to 'endVal'
+            return (value >= start && value <= endVal);
         }
 
         return Integer.valueOf(cronPart) == value;
@@ -103,14 +103,14 @@ public class CronValidator {
         if (cronPart.contains('-')) {
             List<String> rangeParts = cronPart.split('-');
             Integer start = DAY_OF_WEEK_MAP.get(rangeParts[0]);
-            Integer end = DAY_OF_WEEK_MAP.get(rangeParts[1]);
+            Integer endVal = DAY_OF_WEEK_MAP.get(rangeParts[1]); // changed from 'end' to 'endVal'
 
-            if (start == null || end == null) return false;
+            if (start == null || endVal == null) return false;
 
-            if (start <= end) {
-                return currentDayNum >= start && currentDayNum <= end;
+            if (start <= endVal) {
+                return currentDayNum >= start && currentDayNum <= endVal;
             } else {
-                return currentDayNum >= start || currentDayNum <= end;
+                return currentDayNum >= start || currentDayNum <= endVal;
             }
         }
 

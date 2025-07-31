@@ -27,17 +27,17 @@ public with sharing class DiscountCalculatorHandler {
         DiscountSettings settings = new DiscountSettings();
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
-                        Start_Date__c, End_Date__c, Cron_Expression__c, Condition_Logic__c
+                        Start_Date__c, End_Date__c, Cron_Expression__c, Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c
                 FROM Discount__c
                 WHERE Is_Active__c = TRUE
         ];
-
-        List<Discount__c> filteredDiscounts = filterDiscounts(activeDiscounts, settings);
-
+        for (Order order : insertedOrders) {
+            List<Discount__c> filteredDiscounts = filterDiscounts(activeDiscounts, settings, order);
+        }
 
     }
 
-    private static List<Discount__c> filterDiscounts(List<Discount__c> discounts, DiscountSettings settings) {
+    private static List<Discount__c> filterDiscounts(List<Discount__c> discounts, DiscountSettings settings, Order order) {
         List<Discount__c> filteredDiscounts = new List<Discount__c>();
 
         for (Discount__c discount : discounts) {
@@ -66,7 +66,9 @@ public with sharing class DiscountCalculatorHandler {
                 }
                 //Only if order is eligible
                 when 'Conditional' {
-                    //TODO: Implement condition logic evaluation
+                    if (ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order)) {
+                        filteredDiscounts.add(discount);
+                    }
                 }
             }
         }
