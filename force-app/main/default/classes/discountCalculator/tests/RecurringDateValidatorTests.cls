@@ -22,7 +22,6 @@ public with sharing class RecurringDateValidatorTests {
     @IsTest
     static void testRecurringDateValidWithTimeOfDay() {
         Discount__c discount = new Discount__c(
-                //Added 1 hour to end time to ensure it is valid for at least one hour
                 Recurring_Date_Start__c = Datetime.now(),
                 Recurring_Date_End__c = Datetime.now().addHours(1),
                 Recurring_Date_Repeat_By__c = 'Time of Day'

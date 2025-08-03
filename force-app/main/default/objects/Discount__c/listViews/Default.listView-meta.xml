@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default</fullName>
+    <columns>NAME</columns>
+    <columns>Is_Active__c</columns>
+    <columns>Times_Used__c</columns>
+    <columns>Value_Type__c</columns>
+    <columns>Discount_Type__c</columns>
+    <columns>Discount_Value__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>Default</label>
+</ListView>

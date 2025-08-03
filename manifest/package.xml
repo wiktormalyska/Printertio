@@ -28,6 +28,9 @@
         <members>RecurringDateValidatorTests</members>
         <members>TimeBoundValidatorTests</members>
         <members>DiscountCalculatorHandlerTests</members>
+        <members>OrderItemTriggerHandler</members>
+        <members>DiscountFilter</members>
+        <members>DiscountSettings</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -93,6 +96,8 @@
     <types>
         <members>Account_Search</members>
         <members>Organization_Info</members>
+        <members>Applied_Discount__c</members>
+        <members>Discount__c</members>
         <name>CustomTab</name>
     </types>
     <types>
