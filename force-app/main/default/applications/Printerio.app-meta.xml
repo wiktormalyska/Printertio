@@ -58,6 +58,7 @@
     <tabs>standard-Product2</tabs>
     <tabs>standard-Pricebook2</tabs>
     <tabs>Account_Search</tabs>
+    <tabs>Discount__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Printerio_UtilityBar</utilityBar>
 </CustomApplication>

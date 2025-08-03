@@ -28,9 +28,10 @@
         <members>RecurringDateValidatorTests</members>
         <members>TimeBoundValidatorTests</members>
         <members>DiscountCalculatorHandlerTests</members>
-        <members>OrderItemTriggerHandler</members>
         <members>DiscountFilter</members>
         <members>DiscountSettings</members>
+        <members>BestDiscountCounter</members>
+        <members>DiscountSettings.cls-meta.xml</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -80,7 +81,6 @@
         <members>Lock_From_Creating_Leads__c</members>
         <members>Opportunity</members>
         <members>Order</members>
-        <members>Applied_Discount__c</members>
         <members>Discount_Settings__mdt</members>
         <members>Discount__c</members>
         <name>CustomObject</name>
