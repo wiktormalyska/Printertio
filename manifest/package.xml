@@ -30,8 +30,8 @@
         <members>DiscountCalculatorHandlerTests</members>
         <members>DiscountFilter</members>
         <members>DiscountSettings</members>
-        <members>BestDiscountCounter</members>
         <members>DiscountSettings.cls-meta.xml</members>
+        <members>BestDiscountCounter</members>
         <name>ApexClass</name>
     </types>
     <types>
