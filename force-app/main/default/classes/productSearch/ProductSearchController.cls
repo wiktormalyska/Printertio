@@ -1,6 +1,6 @@
 public with sharing class ProductSearchController {
 
-    @AuraEnabled(Cacheable=true)
+    @AuraEnabled(cacheable=true)
     public static List<Product2> getProducts(String searchTerm, String family) {
         if (String.isNotBlank(searchTerm) && String.isNotBlank(family)) {
             return [
@@ -29,13 +29,13 @@ public with sharing class ProductSearchController {
         }
     }
 
-    @AuraEnabled(Cacheable=true)
+    @AuraEnabled(cacheable=true)
     public static List<String> getProductFamilies() {
         List<String> families = new List<String>();
         for (AggregateResult result : [
                 SELECT Family
                 FROM Product2
-                WHERE Family != NULL
+                WHERE Family != null
                 GROUP BY Family
                 ORDER BY Family
         ]) {
@@ -44,7 +44,7 @@ public with sharing class ProductSearchController {
         return families;
     }
 
-    @AuraEnabled(Cacheable=false)
+    @AuraEnabled(cacheable=false)
     public static String createOrderForOpportunity(Id opportunityId, List<Id> products) {
         if (opportunityId == null || products == null || products.isEmpty()) {
             throw new AuraHandledException('Opportunity ID and product list cannot be null or empty.');
@@ -54,7 +54,7 @@ public with sharing class ProductSearchController {
         Savepoint sp = Database.setSavepoint();
 
         try {
-            Id standardPricebookId = [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
+            Id standardPricebookId = [SELECT Id FROM Pricebook2 WHERE IsStandard = true LIMIT 1].Id;
 
             Contract contract = new Contract(
                     AccountId = accountId,
@@ -79,7 +79,7 @@ public with sharing class ProductSearchController {
                     FROM PricebookEntry
                     WHERE Product2Id IN :products
                     AND Pricebook2Id = :standardPricebookId
-                    AND IsActive = TRUE
+                    AND IsActive = true
             ]) {
                 pricebookEntries.put(pbe.Product2Id, pbe);
             }

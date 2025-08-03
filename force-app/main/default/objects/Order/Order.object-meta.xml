@@ -114,13 +114,11 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <content>customOrderAuraForm</content>
-        <formFactor>Large</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>LightningComponent</type>
+        <type>Default</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
+        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -204,7 +202,7 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Order_Custom_Layout</compactLayoutAssignment>
     <enableFeeds>false</enableFeeds>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <searchLayouts>
