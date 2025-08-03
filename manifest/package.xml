@@ -89,8 +89,6 @@
         <name>CustomField</name>
     </types>
     <types>
-        <members>Allowed_Account_Types__mdt-en_US</members>
-        <members>Lock_From_Creating_Leads__c-en_US</members>
         <name>CustomObjectTranslation</name>
     </types>
     <types>
@@ -161,11 +159,9 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>Printerio_User_profilePasswordPolicy1752223315743</members>
         <name>ProfilePasswordPolicy</name>
     </types>
     <types>
-        <members>Printerio_User_profileSessionSetting1752223315842</members>
         <name>ProfileSessionSetting</name>
     </types>
     <types>
@@ -173,7 +169,6 @@
         <name>QuickAction</name>
     </types>
     <types>
-        <members>Case</members>
         <name>SharingRules</name>
     </types>
     <types>
