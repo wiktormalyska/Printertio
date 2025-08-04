@@ -107,6 +107,7 @@
         <members>Lead_Record_Page</members>
         <members>Order_Record_Page</members>
         <members>Printerio_UtilityBar</members>
+        <members>Opportunity_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
