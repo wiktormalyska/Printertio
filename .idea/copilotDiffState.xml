@@ -3,14 +3,6 @@
   <component name="CopilotDiffPersistence">
     <option name="pendingDiffs">
       <map>
-        <entry key="$PROJECT_DIR$/force-app/main/default/aura/createDiscountForm/createDiscountForm.css">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/force-app/main/default/aura/createDiscountForm/createDiscountForm.css" />
-              <option name="updatedContent" value=".THIS .slds-modal__container {&#10;&#10;.THIS .slds-backdrop {&#10;    z-index: 9000;&#10;}&#10;&#10;.THIS .slds-modal {&#10;    z-index: 9001;&#10;}&#10;&#10;/* Responsive design for smaller screens */&#10;@media (max-width: 768px) {&#10;    .THIS .slds-modal__container {&#10;        width: 95%;&#10;        margin: 1rem;&#10;    }&#10;    &#10;    .THIS .slds-grid .slds-col {&#10;        width: 100% !important;&#10;        margin-bottom: 1rem;&#10;    }&#10;}" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/force-app/main/default/aura/createDiscountForm/createDiscountFormCancelEvent.evt">
           <value>
             <PendingDiffInfo>

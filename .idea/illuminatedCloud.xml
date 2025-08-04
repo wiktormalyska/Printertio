@@ -11,5 +11,6 @@
         </IlluminatedCloudConnection>
       </list>
     </option>
+    <option name="ignoreJavaScriptLanguageLevel" value="true" />
   </component>
 </project>

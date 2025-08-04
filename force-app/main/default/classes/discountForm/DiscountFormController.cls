@@ -10,4 +10,16 @@ public with sharing class DiscountFormController {
 
         return helpTexts;
     }
+
+    @AuraEnabled
+    public static void saveDiscount(Discount__c discount) {
+        try {
+            if (discount == null) {
+                throw new AuraHandledException('Discount cannot be null');
+            }
+            insert discount;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unexpected error: ' + e.getMessage());
+        }
+    }
 }
