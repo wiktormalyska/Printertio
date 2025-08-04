@@ -166,6 +166,7 @@
     </types>
     <types>
         <members>Order.Sign_an_Invoice</members>
+        <members>Opportunity.Search_Product</members>
         <name>QuickAction</name>
     </types>
     <types>
