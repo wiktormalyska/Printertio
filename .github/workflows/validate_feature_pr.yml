@@ -18,7 +18,6 @@ jobs:
 
       - name: 'Authenticate to Feature Org'
         run: |
-          # Używamy oryginalnych sekretów, bez żadnych końcówek
           echo "${{ secrets.SF_SECRET_KEY }}" > server.key
           sf org login jwt \
             --client-id ${{ secrets.SF_CONSUMER_KEY }} \

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Condition_Logic_Field__c</fullName>
+    <label>Condition Logic Field</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Order.Products_Amount</fullName>
+                <default>false</default>
+                <label>Order.Products_Amount</label>
+            </value>
+            <value>
+                <fullName>Order.Products_Total_Price</fullName>
+                <default>false</default>
+                <label>Order.Products_Total_Price</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
