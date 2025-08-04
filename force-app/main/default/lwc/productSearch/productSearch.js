@@ -29,6 +29,13 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
         { label: 'Product Family', fieldName: 'Family', type: 'text' }
     ]
 
+    summaryColumns = [
+        { label: 'Product Name', fieldName: 'Name', type: 'text' },
+        { label: 'Product Code', fieldName: 'ProductCode', type: 'text' },
+        { label: 'Product Family', fieldName: 'Family', type: 'text' },
+        { label: 'Quantity', fieldName: 'Quantity', type: 'number', editable: true }
+    ]
+
     showSpinner = false;
 
     currentPage = 1;
@@ -190,6 +197,15 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
 
     handleGoToSummary() {
         if (this.selectedProductIds.length > 0) {
+            this.selectedProducts = this.allProducts
+                .filter(product => this.selectedProductIds.includes(product.Id))
+                .map(product => ({
+                    Id: product.Id,
+                    Name: product.Name,
+                    ProductCode: product.ProductCode,
+                    Family: product.Family,
+                    Quantity: 1
+                }));
             this.stage = 1;
         } else {
             Toast.show({
@@ -200,12 +216,30 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
         }
     }
 
+    draftValues = [];
+    handleQuantitySave(event) {
+        const updatedDraftValues = event.detail.draftValues;
+        updatedDraftValues.forEach(draft => {
+            const product = this.selectedProducts.find(p => p.Id === draft.Id);
+            if (product) {
+                product.Quantity = draft.Quantity;
+            }
+        });
+        this.draftValues = [];
+    }
+
     handleCreateOrder() {
-        console.log('Creating order with selected products:', this.selectedProductIds);
+        console.log('Creating order with selected products:', JSON.stringify(this.selectedProductIds));
         console.log('Record ID:', this.recordId);
+        const productsWithQuantities = this.selectedProducts.map(product => ({
+            id: product.Id,
+            quantity: product.Quantity
+        }));
+        console.log('Products with quantities:', JSON.stringify(productsWithQuantities));
+
         createOrderForOpportunity({
             opportunityId: this.recordId,
-            products: this.selectedProductIds
+            products: productsWithQuantities
         })
             .then(orderId => {
                 Toast.show({
