@@ -32,6 +32,9 @@
         <members>DiscountSettings</members>
         <members>BestDiscountCounter</members>
         <members>BestDiscountCounterTests</members>
+        <members>ProductSearchService</members>
+        <members>ConstUtil</members>
+        <members>DiscountFormController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -54,6 +57,7 @@
     </types>
     <types>
         <members>customOrderAuraForm</members>
+        <members>createDiscountForm</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

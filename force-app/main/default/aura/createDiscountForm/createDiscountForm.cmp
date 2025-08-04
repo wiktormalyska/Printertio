@@ -1,0 +1,148 @@
+<aura:component controller="DiscountFormController"
+                implements="force:hasRecordId,force:hasSObjectName,lightning:actionOverride">
+    <!-- Attributes -->
+    <aura:attribute name="discountRecord" type="Object" default="{}"/>
+    <aura:attribute name="selectedDiscountType" type="String" default=""/>
+    <aura:attribute name="selectedRepeatBy" type="String" default=""/>
+    <aura:attribute name="isRecurring" type="Boolean" default="false"/>
+    <aura:attribute name="isTimeBound" type="Boolean" default="false"/>
+    <aura:attribute name="isConditional" type="Boolean" default="false"/>
+    <aura:attribute name="recurringHelpText" type="String" default=""/>
+    <aura:attribute name="recurringHelpTextMap" type="Map" default="{}"/>
+    <aura:attribute name="discountTypeOptions" type="List" default="[
+        {'label': 'Recurring', 'value': 'Recurring'},
+        {'label': 'Time-Bound', 'value': 'Time-Bound'},
+        {'label': 'Conditional', 'value': 'Conditional'}
+    ]"/>
+    <aura:attribute name="repeatByOptions" type="List" default="[
+        {'label': 'Daily', 'value': 'Daily'},
+        {'label': 'Weekly', 'value': 'Weekly'},
+        {'label': 'Monthly', 'value': 'Monthly'},
+        {'label': 'Yearly', 'value': 'Yearly'}
+    ]"/>
+
+    <!-- Event Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card title="Create Discount" iconName="standard:discount">
+        <div class="slds-m-around_medium">
+            <p class="slds-text-body_regular">Please fill out the form below to create a new discount.</p>
+            <div class="slds-form slds-form_stacked">
+                <div class="slds-grid slds-gutters slds-wrap">
+
+                    <!-- Discount Type Selection -->
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                        <lightning:select name="discountType"
+                                          label="Discount Type"
+                                          value="{!v.selectedDiscountType}"
+                                          onchange="{!c.handleTypeChange}"
+                                          required="true">
+                            <option value="">--None--</option>
+                            <option value="Recurring">Recurring</option>
+                            <option value="Time-Bound">Time-Bound</option>
+                            <option value="Conditional">Conditional</option>
+                        </lightning:select>
+                    </div>
+
+                    <!-- Recurring Section -->
+                    <aura:if isTrue="{!v.isRecurring}">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-gutters slds-wrap">
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                                    <lightning:select name="repeatBy"
+                                                      label="Repeat By"
+                                                      value="{!v.selectedRepeatBy}"
+                                                      onchange="{!c.handleRepeatByChange}"
+                                                      required="true">
+                                        <option value="">--None--</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Yearly">Yearly</option>
+                                    </lightning:select>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                                    <lightning:input type="datetime"
+                                                     name="recurringStartDate"
+                                                     label="Start Date / Time"
+                                                     value="{!v.discountRecord.Recurring_Date_Start__c}"
+                                                     required="true"/>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                                    <lightning:input type="datetime"
+                                                     name="recurringEndDate"
+                                                     label="End Date / Time"
+                                                     value="{!v.discountRecord.Recurring_Date_End__c}"
+                                                     required="true"/>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                    <div class="slds-box slds-box_x-small slds-theme_shade">
+                                        <p class="slds-text-heading_small">Description:</p>
+                                        <p class="slds-text-body_regular">{!v.recurringHelpText}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </aura:if>
+
+                    <!-- Time-Bound Section -->
+                    <aura:if isTrue="{!v.isTimeBound}">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                                    <lightning:input type="datetime"
+                                                     name="timeBoundStartDate"
+                                                     label="Start Date / Time"
+                                                     value="{!v.discountRecord.Time_Bound_Start__c}"
+                                                     required="true"/>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-form-element">
+                                    <lightning:input type="datetime"
+                                                     name="timeBoundEndDate"
+                                                     label="End Date / Time"
+                                                     value="{!v.discountRecord.Time_Bound_End__c}"
+                                                     required="true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+
+                    <!-- Conditional Section -->
+                    <aura:if isTrue="{!v.isConditional}">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-gutters slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-form-element">
+                                    <lightning:textarea name="conditionalCriteria"
+                                                        label="Conditional Criteria"
+                                                        value="{!v.discountRecord.Conditional_Criteria__c}"
+                                                        placeholder="Enter the conditions for this discount..."
+                                                        required="true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+
+                    <!-- Action Buttons -->
+                    <div class="slds-col slds-size_1-of-1 slds-m-top_large">
+                        <div class="slds-grid slds-grid_align-center">
+                            <lightning:button variant="brand"
+                                              label="Save"
+                                              onclick="{!c.handleSave}"/>
+                            <lightning:button variant="neutral"
+                                              label="Cancel"
+                                              onclick="{!c.handleCancel}"
+                                              class="slds-m-left_small"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </lightning:card>
+</aura:component>
