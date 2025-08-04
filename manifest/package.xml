@@ -94,7 +94,6 @@
     <types>
         <members>Account_Search</members>
         <members>Organization_Info</members>
-        <members>Applied_Discount__c</members>
         <members>Discount__c</members>
         <name>CustomTab</name>
     </types>
