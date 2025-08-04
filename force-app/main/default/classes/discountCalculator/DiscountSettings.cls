@@ -17,4 +17,9 @@ public with sharing class DiscountSettings {
             this.maxDiscountPercent = 50.0;
         }
     }
+
+    public DiscountSettings(String strategy, Decimal maxDiscountPercent) {
+        this.strategy = strategy;
+        this.maxDiscountPercent = maxDiscountPercent;
+    }
 }

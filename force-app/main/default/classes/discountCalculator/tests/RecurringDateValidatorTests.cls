@@ -38,7 +38,7 @@ public with sharing class RecurringDateValidatorTests {
     static void testRecurringDateValidWithDayOfWeek() {
         Discount__c discount = new Discount__c(
                 Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now(),
+                Recurring_Date_End__c = Datetime.now().addHours(1),
                 Recurring_Date_Repeat_By__c = 'Day of the Week'
         );
 
@@ -53,7 +53,7 @@ public with sharing class RecurringDateValidatorTests {
     static void testRecurringDateValidWithDayOfMonth() {
         Discount__c discount = new Discount__c(
                 Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now(),
+                Recurring_Date_End__c = Datetime.now().addHours(1),
                 Recurring_Date_Repeat_By__c = 'Day of the Month'
         );
 
@@ -68,7 +68,7 @@ public with sharing class RecurringDateValidatorTests {
     static void testRecurringDateValidWithMonth() {
         Discount__c discount = new Discount__c(
                 Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now(),
+                Recurring_Date_End__c = Datetime.now().addHours(1),
                 Recurring_Date_Repeat_By__c = 'Month'
         );
 
@@ -83,7 +83,7 @@ public with sharing class RecurringDateValidatorTests {
     static void testRecurringDateValidWithYear() {
         Discount__c discount = new Discount__c(
                 Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now(),
+                Recurring_Date_End__c = Datetime.now().addHours(1),
                 Recurring_Date_Repeat_By__c = 'Year'
         );
 
