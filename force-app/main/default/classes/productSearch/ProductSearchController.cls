@@ -1,6 +1,6 @@
 public with sharing class ProductSearchController {
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(Cacheable=true)
     public static List<Product2> getProducts(String searchTerm, String family) {
         if (String.isNotBlank(searchTerm) && String.isNotBlank(family)) {
             return [
@@ -29,13 +29,13 @@ public with sharing class ProductSearchController {
         }
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(Cacheable=true)
     public static List<String> getProductFamilies() {
         List<String> families = new List<String>();
         for (AggregateResult result : [
                 SELECT Family
                 FROM Product2
-                WHERE Family != null
+                WHERE Family != NULL
                 GROUP BY Family
                 ORDER BY Family
         ]) {
@@ -43,18 +43,25 @@ public with sharing class ProductSearchController {
         }
         return families;
     }
+    public class ProductWrapper {
+        @AuraEnabled public Id id {get; set;}
+        @AuraEnabled public Integer quantity {get; set;}
+    }
 
-    @AuraEnabled(cacheable=false)
-    public static String createOrderForOpportunity(Id opportunityId, List<Id> products) {
+    @AuraEnabled(Cacheable=false)
+    public static String createOrderForOpportunity(Id opportunityId, List<ProductWrapper> products) {
+        System.debug('Creating order for opportunity: ' + opportunityId);
+        System.debug('Products: ' + products);
         if (opportunityId == null || products == null || products.isEmpty()) {
             throw new AuraHandledException('Opportunity ID and product list cannot be null or empty.');
         }
 
         Id accountId = [SELECT AccountId FROM Opportunity WHERE Id = :opportunityId].AccountId;
+        System.debug('Account ID: ' + accountId);
         Savepoint sp = Database.setSavepoint();
 
         try {
-            Id standardPricebookId = [SELECT Id FROM Pricebook2 WHERE IsStandard = true LIMIT 1].Id;
+            Id standardPricebookId = [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
 
             Contract contract = new Contract(
                     AccountId = accountId,
@@ -63,6 +70,7 @@ public with sharing class ProductSearchController {
                     ContractTerm = 3
             );
             insert contract;
+            System.debug('Contract created: ' + contract.Id);
 
             Order order = new Order(
                     AccountId = accountId,
@@ -72,32 +80,41 @@ public with sharing class ProductSearchController {
                     Pricebook2Id = standardPricebookId
             );
             insert order;
+            System.debug('Order created: ' + order.Id);
+
+            Set<Id> productIds = new Set<Id>();
+            for (ProductWrapper pw : products) {
+                productIds.add(pw.id);
+            }
+            System.debug('Product IDs: ' + productIds);
 
             Map<Id, PricebookEntry> pricebookEntries = new Map<Id, PricebookEntry>();
             for (PricebookEntry pbe : [
                     SELECT Id, Product2Id, UnitPrice
                     FROM PricebookEntry
-                    WHERE Product2Id IN :products
+                    WHERE Product2Id IN :productIds
                     AND Pricebook2Id = :standardPricebookId
-                    AND IsActive = true
+                    AND IsActive = TRUE
             ]) {
                 pricebookEntries.put(pbe.Product2Id, pbe);
             }
+            System.debug('Pricebook Entries: ' + pricebookEntries);
 
             List<OrderItem> orderItems = new List<OrderItem>();
-            for (Id productId : products) {
-                PricebookEntry pbe = pricebookEntries.get(productId);
+            for (ProductWrapper pw : products) {
+                PricebookEntry pbe = pricebookEntries.get(pw.id);
                 if (pbe != null) {
                     OrderItem item = new OrderItem(
                             OrderId = order.Id,
-                            Product2Id = productId,
+                            Product2Id = pw.id,
                             PricebookEntryId = pbe.Id,
-                            Quantity = 1,
+                            Quantity = pw.quantity != null ? pw.quantity : 1,
                             UnitPrice = pbe.UnitPrice
                     );
                     orderItems.add(item);
                 }
             }
+            System.debug('Order Items: ' + orderItems);
 
             if (!orderItems.isEmpty()) {
                 insert orderItems;

@@ -9,8 +9,13 @@
 
 
             <div style="border: 1px solid #d8dde6; border-radius: 4px; overflow: hidden;">
-                <lightning-datatable key-field="Id" data={selectedProducts} columns={columns}
-                                     hide-checkbox-column="true"></lightning-datatable>
+                <lightning-datatable key-field="Id"
+                                     data={selectedProducts}
+                                     columns={summaryColumns}
+                                     hide-checkbox-column="true"
+                                     onsave={handleQuantitySave}
+                                     draft-values={draftValues}
+                ></lightning-datatable>
             </div>
         </div>
     </lightning-modal-body>
