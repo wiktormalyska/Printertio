@@ -5,16 +5,16 @@ public with sharing class BestDiscountCounter {
 
         for (Discount__c discount : discounts) {
             Decimal discountValue = 0;
-            if (discount.Value_Type__c == 'Percentage') {
+            if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
                 discountValue = currentOrder.TotalAmount * discount.Discount_Value__c / 100;
-            } else if (discount.Value_Type__c == 'Fixed Amount') {
+            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
                 discountValue = discount.Discount_Value__c;
             }
 
-            if (settings.strategy == 'Highest' && discountValue > bestDiscountValue) {
+            if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_HIGHEST && discountValue > bestDiscountValue) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
-            } else if (settings.strategy == 'Lowest' && (bestDiscount == null || discountValue < bestDiscountValue)) {
+            } else if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
             }
@@ -29,16 +29,16 @@ public with sharing class BestDiscountCounter {
 
         for (Discount__c discount : discounts) {
             Decimal discountValue = 0;
-            if (discount.Value_Type__c == 'Percentage') {
+            if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
                 discountValue = totalAmount * discount.Discount_Value__c / 100;
-            } else if (discount.Value_Type__c == 'Fixed Amount') {
+            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
                 discountValue = discount.Discount_Value__c;
             }
 
-            if (settings.strategy == 'Highest' && discountValue > bestDiscountValue) {
+            if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_HIGHEST && discountValue > bestDiscountValue) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
-            } else if (settings.strategy == 'Lowest' && (bestDiscount == null || discountValue < bestDiscountValue)) {
+            } else if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
             }

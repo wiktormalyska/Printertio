@@ -1,90 +1,94 @@
 @IsTest
-public with sharing class ConditionLogicValidatorTests {
+private class ConditionLogicValidatorTests {
     @TestSetup
     static void setup() {
-        Account account = new Account(
-                Name = 'Test Account',
-                Type = 'Customer'
-        );
+        Account account = AccountBuilder.create()
+                .withName('Test Account')
+                .withType('Customer')
+                .build();
         insert account;
 
-        Contract contract = new Contract(
-                AccountId = account.Id,
-                StartDate = Date.today(),
-                Status = 'Draft',
-                ContractTerm = 12
-        );
+        Contract contract = ContractBuilder.create()
+                .withAccountId(account.Id)
+                .withStartDate(Date.today())
+                .withStatus('Draft')
+                .withContractTerm(12)
+                .build();
+        insert contract;
 
-        Product2 product1 = new Product2(
-                Name = 'Test Product 1',
-                IsActive = true,
-                ProductCode = 'TP1',
-                Description = 'Test Product 1 Description'
-        );
+        Product2 product1 = ProductBuilder.create()
+                .withName('Test Product 1')
+                .withIsActive(true)
+                .withProductCode('TP1')
+                .withDescription('Test Product 1 Description')
+                .build();
         insert product1;
-        Product2 product2 = new Product2(
-                Name = 'Test Product 2',
-                IsActive = true,
-                ProductCode = 'TP2',
-                Description = 'Test Product 2 Description'
-        );
+
+        Product2 product2 = ProductBuilder.create()
+                .withName('Test Product 2')
+                .withIsActive(true)
+                .withProductCode('TP2')
+                .withDescription('Test Product 2 Description')
+                .build();
         insert product2;
 
         Id priceBookId = Test.getStandardPricebookId();
 
-        PricebookEntry pbe1 = new PricebookEntry(
-                Pricebook2Id = priceBookId,
-                Product2Id = product1.Id,
-                UnitPrice = 100.0,
-                IsActive = true
-        );
+        PricebookEntry pbe1 = PricebookEntryBuilder.create()
+                .withPricebook2Id(priceBookId)
+                .withProduct2Id(product1.Id)
+                .withUnitPrice(100.0)
+                .withIsActive(true)
+                .build();
         insert pbe1;
-        PricebookEntry pbe2 = new PricebookEntry(
-                Pricebook2Id = priceBookId,
-                Product2Id = product2.Id,
-                UnitPrice = 150.0,
-                IsActive = true
-        );
+
+        PricebookEntry pbe2 = PricebookEntryBuilder.create()
+                .withPricebook2Id(priceBookId)
+                .withProduct2Id(product2.Id)
+                .withUnitPrice(150.0)
+                .withIsActive(true)
+                .build();
         insert pbe2;
 
-        Order order = new Order(
-                Name = 'Test Order',
-                EffectiveDate = Date.today(),
-                Status = 'Draft',
-                AccountId = account.Id,
-                ContractId = contract.Id,
-                Pricebook2Id = priceBookId
-        );
+        Order order = OrderBuilder.create()
+                .withName('Test Order')
+                .withEffectiveDate(Date.today())
+                .withStatus('Draft')
+                .withAccountId(account.Id)
+                .withContractId(contract.Id)
+                .withPricebook2Id(priceBookId)
+                .build();
         insert order;
 
-        OrderItem orderItem1 = new OrderItem(
-                OrderId = order.Id,
-                PricebookEntryId = pbe1.Id,
-                Quantity = 2,
-                UnitPrice = 100.0
-        );
+        OrderItem orderItem1 = OrderItemBuilder.create()
+                .withOrderId(order.Id)
+                .withPricebookEntryId(pbe1.Id)
+                .withQuantity(2)
+                .withUnitPrice(100.0)
+                .build();
         insert orderItem1;
-        OrderItem orderItem2 = new OrderItem(
-                OrderId = order.Id,
-                PricebookEntryId = pbe2.Id,
-                Quantity = 3,
-                UnitPrice = 150.0
-        );
+
+        OrderItem orderItem2 = OrderItemBuilder.create()
+                .withOrderId(order.Id)
+                .withPricebookEntryId(pbe2.Id)
+                .withQuantity(3)
+                .withUnitPrice(150.0)
+                .build();
         insert orderItem2;
     }
 
     @IsTest
     static void testAmount_GreaterThan_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Amount',
-                Condition_Logic_Operator__c = '>',
-                Condition_Logic_Numeric_Value__c = 1,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Amount')
+                .withConditionLogicOperator('>')
+                .withConditionLogicNumericValue(1)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -99,16 +103,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testAmount_LessThan_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Amount',
-                Condition_Logic_Operator__c = '<',
-                Condition_Logic_Numeric_Value__c = 5,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Amount')
+                .withConditionLogicOperator('<')
+                .withConditionLogicNumericValue(5)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -123,16 +127,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testTotalPrice_Equals_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '==',
-                Condition_Logic_Numeric_Value__c = 650.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Total_Price')
+                .withConditionLogicOperator('==')
+                .withConditionLogicNumericValue(650.0)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -147,16 +151,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testTotalPrice_NotEquals_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '!=',
-                Condition_Logic_Numeric_Value__c = 500.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Total_Price')
+                .withConditionLogicOperator('!=')
+                .withConditionLogicNumericValue(500.0)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -171,16 +175,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testTotalPrice_LessThanOrEqual_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '<=',
-                Condition_Logic_Numeric_Value__c = 1000.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Total_Price')
+                .withConditionLogicOperator('<=')
+                .withConditionLogicNumericValue(1000.0)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -195,16 +199,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testTotalPrice_LessThanOrEqual_ReturnsFalse() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '<=',
-                Condition_Logic_Numeric_Value__c = 500.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Total_Price')
+                .withConditionLogicOperator('<=')
+                .withConditionLogicNumericValue(500.0)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
@@ -219,16 +223,16 @@ public with sharing class ConditionLogicValidatorTests {
 
     @IsTest
     static void testTotalPrice_GreaterThanOrEqual_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '>=',
-                Condition_Logic_Numeric_Value__c = 400.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withIsActive(true)
+                .withDiscountType('Conditional')
+                .withConditionLogicField('Order.Products_Total_Price')
+                .withConditionLogicOperator('>=')
+                .withConditionLogicNumericValue(400.0)
+                .withValueType('Percentage')
+                .withDiscountValue(10.0)
+                .build();
         insert discount;
 
         Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];

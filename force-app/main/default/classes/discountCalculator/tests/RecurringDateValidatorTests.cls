@@ -1,16 +1,17 @@
 @IsTest
-public with sharing class RecurringDateValidatorTests {
+private class RecurringDateValidatorTests {
     @TestSetup
     static void setup() {
-
+        // Setup can remain empty or be removed
     }
 
     @IsTest
     static void testRecurringDateInvalidWithoutRepeatBy() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = null,
-                Recurring_Date_End__c = Datetime.now().addDays(1)
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(null)
+                .withRecurringDateEnd(Datetime.now().addDays(1))
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -21,11 +22,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateValidWithTimeOfDay() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now().addHours(1),
-                Recurring_Date_Repeat_By__c = 'Time of Day'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now())
+                .withRecurringDateEnd(Datetime.now().addHours(1))
+                .withRecurringDateRepeatBy('Time of Day')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -36,11 +38,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateValidWithDayOfWeek() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now().addHours(1),
-                Recurring_Date_Repeat_By__c = 'Day of the Week'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now())
+                .withRecurringDateEnd(Datetime.now().addHours(1))
+                .withRecurringDateRepeatBy('Day of the Week')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -51,11 +54,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateValidWithDayOfMonth() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now().addHours(1),
-                Recurring_Date_Repeat_By__c = 'Day of the Month'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now())
+                .withRecurringDateEnd(Datetime.now().addHours(1))
+                .withRecurringDateRepeatBy('Day of the Month')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -66,11 +70,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateValidWithMonth() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now().addHours(1),
-                Recurring_Date_Repeat_By__c = 'Month'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now())
+                .withRecurringDateEnd(Datetime.now().addHours(1))
+                .withRecurringDateRepeatBy('Month')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -81,11 +86,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateValidWithYear() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now(),
-                Recurring_Date_End__c = Datetime.now().addHours(1),
-                Recurring_Date_Repeat_By__c = 'Year'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now())
+                .withRecurringDateEnd(Datetime.now().addHours(1))
+                .withRecurringDateRepeatBy('Year')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);
@@ -96,11 +102,12 @@ public with sharing class RecurringDateValidatorTests {
 
     @IsTest
     static void testRecurringDateInvalidWithTimeOfDayOutsideRange() {
-        Discount__c discount = new Discount__c(
-                Recurring_Date_Start__c = Datetime.now().addHours(-2),
-                Recurring_Date_End__c = Datetime.now().addHours(-1),
-                Recurring_Date_Repeat_By__c = 'Time of Day'
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withRecurringDateStart(Datetime.now().addHours(-2))
+                .withRecurringDateEnd(Datetime.now().addHours(-1))
+                .withRecurringDateRepeatBy('Time of Day')
+                .build();
 
         Test.startTest();
         Boolean isValid = RecurringDateValidator.isRecurringDateValidForToday(discount);

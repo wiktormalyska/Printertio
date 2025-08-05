@@ -3,6 +3,21 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import Toast from 'lightning/toast';
+
+// Import Custom Labels
+import Selected_Products_Summary_Text from '@salesforce/label/c.Selected_Products_Summary_Text';
+import Loading_Products_Text from '@salesforce/label/c.Loading_Products_Text';
+import Total_Price_Text from '@salesforce/label/c.Total_Price_Text';
+import Price_After_Discount_Text from '@salesforce/label/c.Price_After_Discount_Text';
+import Cancel_Text from '@salesforce/label/c.Cancel_Text';
+import Previous_Text from '@salesforce/label/c.Previous_Text';
+import Create_Order_Text from '@salesforce/label/c.Create_Order_Text';
+import Discount_Search_Products_Text from '@salesforce/label/c.Discount_Search_Products_Text';
+import Category_Text from '@salesforce/label/c.Category_Text';
+import Select_Category_Placeholder_Text from '@salesforce/label/c.Select_Category_Placeholder_Text';
+import Search_Text from '@salesforce/label/c.Search_Text';
+import Next_Text from '@salesforce/label/c.Next_Text';
+
 import getProducts from '@salesforce/apex/ProductSearchController.getProducts';
 import getProductFamilies from '@salesforce/apex/ProductSearchController.getProductFamilies';
 import getProductsTotalAmount from '@salesforce/apex/ProductSearchController.getProductsTotalAmount';
@@ -13,6 +28,22 @@ import SECOND_PAGE from './summaryOfForm.html';
 
 export default class ProductSearch extends NavigationMixin(LightningModal) {
     @api recordId;
+
+    label = {
+        Selected_Products_Summary_Text,
+        Loading_Products_Text,
+        Total_Price_Text,
+        Price_After_Discount_Text,
+        Cancel_Text,
+        Previous_Text,
+        Create_Order_Text,
+        Discount_Search_Products_Text,
+        Category_Text,
+        Select_Category_Placeholder_Text,
+        Search_Text,
+        Next_Text
+    };
+
     stage = 0;
 
     searchFieldValue = ''

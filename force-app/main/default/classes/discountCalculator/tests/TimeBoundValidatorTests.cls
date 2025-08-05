@@ -1,11 +1,12 @@
 @IsTest
-public with sharing class TimeBoundValidatorTests {
+private class TimeBoundValidatorTests {
     @IsTest
     static void testTimeBoundDiscountValid() {
-        Discount__c discount = new Discount__c(
-            Start_Date__c = Date.today(),
-            End_Date__c = Date.today().addDays(1)
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withStartDate(Date.today())
+                .withEndDate(Date.today().addDays(1))
+                .build();
 
         Test.startTest();
         Boolean isValid = TimeBoundValidator.isValidTimeBoundDiscount(discount);
@@ -16,10 +17,11 @@ public with sharing class TimeBoundValidatorTests {
 
     @IsTest
     static void testTimeBoundDiscountInvalid() {
-        Discount__c discount = new Discount__c(
-            Start_Date__c = Date.today().addDays(1),
-            End_Date__c = Date.today().addDays(2)
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withStartDate(Date.today().addDays(1))
+                .withEndDate(Date.today().addDays(2))
+                .build();
 
         Test.startTest();
         Boolean isValid = TimeBoundValidator.isValidTimeBoundDiscount(discount);
@@ -30,10 +32,11 @@ public with sharing class TimeBoundValidatorTests {
 
     @IsTest
     static void testTimeBoundDiscountWithNullDates() {
-        Discount__c discount = new Discount__c(
-            Start_Date__c = null,
-            End_Date__c = null
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withStartDate(null)
+                .withEndDate(null)
+                .build();
 
         Test.startTest();
         Boolean isValid = TimeBoundValidator.isValidTimeBoundDiscount(discount);
@@ -44,10 +47,11 @@ public with sharing class TimeBoundValidatorTests {
 
     @IsTest
     static void testTimeBoundDiscountWithStartDateAfterEndDate() {
-        Discount__c discount = new Discount__c(
-            Start_Date__c = Date.today().addDays(2),
-            End_Date__c = Date.today().addDays(1)
-        );
+        Discount__c discount = DiscountBuilder.create()
+                .withName('Test Discount')
+                .withStartDate(Date.today().addDays(2))
+                .withEndDate(Date.today().addDays(1))
+                .build();
 
         Test.startTest();
         Boolean isValid = TimeBoundValidator.isValidTimeBoundDiscount(discount);

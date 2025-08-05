@@ -1,10 +1,10 @@
 <template>
-    <lightning-modal-header label="Summary for Selected Products"></lightning-modal-header>
+    <lightning-modal-header label={label.Selected_Products_Summary_Text}></lightning-modal-header>
     <lightning-modal-body>
         <div style="width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div if:true={showSpinner}
                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: center; z-index: 1000;">
-                <lightning-spinner alternative-text="Loading Products..." size="large"></lightning-spinner>
+                <lightning-spinner alternative-text={label.Loading_Products_Text} size="large"></lightning-spinner>
             </div>
 
 
@@ -19,17 +19,17 @@
             </div>
         </div>
         <div style="width: 100%; margin-top: 1rem; text-align: end; font-size: 14px;">
-            Total price: ${totalPrice}
+            {label.Total_Price_Text}${totalPrice}
         </div>
         <div style="width: 100%; margin-top: 1rem; text-align: end; font-size: 14px;">
-            Price after discount: ${totalPriceAfterDiscount}
+            {label.Price_After_Discount_Text}${totalPriceAfterDiscount}
         </div>
     </lightning-modal-body>
     <lightning-modal-footer>
         <div style="width: 100%; display: flex; justify-content: flex-end; align-items: flex-end; flex-direction: row; gap: 0.5rem;">
-            <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
-            <lightning-button variant="neutral" label="Previous" onclick={handleGoToProductForm}></lightning-button>
-            <lightning-button variant="brand" label="Create Order" onclick={handleCreateOrder}
+            <lightning-button variant="neutral" label={label.Cancel_Text} onclick={handleCancel}></lightning-button>
+            <lightning-button variant="neutral" label={label.Previous_Text} onclick={handleGoToProductForm}></lightning-button>
+            <lightning-button variant="brand" label={label.Create_Order_Text} onclick={handleCreateOrder}
                               class="slds-m-top_small"></lightning-button>
         </div>
     </lightning-modal-footer>

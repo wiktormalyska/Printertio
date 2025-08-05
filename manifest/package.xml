@@ -35,6 +35,21 @@
         <members>ProductSearchService</members>
         <members>ConstUtil</members>
         <members>DiscountFormController</members>
+        <members>DiscountFormService</members>
+        <members>DiscountBuilder</members>
+        <members>ProductBuilder</members>
+        <members>AccountBuilder</members>
+        <members>PricebookEntryBuilder</members>
+        <members>OrderItemBuilder</members>
+        <members>OrderBuilder</members>
+        <members>ContractBuilder</members>
+        <members>TestDataFactory</members>
+        <members>DiscountTestDataFactory</members>
+        <members>ProductTestDataFactory</members>
+        <members>PricebookEntryTestDataFactory</members>
+        <members>AccountTestDataFactory</members>
+        <members>OrderTestDataFactory</members>
+        <members>OrderItemTestDataFactory</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -190,6 +205,52 @@
     <types>
         <members>Case.ChangePriorityToHigh</members>
         <name>WorkflowFieldUpdate</name>
+    </types>
+    <types>
+        <members>Cancel_Text</members>
+        <members>Conditional_Criteria_Placeholder_Text</members>
+        <members>Conditional_Criteria_Text</members>
+        <members>Conditional_Discount_Details</members>
+        <members>Create_Discount_Text</members>
+        <members>Description_Text</members>
+        <members>Discount_Create_Form_Description</members>
+        <members>Discount_Name_Text</members>
+        <members>Discount_Saved_Successfully_Text</members>
+        <members>Discount_Type_Option_Conditional</members>
+        <members>Discount_Type_Option_None</members>
+        <members>Discount_Type_Option_Recurring</members>
+        <members>Discount_Type_Option_Time_Bound</members>
+        <members>Discount_Type_Text</members>
+        <members>Discount_Value_Text</members>
+        <members>Discount_Value_Type_Option_Amount</members>
+        <members>Discount_Value_Type_Option_Percentage</members>
+        <members>Discount_Value_Type_Text</members>
+        <members>Error_Conditional_Criteria_Required_Text</members>
+        <members>Error_Discount_Name_Required_Text</members>
+        <members>Error_Discount_Null_Text</members>
+        <members>Error_Discount_Type_Required_Text</members>
+        <members>Error_Discount_Value_Required_Text</members>
+        <members>Error_End_Date_Required_Text</members>
+        <members>Error_Select_Repeat_By_Required_Text</members>
+        <members>Error_Start_Date_Required_Text</members>
+        <members>Error_Time_Bound_End_Date_Required_Text</members>
+        <members>Error_Time_Bound_Start_Date_Required_Text</members>
+        <members>Error_Unexpected_Text</members>
+        <members>Error_Value_Type_Required_Text</members>
+        <members>Loading_Products_Text</members>
+        <members>Recurring_Discount_Details_Text</members>
+        <members>Recurring_End_Date_Text</members>
+        <members>Recurring_Help_Text_Default_Text</members>
+        <members>Recurring_Help_Text_Not_Found_Text</members>
+        <members>Recurring_Start_Date_Text</members>
+        <members>Recursive_Option_Daily</members>
+        <members>Recursive_Option_Monthly</members>
+        <members>Recursive_Option_Weekly</members>
+        <members>Recursive_Option_Yearly</members>
+        <members>Repeat_By_Text</members>
+        <members>Save_Text</members>
+        <members>Time_Bound_Discount_Details</members>
+        <name>CustomLabel</name>
     </types>
     <version>64.0</version>
 </Package>

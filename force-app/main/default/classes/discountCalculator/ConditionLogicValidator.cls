@@ -4,7 +4,6 @@ public with sharing class ConditionLogicValidator {
         String objectNameWithFieldName = discount.Condition_Logic_Field__c;
         Decimal numericValue = discount.Condition_Logic_Numeric_Value__c;
         Decimal fieldNameValue = 0;
-        System.debug('Condition Logic: '+ objectNameWithFieldName + ' ' + operator + ' ' + numericValue);
         switch on objectNameWithFieldName {
             when 'Order.Products_Amount' {
                 fieldNameValue = order.OrderItems.size();

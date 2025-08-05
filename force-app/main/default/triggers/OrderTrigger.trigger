@@ -10,7 +10,6 @@ trigger OrderTrigger on Order (before insert, before update, before delete, afte
             }
         }
         if (!ordersToProcess.isEmpty()) {
-            System.debug('Processing orders for discount calculation: ' + ordersToProcess);
             DiscountCalculatorHandler.applyDiscountsWhenOrderTriggered(ordersToProcess);
         }
     }
