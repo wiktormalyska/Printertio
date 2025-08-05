@@ -1,24 +1,21 @@
 public virtual class PricebookEntryTestDataFactory extends TestDataFactory {
+    private final Product2 product;
+
+    public PricebookEntryTestDataFactory(Product2 product) {
+        this.product = product;
+    }
+
     protected override SObject prepare() {
-        Product2 product = (Product2) new ProductDataFactory().create();
         return PricebookEntryBuilder.create()
                 .withPricebook2Id(Test.getStandardPricebookId())
-                .withProduct2Id(product.Id)
+                .withProduct2Id(this.product.Id)
                 .withUnitPrice(100.0)
                 .withIsActive(true)
                 .build();
     }
 
-    public override SObject create() {
-        return (PricebookEntry) prepare();
-    }
-
-    private class ProductDataFactory extends ProductTestDataFactory {
-        public override SObject create() {
-            Product2 product = (Product2) super.prepare();
-            product.IsActive = true;
-            return product;
-        }
+    public virtual override SObject create() {
+        return prepare();
     }
 
 }

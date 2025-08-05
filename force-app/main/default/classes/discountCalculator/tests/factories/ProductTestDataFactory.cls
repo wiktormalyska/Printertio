@@ -9,7 +9,7 @@ public virtual class ProductTestDataFactory extends TestDataFactory {
     }
 
     public virtual override SObject create() {
-        return (Product2) prepare();
+        return prepare();
     }
 
 }

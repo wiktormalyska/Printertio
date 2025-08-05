@@ -2,79 +2,37 @@
 private class ConditionLogicValidatorTests {
     @TestSetup
     static void setup() {
-        Account account = AccountBuilder.create()
-                .withName('Test Account')
-                .withType('Customer')
-                .build();
+        Account account = (Account) new AccountTestDataFactory().create();
         insert account;
 
-        Contract contract = ContractBuilder.create()
-                .withAccountId(account.Id)
-                .withStartDate(Date.today())
-                .withStatus('Draft')
-                .withContractTerm(12)
-                .build();
+        Contract contract = (Contract) new ContractTestDataFactory(account).create();
         insert contract;
 
-        Product2 product1 = ProductBuilder.create()
-                .withName('Test Product 1')
-                .withIsActive(true)
-                .withProductCode('TP1')
-                .withDescription('Test Product 1 Description')
-                .build();
-        insert product1;
-
-        Product2 product2 = ProductBuilder.create()
-                .withName('Test Product 2')
-                .withIsActive(true)
-                .withProductCode('TP2')
-                .withDescription('Test Product 2 Description')
-                .build();
-        insert product2;
+        List<Product2> products = new List<Product2>();
+        Product2 product1 = (Product2) new ProductTestDataFactory().create();
+        products.add(product1);
+        Product2 product2 = (Product2) new ProductTestDataFactory().create();
+        products.add(product2);
+        insert products;
 
         Id priceBookId = Test.getStandardPricebookId();
 
-        PricebookEntry pbe1 = PricebookEntryBuilder.create()
-                .withPricebook2Id(priceBookId)
-                .withProduct2Id(product1.Id)
-                .withUnitPrice(100.0)
-                .withIsActive(true)
-                .build();
-        insert pbe1;
+        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+        PricebookEntry pbe1 = (PricebookEntry) new PricebookEntryTestDataFactory(product1).create();
+        pricebookEntries.add(pbe1);
+        PricebookEntry pbe2 = (PricebookEntry) new PricebookEntryTestDataFactory(product2).create();
+        pricebookEntries.add(pbe2);
+        insert pricebookEntries;
 
-        PricebookEntry pbe2 = PricebookEntryBuilder.create()
-                .withPricebook2Id(priceBookId)
-                .withProduct2Id(product2.Id)
-                .withUnitPrice(150.0)
-                .withIsActive(true)
-                .build();
-        insert pbe2;
-
-        Order order = OrderBuilder.create()
-                .withName('Test Order')
-                .withEffectiveDate(Date.today())
-                .withStatus('Draft')
-                .withAccountId(account.Id)
-                .withContractId(contract.Id)
-                .withPricebook2Id(priceBookId)
-                .build();
+        Order order = (Order) new OrderTestDataFactory(account).create();
         insert order;
 
-        OrderItem orderItem1 = OrderItemBuilder.create()
-                .withOrderId(order.Id)
-                .withPricebookEntryId(pbe1.Id)
-                .withQuantity(2)
-                .withUnitPrice(100.0)
-                .build();
-        insert orderItem1;
-
-        OrderItem orderItem2 = OrderItemBuilder.create()
-                .withOrderId(order.Id)
-                .withPricebookEntryId(pbe2.Id)
-                .withQuantity(3)
-                .withUnitPrice(150.0)
-                .build();
-        insert orderItem2;
+        List<OrderItem> orderItems = new List<OrderItem>();
+        OrderItem orderItem1 = (OrderItem) new OrderItemTestDataFactory(order, pbe1).create();
+        orderItems.add(orderItem1);
+        OrderItem orderItem2 = (OrderItem) new OrderItemTestDataFactory(order, pbe2).create();
+        orderItems.add(orderItem2);
+        insert orderItems;
     }
 
     @IsTest
@@ -133,7 +91,7 @@ private class ConditionLogicValidatorTests {
                 .withDiscountType('Conditional')
                 .withConditionLogicField('Order.Products_Total_Price')
                 .withConditionLogicOperator('==')
-                .withConditionLogicNumericValue(650.0)
+                .withConditionLogicNumericValue(200.0)
                 .withValueType('Percentage')
                 .withDiscountValue(10.0)
                 .build();
@@ -205,7 +163,7 @@ private class ConditionLogicValidatorTests {
                 .withDiscountType('Conditional')
                 .withConditionLogicField('Order.Products_Total_Price')
                 .withConditionLogicOperator('<=')
-                .withConditionLogicNumericValue(500.0)
+                .withConditionLogicNumericValue(100.0)
                 .withValueType('Percentage')
                 .withDiscountValue(10.0)
                 .build();
@@ -229,7 +187,7 @@ private class ConditionLogicValidatorTests {
                 .withDiscountType('Conditional')
                 .withConditionLogicField('Order.Products_Total_Price')
                 .withConditionLogicOperator('>=')
-                .withConditionLogicNumericValue(400.0)
+                .withConditionLogicNumericValue(200.0)
                 .withValueType('Percentage')
                 .withDiscountValue(10.0)
                 .build();

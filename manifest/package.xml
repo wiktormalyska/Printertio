@@ -50,6 +50,11 @@
         <members>AccountTestDataFactory</members>
         <members>OrderTestDataFactory</members>
         <members>OrderItemTestDataFactory</members>
+        <members>ContractTestDataFactory</members>
+        <members>IFieldValidator</members>
+        <members>ProductsAmountValidator</members>
+        <members>ProductsTotalPriceValidator</members>
+        <members>FieldValidatorFactory</members>
         <name>ApexClass</name>
     </types>
     <types>

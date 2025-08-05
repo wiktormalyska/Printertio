@@ -1,7 +1,9 @@
 public virtual class OrderTestDataFactory extends TestDataFactory {
+    private final Account account;
+
     protected override SObject prepare() {
         Id priceBookId = Test.getStandardPricebookId();
-        Account account = (Account) new AccountDataFactory().create();
+        Account account = this.account;
         return OrderBuilder.create()
                 .withAccountId(account.Id)
                 .withPricebook2Id(priceBookId)
@@ -10,8 +12,12 @@ public virtual class OrderTestDataFactory extends TestDataFactory {
                 .build();
     }
 
-    public override SObject create() {
-        return (Order) prepare();
+    public OrderTestDataFactory(Account account) {
+        this.account = account;
+    }
+
+    public virtual override SObject create() {
+        return prepare();
     }
 
     private class AccountDataFactory extends AccountTestDataFactory {

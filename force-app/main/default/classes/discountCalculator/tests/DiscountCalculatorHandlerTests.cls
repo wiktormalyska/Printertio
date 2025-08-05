@@ -2,27 +2,13 @@
 private class DiscountCalculatorHandlerTests {
     @TestSetup
     static void setup() {
-        Product2 product1 = ProductBuilder.create()
-                .withName('Test Product 1')
-                .withIsActive(true)
-                .withProductCode('TP1')
-                .withDescription('Test Product 1 Description')
-                .build();
+        Product2 product1 = (Product2) new ProductTestDataFactory().create();
         insert product1;
 
-        Id priceBookId = Test.getStandardPricebookId();
-
-        PricebookEntry pbe1 = PricebookEntryBuilder.create()
-                .withPricebook2Id(priceBookId)
-                .withProduct2Id(product1.Id)
-                .withUnitPrice(100.0)
-                .withIsActive(true)
-                .build();
+        PricebookEntry pbe1 = (PricebookEntry) new PricebookEntryTestDataFactory(product1).create();
         insert pbe1;
 
-        Account account = AccountBuilder.create()
-                .withName('Test Account')
-                .build();
+        Account account = (Account) new AccountTestDataFactory().create();
         insert account;
     }
 

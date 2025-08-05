@@ -1,4 +1,5 @@
 public virtual class DiscountTestDataFactory extends TestDataFactory {
+
     protected override SObject prepare() {
         return DiscountBuilder.create()
                 .withName('Test Discount')
@@ -12,6 +13,6 @@ public virtual class DiscountTestDataFactory extends TestDataFactory {
     }
 
     public virtual override SObject create() {
-        return (Discount__c) prepare();
+        return prepare();
     }
 }
