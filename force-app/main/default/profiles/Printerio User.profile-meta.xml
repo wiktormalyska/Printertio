@@ -86,10 +86,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductSearchControllerTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>RecurringDateValidator</apexClass>
         <enabled>false</enabled>
     </classAccesses>
