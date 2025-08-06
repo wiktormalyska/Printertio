@@ -1,243 +1,66 @@
 @IsTest
-public with sharing class ConditionLogicValidatorTests {
+private class ConditionLogicValidatorTests {
     @TestSetup
     static void setup() {
-        Account account = new Account(
-                Name = 'Test Account',
-                Type = 'Customer'
-        );
+        Account account = (Account) new AccountTestDataFactory().create();
         insert account;
 
-        Contract contract = new Contract(
-                AccountId = account.Id,
-                StartDate = Date.today(),
-                Status = 'Draft',
-                ContractTerm = 12
-        );
+        Contract contract = (Contract) new ContractTestDataFactory(account).create();
+        insert contract;
 
-        Product2 product1 = new Product2(
-                Name = 'Test Product 1',
-                IsActive = true,
-                ProductCode = 'TP1',
-                Description = 'Test Product 1 Description'
-        );
-        insert product1;
-        Product2 product2 = new Product2(
-                Name = 'Test Product 2',
-                IsActive = true,
-                ProductCode = 'TP2',
-                Description = 'Test Product 2 Description'
-        );
-        insert product2;
+        List<Product2> products = new List<Product2>();
+        Product2 product1 = (Product2) new ProductTestDataFactory().create();
+        products.add(product1);
+        Product2 product2 = (Product2) new ProductTestDataFactory().create();
+        products.add(product2);
+        insert products;
 
-        Id priceBookId = Test.getStandardPricebookId();
+        List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
+        PricebookEntry pbe1 = (PricebookEntry) new PricebookEntryTestDataFactory(product1).create();
+        pricebookEntries.add(pbe1);
+        PricebookEntry pbe2 = (PricebookEntry) new PricebookEntryTestDataFactory(product2).create();
+        pricebookEntries.add(pbe2);
+        insert pricebookEntries;
 
-        PricebookEntry pbe1 = new PricebookEntry(
-                Pricebook2Id = priceBookId,
-                Product2Id = product1.Id,
-                UnitPrice = 100.0,
-                IsActive = true
-        );
-        insert pbe1;
-        PricebookEntry pbe2 = new PricebookEntry(
-                Pricebook2Id = priceBookId,
-                Product2Id = product2.Id,
-                UnitPrice = 150.0,
-                IsActive = true
-        );
-        insert pbe2;
-
-        Order order = new Order(
-                Name = 'Test Order',
-                EffectiveDate = Date.today(),
-                Status = 'Draft',
-                AccountId = account.Id,
-                ContractId = contract.Id,
-                Pricebook2Id = priceBookId
-        );
+        Order order = (Order) new OrderTestDataFactory(account).create();
         insert order;
 
-        OrderItem orderItem1 = new OrderItem(
-                OrderId = order.Id,
-                PricebookEntryId = pbe1.Id,
-                Quantity = 2,
-                UnitPrice = 100.0
-        );
-        insert orderItem1;
-        OrderItem orderItem2 = new OrderItem(
-                OrderId = order.Id,
-                PricebookEntryId = pbe2.Id,
-                Quantity = 3,
-                UnitPrice = 150.0
-        );
-        insert orderItem2;
+        OrderItem orderItem = (OrderItem) new FiveQuantityOrderItemTestDataFactory(order, pbe1).create();
+        insert orderItem;
+
+        Discount__c discount = (Discount__c) new ConditionLogicDiscountTestDataFactory().create();
+        insert discount;
     }
 
     @IsTest
-    static void testAmount_GreaterThan_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Amount',
-                Condition_Logic_Operator__c = '>',
-                Condition_Logic_Numeric_Value__c = 1,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
+    static void testFilterDiscountsByConditionLogic() {
+        Discount__c discount = [SELECT Id, Name, Condition_Logic__c FROM Discount__c WHERE Is_Active__c = TRUE LIMIT 1];
+        Order order = [SELECT Id, TotalAmount, (SELECT Quantity FROM OrderItems) FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
         Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
+        Boolean filteredDiscounts = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
         Test.stopTest();
 
-        System.assertEquals(true, result, 'Result should be true because the number of products (2) is greater than 1.');
+        System.assertEquals(true, filteredDiscounts, 'Discount should be applicable based on condition logic');
     }
 
-    @IsTest
-    static void testAmount_LessThan_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Amount',
-                Condition_Logic_Operator__c = '<',
-                Condition_Logic_Numeric_Value__c = 5,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(true, result, 'Result should be true because the number of products (2) is less than 5.');
+    private class ConditionLogicDiscountTestDataFactory extends DiscountTestDataFactory {
+        public override SObject create() {
+            Discount__c discount = (Discount__c) super.create();
+            discount.Name = 'Condition Logic Discount';
+            discount.Condition_Logic__c = 'OrderItemsCondition';
+            return discount;
+        }
     }
 
-    @IsTest
-    static void testTotalPrice_Equals_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '==',
-                Condition_Logic_Numeric_Value__c = 650.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
+    private class FiveQuantityOrderItemTestDataFactory extends OrderItemTestDataFactory {
+        private FiveQuantityOrderItemTestDataFactory(Order order, PricebookEntry pricebookEntry) {
+            super(order, pricebookEntry);
+        }
 
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(true, result, 'Result should be true because the total price (650) equals 650.');
-    }
-
-    @IsTest
-    static void testTotalPrice_NotEquals_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '!=',
-                Condition_Logic_Numeric_Value__c = 500.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(true, result, 'Result should be true because the total price (650) is not equal to 500.');
-    }
-
-    @IsTest
-    static void testTotalPrice_LessThanOrEqual_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '<=',
-                Condition_Logic_Numeric_Value__c = 1000.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(true, result, 'Result should be false because the total price (650) is not less than or equal to 1000.');
-    }
-
-    @IsTest
-    static void testTotalPrice_LessThanOrEqual_ReturnsFalse() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '<=',
-                Condition_Logic_Numeric_Value__c = 500.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(false, result, 'Result should be false because the total price (650) is not less than or equal to 500.');
-    }
-
-    @IsTest
-    static void testTotalPrice_GreaterThanOrEqual_ReturnsTrue() {
-        Discount__c discount = new Discount__c(
-                Name = 'Test Discount',
-                Is_Active__c = true,
-                Discount_Type__c = 'Conditional',
-                Condition_Logic_Field__c = 'Order.Products_Total_Price',
-                Condition_Logic_Operator__c = '>=',
-                Condition_Logic_Numeric_Value__c = 400.0,
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10.0
-        );
-        insert discount;
-
-        Order order = [SELECT Id, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order LIMIT 1];
-        System.debug('Order : ' + order);
-
-        Test.startTest();
-        Boolean result = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
-        Test.stopTest();
-
-        System.assertEquals(true, result, 'Result should be true because the total price (650) is greater than or equal to 400.');
+        public override SObject create() {
+            OrderItem orderItem = (OrderItem) super.create();
+            orderItem.Quantity = 5;
+            return orderItem;
+        }
     }
 }

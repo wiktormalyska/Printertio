@@ -1,0 +1,8 @@
+.THIS {
+
+}
+
+.THIS .my-gap .slds-form-element__row {
+    gap: 1rem;
+}
+

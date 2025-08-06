@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Cancel_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Cancel Text</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>Conditional_Criteria_Placeholder_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Conditional Criteria Placeholder Text</shortDescription>
+        <value>e.g., &apos;Purchase value over $1000&apos; or &apos;Customer is from Poland&apos;</value>
+    </labels>
+    <labels>
+        <fullName>Conditional_Criteria_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Conditional Criteria Text</shortDescription>
+        <value>Conditional Criteria</value>
+    </labels>
+    <labels>
+        <fullName>Conditional_Discount_Details</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Conditional Discount Details</shortDescription>
+        <value>Conditional Discount Details</value>
+    </labels>
+    <labels>
+        <fullName>Create_Discount_Text</fullName>
+        <categories>Constant</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Discount Text</shortDescription>
+        <value>Create Discount</value>
+    </labels>
+    <labels>
+        <fullName>Description_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Description: Text</shortDescription>
+        <value>Description:</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Create_Form_Description</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Create Form Description</shortDescription>
+        <value>Select a discount type and fill out the details below to create a new discount.</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Name_Text</fullName>
+        <categories>Constant</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Name Text</shortDescription>
+        <value>Discount Name</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Saved_Successfully_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Saved Successfully Text</shortDescription>
+        <value>Discount saved successfully.</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Type_Option_Conditional</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Type Option Conditional</shortDescription>
+        <value>Conditional</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Type_Option_None</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Option None</shortDescription>
+        <value>--None--</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Type_Option_Recurring</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Type Option Recurring</shortDescription>
+        <value>Recurring</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Type_Option_Time_Bound</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Type Option Time-Bound</shortDescription>
+        <value>Time-Bound</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Type_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Type Text</shortDescription>
+        <value>Discount Type</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Value_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Value Text</shortDescription>
+        <value>Discount Value</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Value_Type_Option_Amount</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Value Type Option Amount</shortDescription>
+        <value>Amount</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Value_Type_Option_Percentage</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Value Type Option Percentage</shortDescription>
+        <value>Percentage</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Value_Type_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Value Type Text</shortDescription>
+        <value>Value Type (Percentage or Amount)</value>
+    </labels>
+    <labels>
+        <fullName>Error_Conditional_Criteria_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Conditional Criteria Required Text</shortDescription>
+        <value>Conditional Criteria is required for Conditional discounts.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Discount_Name_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Discount Name Required Text</shortDescription>
+        <value>Discount Name is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Discount_Null_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Discount Null Text</shortDescription>
+        <value>Discount cannot be null</value>
+    </labels>
+    <labels>
+        <fullName>Error_Discount_Type_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Discount Type Required Text</shortDescription>
+        <value>Discount Type is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Discount_Value_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Discount Value Required Text</shortDescription>
+        <value>Discount Value is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_End_Date_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error End Date Required Text</shortDescription>
+        <value>Recurring End Date is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Select_Repeat_By_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Select Repeat By Required Text</shortDescription>
+        <value>Repeat By is required for Recurring discounts.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Start_Date_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Start Date Required Text</shortDescription>
+        <value>Recurring Start Date is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Time_Bound_End_Date_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Time-Bound End Date Required Text</shortDescription>
+        <value>Time-Bound End Date is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Time_Bound_Start_Date_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Time-Bound Start Date Required Text</shortDescription>
+        <value>Time-Bound Start Date is required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_Unexpected_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Unexpected Text</shortDescription>
+        <value>Unexpected error:</value>
+    </labels>
+    <labels>
+        <fullName>Error_Value_Type_Required_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Value Type Required Text</shortDescription>
+        <value>Value Type is required.</value>
+    </labels>
+    <labels>
+        <fullName>Loading_Products_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Loading Products Text</shortDescription>
+        <value>Loading Products...</value>
+    </labels>
+    <labels>
+        <fullName>Recurring_Discount_Details_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recurring Discount Details Text</shortDescription>
+        <value>Recurring Discount Details</value>
+    </labels>
+    <labels>
+        <fullName>Recurring_End_Date_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>End Date/Time Text</shortDescription>
+        <value>End Date / Time</value>
+    </labels>
+    <labels>
+        <fullName>Recurring_Help_Text_Default_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recurring Help Text Default Text</shortDescription>
+        <value>Please select a repeat option to see the description.</value>
+    </labels>
+    <labels>
+        <fullName>Recurring_Help_Text_Not_Found_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recurring Help Text Not Found Text</shortDescription>
+        <value>Description for this option was not found.</value>
+    </labels>
+    <labels>
+        <fullName>Recurring_Start_Date_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Start Date/Time Text</shortDescription>
+        <value>Start Date / Time</value>
+    </labels>
+    <labels>
+        <fullName>Recursive_Option_Daily</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recursive Option Daily</shortDescription>
+        <value>Daily</value>
+    </labels>
+    <labels>
+        <fullName>Recursive_Option_Monthly</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recursive Option Monthly</shortDescription>
+        <value>Monthly</value>
+    </labels>
+    <labels>
+        <fullName>Recursive_Option_Weekly</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recursive Option Weekly</shortDescription>
+        <value>Weekly</value>
+    </labels>
+    <labels>
+        <fullName>Recursive_Option_Yearly</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Recursive Option Yearly</shortDescription>
+        <value>Yearly</value>
+    </labels>
+    <labels>
+        <fullName>Repeat_By_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Repeat By Text</shortDescription>
+        <value>Repeat By</value>
+    </labels>
+    <labels>
+        <fullName>Save_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save Text</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>Time_Bound_Discount_Details</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Time-Bound Discount Details</shortDescription>
+        <value>Time-Bound Discount Details</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Search_Products_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Search Products Text</shortDescription>
+        <value>Search Products by Name or Product Code</value>
+    </labels>
+    <labels>
+        <fullName>Select_Category_Placeholder_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select Category Placeholder Text</shortDescription>
+        <value>Select Category</value>
+    </labels>
+    <labels>
+        <fullName>Category_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Category Text</shortDescription>
+        <value>Category</value>
+    </labels>
+    <labels>
+        <fullName>Search_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Search Text</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>Previous_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Previous Text</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>Next_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Next Text</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>Selected_Products_Summary_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Selected Products Summary Text</shortDescription>
+        <value>Summary for Selected Products</value>
+    </labels>
+    <labels>
+        <fullName>Create_Order_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Order Text</shortDescription>
+        <value>Create Order</value>
+    </labels>
+    <labels>
+        <fullName>Total_Price_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Total Price Text</shortDescription>
+        <value>Total price: </value>
+    </labels>
+    <labels>
+        <fullName>Price_After_Discount_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Price After Discount Text</shortDescription>
+        <value>Price after discount: </value>
+    </labels>
+
+</CustomLabels>

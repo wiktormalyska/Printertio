@@ -1,78 +1,190 @@
 @IsTest
-public with sharing class BestDiscountCounterTests {
+private class BestDiscountCounterTests {
     @TestSetup
     static void setup() {
-        List<Discount__c> discounts = new List<Discount__c>();
-        discounts.add(new Discount__c(
-                Name = 'Test Discount 1',
-                Discount_Type__c = 'Time-Bound',
-                Value_Type__c = 'Percentage',
-                Discount_Value__c = 10,
-                Start_Date__c = System.today().addDays(-1),
-                End_Date__c = System.today().addDays(1),
-                Is_Active__c = true
-        ));
-        discounts.add(new Discount__c(
-                Name = 'Test Discount 2',
-                Discount_Type__c = 'Time-Bound',
-                Value_Type__c = 'Amount',
-                Discount_Value__c = 50,
-                Start_Date__c = System.today().addDays(-1),
-                End_Date__c = System.today().addDays(1),
-                Is_Active__c = true
-        ));
-        insert discounts;
-
-        Product2 product1 = new Product2(
-                Name = 'Test Product 1',
-                IsActive = true,
-                ProductCode = 'TP1',
-                Description = 'Test Product 1 Description'
-        );
-        insert product1;
-
-        Id priceBookId = Test.getStandardPricebookId();
-
-        PricebookEntry pbe1 = new PricebookEntry(
-                Pricebook2Id = priceBookId,
-                Product2Id = product1.Id,
-                UnitPrice = 100.0,
-                IsActive = true
-        );
-        insert pbe1;
-        Account account = new Account(
-                Name = 'Test Account'
-        );
+        Discount__c discount1 = (Discount__c) new TimeBoundDiscountDataFactory().create();
+        insert discount1;
+        Account account = (Account) new AccountTestDataFactory().create();
         insert account;
-
-        Order order = new Order(
-                AccountId = account.Id,
-                EffectiveDate = System.today(),
-                Pricebook2Id = priceBookId,
-                Status = 'Draft'
-        );
+        Order order = (Order) new OrderTestDataFactory(account).create();
         insert order;
-
-        OrderItem orderItem = new OrderItem(
-                OrderId = order.Id,
-                PricebookEntryId = pbe1.Id,
-                Quantity = 10,
-                UnitPrice = 100.0
-        );
+        Product2 product = (Product2) new ProductTestDataFactory().create();
+        insert product;
+        PricebookEntry pbe = (PricebookEntry) new PricebookEntryTestDataFactory(product).create();
+        insert pbe;
+        OrderItem orderItem = (OrderItem) new OrderItemTestDataFactory(order, pbe).create();
         insert orderItem;
     }
 
     @IsTest
     static void testGetMatchingDiscountWithPercentage() {
         List<Discount__c> discounts = [SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
-        Order order = [SELECT Id, TotalAmount FROM Order WHERE Status = 'Draft' LIMIT 1];
-        DiscountSettings settings = new DiscountSettings('Highest', 50.0);
+        Order order = [SELECT Id, TotalAmount FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
 
         Test.startTest();
         Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(discounts, settings, order);
         Test.stopTest();
 
         System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
-        System.assertEquals('Test Discount 1', bestDiscount.Name, 'Best discount should be the one with the highest percentage');
+        System.assertEquals('Test Discount', bestDiscount.Name, 'Best discount should be the one with the highest percentage');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountWithFixedAmount() {
+        // Create a fixed amount discount
+        Discount__c fixedDiscount = new Discount__c(
+                Name = 'Fixed Discount',
+                Discount_Type__c = ConstUtil.DISCOUNT_TYPE_TIME_BOUND,
+                Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT,
+                Discount_Value__c = 50.0,
+                Is_Active__c = true,
+                Start_Date__c = Date.today(),
+                End_Date__c = Date.today().addDays(30)
+        );
+        insert fixedDiscount;
+
+        List<Discount__c> discounts = [SELECT Id, Name, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
+        Order order = [SELECT Id, TotalAmount FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(discounts, settings, order);
+        Test.stopTest();
+
+        System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountLowestStrategy() {
+        // Create multiple discounts with different values
+        List<Discount__c> testDiscounts = new List<Discount__c>{
+                new Discount__c(
+                        Name = 'High Discount',
+                        Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE,
+                        Discount_Value__c = 30.0,
+                        Is_Active__c = true
+                ),
+                new Discount__c(
+                        Name = 'Low Discount',
+                        Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE,
+                        Discount_Value__c = 10.0,
+                        Is_Active__c = true
+                )
+        };
+        insert testDiscounts;
+
+        List<Discount__c> discounts = [SELECT Id, Name, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
+        Order order = [SELECT Id, TotalAmount FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_LOWEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(discounts, settings, order);
+        Test.stopTest();
+
+        System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountWithEmptyList() {
+        List<Discount__c> emptyDiscounts = new List<Discount__c>();
+        Order order = [SELECT Id, TotalAmount FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(emptyDiscounts, settings, order);
+        Test.stopTest();
+
+        System.assertEquals(null, bestDiscount, 'Best discount should be null for empty list');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountBasedOnTotalAmountWithPercentage() {
+        List<Discount__c> discounts = [SELECT Id, Name, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
+        Decimal totalAmount = 100.0;
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscountBasedOnTotalAmount(discounts, settings, totalAmount);
+        Test.stopTest();
+
+        System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountBasedOnTotalAmountWithFixedAmount() {
+        // Create a fixed amount discount
+        Discount__c fixedDiscount = new Discount__c(
+                Name = 'Fixed Amount Discount',
+                Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT,
+                Discount_Value__c = 25.0,
+                Is_Active__c = true
+        );
+        insert fixedDiscount;
+
+        List<Discount__c> discounts = [SELECT Id, Name, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
+        Decimal totalAmount = 100.0;
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscountBasedOnTotalAmount(discounts, settings, totalAmount);
+        Test.stopTest();
+
+        System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountBasedOnTotalAmountLowestStrategy() {
+        // Create multiple discounts
+        List<Discount__c> testDiscounts = new List<Discount__c>{
+                new Discount__c(
+                        Name = 'High Fixed Discount',
+                        Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT,
+                        Discount_Value__c = 40.0,
+                        Is_Active__c = true
+                ),
+                new Discount__c(
+                        Name = 'Low Fixed Discount',
+                        Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT,
+                        Discount_Value__c = 15.0,
+                        Is_Active__c = true
+                )
+        };
+        insert testDiscounts;
+
+        List<Discount__c> discounts = [SELECT Id, Name, Value_Type__c, Discount_Value__c FROM Discount__c WHERE Is_Active__c = TRUE];
+        Decimal totalAmount = 200.0;
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_LOWEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscountBasedOnTotalAmount(discounts, settings, totalAmount);
+        Test.stopTest();
+
+        System.assertNotEquals(null, bestDiscount, 'Best discount should not be null');
+    }
+
+    @IsTest
+    static void testGetMatchingDiscountBasedOnTotalAmountWithEmptyList() {
+        List<Discount__c> emptyDiscounts = new List<Discount__c>();
+        Decimal totalAmount = 100.0;
+        DiscountSettings settings = new DiscountSettings(ConstUtil.DISCOUNT_STRATEGY_HIGHEST, 50.0);
+
+        Test.startTest();
+        Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscountBasedOnTotalAmount(emptyDiscounts, settings, totalAmount);
+        Test.stopTest();
+
+        System.assertEquals(null, bestDiscount, 'Best discount should be null for empty list');
+    }
+
+    private class TimeBoundDiscountDataFactory extends DiscountTestDataFactory {
+        public override SObject create() {
+            Discount__c discount = (Discount__c) super.prepare();
+            discount.Discount_Type__c = ConstUtil.DISCOUNT_TYPE_TIME_BOUND;
+            discount.Value_Type__c = ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE;
+            discount.Discount_Value__c = 20.0;
+            discount.Start_Date__c = Date.today();
+            discount.End_Date__c = Date.today().addDays(30);
+            return discount;
+        }
     }
 }

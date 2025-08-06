@@ -19,42 +19,32 @@ public with sharing class RecurringDateValidator {
         Datetime endDate = discount.Recurring_Date_End__c;
         Datetime today = Datetime.now();
 
-        if (repeatByOptions.equals('Time of Day')) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)) {
             if (today.time() >= startDate.time() && today.time() <= endDate.time()) {
                 return true;
             }
         }
 
-        if (repeatByOptions.equals('Day of the Week')) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_WEEKLY)) {
             Integer todayDayOfWeek = weekdayMap.get(String.valueOf(today.format('EEEE')));
-            System.debug('Today Day of Week: ' + todayDayOfWeek);
             if (todayDayOfWeek != null && todayDayOfWeek >= 1 && todayDayOfWeek <= 7) {
                 Integer startDayOfWeek = weekdayMap.get(String.valueOf(startDate.format('EEEE')));
                 Integer endDayOfWeek = weekdayMap.get(String.valueOf(endDate.format('EEEE')));
-                System.debug('Start Day of Week: ' + startDayOfWeek);
-                System.debug('End Day of Week: ' + endDayOfWeek);
 
                 if (todayDayOfWeek >= startDayOfWeek && todayDayOfWeek <= endDayOfWeek) {
-                    System.debug(startDate.format('EEEE') + ' to ' + endDate.format('EEEE') + ' matches today: ' + today.format('EEEE'));
                     return true;
                 }
             }
         }
 
-        if (repeatByOptions.equals('Day of the Month')) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_MONTHLY)) {
             if (today.day() >= startDate.day() && today.day() <= endDate.day()) {
                 return true;
             }
         }
 
-        if (repeatByOptions.equals('Month')) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_YEARLY)) {
             if (today.month() >= startDate.month() && today.month() <= endDate.month()) {
-                return true;
-            }
-        }
-
-        if (repeatByOptions.equals('Year')) {
-            if (today.year() >= startDate.year() && today.year() <= endDate.year()) {
                 return true;
             }
         }
