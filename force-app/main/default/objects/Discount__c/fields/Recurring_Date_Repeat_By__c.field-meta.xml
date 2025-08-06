@@ -10,29 +10,24 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Day of the Week</fullName>
+                <fullName>Daily</fullName>
                 <default>false</default>
-                <label>Day of the Week</label>
+                <label>Daily</label>
             </value>
             <value>
-                <fullName>Day of the Month</fullName>
+                <fullName>Weekly</fullName>
                 <default>false</default>
-                <label>Day of the Month</label>
+                <label>Weekly</label>
             </value>
             <value>
-                <fullName>Month</fullName>
+                <fullName>Monthly</fullName>
                 <default>false</default>
-                <label>Month</label>
+                <label>Monthly</label>
             </value>
             <value>
-                <fullName>Year</fullName>
+                <fullName>Yearly</fullName>
                 <default>false</default>
-                <label>Year</label>
-            </value>
-            <value>
-                <fullName>Time of Day</fullName>
-                <default>false</default>
-                <label>Time of Day</label>
+                <label>Yearly</label>
             </value>
         </valueSetDefinition>
     </valueSet>
