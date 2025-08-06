@@ -1,27 +1,21 @@
 public with sharing class ConditionLogicValidator {
     public static Boolean filterDiscountsByConditionLogic(Discount__c discount, Order order) {
-        String operator = discount.Condition_Logic_Operator__c;
-        String fieldApiName = discount.Condition_Logic_Field__c;
-        Decimal numericValue = discount.Condition_Logic_Numeric_Value__c;
+        String selectedApiName = discount.Condition_Logic__c;
 
-        IFieldValidator validator = FieldValidatorFactory.getValidator(fieldApiName);
-        if (validator == null) {
+        ICondition condition;
+        try {
+            Type conditionType = Type.forName(selectedApiName);
+
+            Object conditionInstance = conditionType.newInstance();
+            condition = (ICondition) conditionInstance;
+        } catch (Exception e) {
             return false;
         }
 
-        Decimal fieldValue = validator.getFieldValue(order);
-        return evaluateCondition(fieldValue, operator, numericValue);
-    }
-
-    private static Boolean evaluateCondition(Decimal fieldValue, String operator, Decimal numericValue) {
-        switch on operator {
-            when '>' { return fieldValue > numericValue; }
-            when '==' { return fieldValue == numericValue; }
-            when '<' { return fieldValue < numericValue; }
-            when '<=' { return fieldValue <= numericValue; }
-            when '>=' { return fieldValue >= numericValue; }
-            when '!=' { return fieldValue != numericValue; }
-            when else { return false; }
+        if (condition == null) {
+            return false;
         }
+
+        return condition.isApplicable(order);
     }
 }

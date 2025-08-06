@@ -39,4 +39,19 @@
         });
         errorEvent.fire();
     },
+
+    getConditionLogicPicklistValues: function(component) {
+        const action = component.get("c.getConditionLogicPicklistValues");
+        action.setCallback(this, function(response) {
+            const state = response.getState();
+            if (state === "SUCCESS") {
+                const picklistValues = response.getReturnValue();
+                component.set("v.conditionLogicOptions", picklistValues);
+            } else if (state === "ERROR") {
+                const errors = response.getError();
+                console.error("Error fetching picklist values: ", errors);
+            }
+        });
+        $A.enqueueAction(action);
+    }
 })

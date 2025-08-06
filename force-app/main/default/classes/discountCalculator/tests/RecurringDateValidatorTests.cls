@@ -39,7 +39,7 @@ private class RecurringDateValidatorTests {
         Datetime now = Datetime.now();
         Datetime startTime = now.addHours(-1); // 1 hour before now
         Datetime endTime = now.addHours(1);    // 1 hour after now
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(startTime)
@@ -60,7 +60,7 @@ private class RecurringDateValidatorTests {
         Datetime now = Datetime.now();
         Datetime startTime = now.addHours(-3); // 3 hours before now
         Datetime endTime = now.addHours(-1);   // 1 hour before now
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(startTime)
@@ -80,7 +80,7 @@ private class RecurringDateValidatorTests {
         // Create discount valid for current day of week
         Datetime now = Datetime.now();
         String todayName = now.format('EEEE');
-
+        
         // Set start and end to same day of week as today
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
@@ -101,7 +101,7 @@ private class RecurringDateValidatorTests {
         // Create discount valid from Monday to Friday
         Datetime monday = getDateForDayOfWeek('Monday');
         Datetime friday = getDateForDayOfWeek('Friday');
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(monday)
@@ -120,7 +120,7 @@ private class RecurringDateValidatorTests {
                                 currentDayName == 'Wednesday' || currentDayName == 'Thursday' ||
                                 currentDayName == 'Friday');
 
-        System.assertEquals(shouldBeValid, isValid,
+        System.assertEquals(shouldBeValid, isValid, 
             'Recurring date validity should match whether current day is in Monday-Friday range');
     }
 
@@ -128,7 +128,7 @@ private class RecurringDateValidatorTests {
     static void testRecurringDateValidWithMonthlyCurrentDay() {
         // Create discount valid for current day of month
         Datetime now = Datetime.now();
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(now)
@@ -149,7 +149,7 @@ private class RecurringDateValidatorTests {
         Datetime now = Datetime.now();
         Datetime firstDay = Datetime.newInstance(now.year(), now.month(), 1, 12, 0, 0);
         Datetime fifteenthDay = Datetime.newInstance(now.year(), now.month(), 15, 12, 0, 0);
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(firstDay)
@@ -163,8 +163,8 @@ private class RecurringDateValidatorTests {
 
         // This test will pass if today is between 1st and 15th
         Boolean shouldBeValid = (now.day() >= 1 && now.day() <= 15);
-
-        System.assertEquals(shouldBeValid, isValid,
+        
+        System.assertEquals(shouldBeValid, isValid, 
             'Recurring date validity should match whether current day is in 1st-15th range');
     }
 
@@ -172,7 +172,7 @@ private class RecurringDateValidatorTests {
     static void testRecurringDateValidWithYearlyCurrentMonth() {
         // Create discount valid for current month
         Datetime now = Datetime.now();
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(now)
@@ -193,7 +193,7 @@ private class RecurringDateValidatorTests {
         Datetime now = Datetime.now();
         Datetime june = Datetime.newInstance(now.year(), 6, 1, 12, 0, 0);
         Datetime august = Datetime.newInstance(now.year(), 8, 1, 12, 0, 0);
-
+        
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')
                 .withRecurringDateStart(june)
@@ -207,8 +207,8 @@ private class RecurringDateValidatorTests {
 
         // This test will pass if current month is June, July, or August
         Boolean shouldBeValid = (now.month() >= 6 && now.month() <= 8);
-
-        System.assertEquals(shouldBeValid, isValid,
+        
+        System.assertEquals(shouldBeValid, isValid, 
             'Recurring date validity should match whether current month is in June-August range');
     }
 
@@ -235,14 +235,14 @@ private class RecurringDateValidatorTests {
             'Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4,
             'Friday' => 5, 'Saturday' => 6, 'Sunday' => 7
         };
-
+        
         Integer targetDay = weekdayMap.get(dayName);
         String currentDayName = now.format('EEEE');
         Integer currentDay = weekdayMap.get(currentDayName);
-
+        
         // Calculate days to add/subtract to get to target day
         Integer daysToAdd = targetDay - currentDay;
-
+        
         return now.addDays(daysToAdd);
     }
 }

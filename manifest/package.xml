@@ -15,7 +15,6 @@
         <members>OrgConnectorMock</members>
         <members>OrganizationInfoController</members>
         <members>ProductSearchController</members>
-        <members>ProductSearchControllerTests</members>
         <members>TestAccountSearchController</members>
         <members>TestGenerateOrderPdfAction</members>
         <members>TestOrderInvoicePDFController</members>
@@ -51,10 +50,12 @@
         <members>OrderTestDataFactory</members>
         <members>OrderItemTestDataFactory</members>
         <members>ContractTestDataFactory</members>
-        <members>IFieldValidator</members>
-        <members>ProductsAmountValidator</members>
-        <members>ProductsTotalPriceValidator</members>
-        <members>FieldValidatorFactory</members>
+        <members>DiscountFilterTests</members>
+        <members>ICondition</members>
+        <members>OrderItemsCondition</members>
+        <members>DiscountFormSericeTests</members>
+        <members>OrderItemsConditionTests</members>
+        <members>DiscountFormControllerTests</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -132,6 +133,7 @@
         <members>Order_Record_Page</members>
         <members>Printerio_UtilityBar</members>
         <members>Opportunity_Record_Page</members>
+        <members>Discount_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>

@@ -44,18 +44,8 @@ public class DiscountBuilder {
         return this;
     }
 
-    public DiscountBuilder withConditionLogicField(String field) {
-        this.discount.Condition_Logic_Field__c = field;
-        return this;
-    }
-
-    public DiscountBuilder withConditionLogicOperator(String operator) {
-        this.discount.Condition_Logic_Operator__c = operator;
-        return this;
-    }
-
-    public DiscountBuilder withConditionLogicNumericValue(Decimal value) {
-        this.discount.Condition_Logic_Numeric_Value__c = value;
+    public DiscountBuilder withConditionLogic(String field) {
+        this.discount.Condition_Logic__c = field;
         return this;
     }
 

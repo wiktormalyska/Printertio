@@ -22,6 +22,9 @@
     <aura:attribute name="selectedRepeatBy" type="String" default=""
                     description="The currently selected value from the Repeat By picklist."/>
 
+    <aura:attribute name="conditionalCriteria" type="String" default=""
+                    description="The currently selected value from the Conditional Criteria picklist."/>
+
     <aura:attribute name="recurringStartDate" type="DateTime"
                     description="Intermediate attribute for recurring start date"/>
     <aura:attribute name="recurringEndDate" type="DateTime"
@@ -30,8 +33,7 @@
                     description="Intermediate attribute for time-bound start date"/>
     <aura:attribute name="timeBoundEndDate" type="DateTime"
                     description="Intermediate attribute for time-bound end date"/>
-    <aura:attribute name="conditionalCriteria" type="String" default=""
-                    description="Intermediate attribute for conditional criteria"/>
+    <aura:attribute name="conditionLogicOptions" type="List" default="[]"/>
 
     <aura:attribute name="recurringHelpText" type="String" default=""
                     description="Dynamic help text for the recurring section."/>
@@ -186,11 +188,16 @@
                                 </h3>
                                 <div class="slds-grid slds-gutters slds-wrap">
                                     <div class="slds-col slds-size_1-of-1 slds-form-element" style="margin-left: 8px;">
-                                        <lightning:textarea name="conditionalCriteria"
-                                                            label="{!$Label.c.Conditional_Criteria_Text}"
-                                                            value="{!v.conditionalCriteria}"
-                                                            placeholder="{!$Label.c.Conditional_Criteria_Placeholder_Text}"
-                                                            required="true"/>
+                                        <lightning:select name="conditionalCriteria"
+                                                          label="{!$Label.c.Conditional_Criteria_Text}"
+                                                          value="{!v.conditionalCriteria}"
+                                                          onchange="{!c.handleConditionalCriteriaChange}"
+                                                          required="true">
+                                            <option value="">{!$Label.c.Discount_Type_Option_None}</option>
+                                            <aura:iteration items="{!v.conditionLogicOptions}" var="option">
+                                                <option value="{!option.value}">{!option.label}</option>
+                                            </aura:iteration>
+                                        </lightning:select>
                                     </div>
                                 </div>
                             </div>

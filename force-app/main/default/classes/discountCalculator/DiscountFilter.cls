@@ -19,6 +19,7 @@ public with sharing class DiscountFilter {
             if (discount.Discount_Type__c == ConstUtil.DISCOUNT_TYPE_CONDITIONAL) {
                 order = [SELECT Id, TotalAmount, (SELECT Id, UnitPrice, Quantity FROM OrderItems) FROM Order WHERE Id = :order.Id];
                 if (ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order)) {
+                    System.debug('Discount conditional' + discount.Name + ' is applicable for order ' + order.Id);
                     filteredDiscounts.add(discount);
                 }
             }

@@ -6,7 +6,7 @@ public with sharing class DiscountCalculatorHandler {
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
                         Start_Date__c, End_Date__c,
-                        Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c,
+                        Condition_Logic__c,
                         Recurring_Date_Start__c, Recurring_Date_End__c, Recurring_Date_Repeat_By__c
                 FROM Discount__c
                 WHERE Is_Active__c = TRUE
@@ -41,7 +41,7 @@ public with sharing class DiscountCalculatorHandler {
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
                         Start_Date__c, End_Date__c,
-                        Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c,
+                        Condition_Logic__c,
                         Recurring_Date_Start__c, Recurring_Date_End__c, Recurring_Date_Repeat_By__c,
                         Is_Active__c
                 FROM Discount__c

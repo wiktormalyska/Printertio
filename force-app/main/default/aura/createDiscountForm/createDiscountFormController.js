@@ -17,6 +17,19 @@
             { 'label': $A.get("$Label.c.Recursive_Option_Yearly"), 'value': 'Yearly' }
         ]);
 
+        const picklistAction = component.get("c.getConditionLogicPicklistValues");
+        picklistAction.setCallback(this, function(response) {
+            const state = response.getState();
+            if (state === "SUCCESS") {
+                const picklistValues = response.getReturnValue();
+                component.set("v.conditionLogicOptions", picklistValues);
+            } else if (state === "ERROR") {
+                const errors = response.getError();
+                console.error("Error fetching picklist values: ", errors);
+            }
+        });
+        $A.enqueueAction(picklistAction);
+
         const action = component.get("c.getRecurringHelpTexts");
         action.setCallback(this, function(response) {
             const state = response.getState();
@@ -184,4 +197,9 @@
         const dismissActionPanel = $A.get("e.force:closeQuickAction");
         dismissActionPanel.fire();
     },
+
+    handleConditionalCriteriaChange: function(component, event, helper) {
+        const conditionalCriteria = event.getSource().get("v.value");
+        component.set("v.conditionalCriteria", conditionalCriteria);
+    }
 });

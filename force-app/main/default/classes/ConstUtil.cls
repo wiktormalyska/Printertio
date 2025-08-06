@@ -32,7 +32,7 @@ public with sharing class ConstUtil {
 
     public static String DISCOUNT_VALUE_TYPE_FIXED_AMOUNT {
         get {
-            return 'Fixed Amount';
+            return 'Amount';
         }
     }
 
@@ -99,4 +99,9 @@ public with sharing class ConstUtil {
         }
     }
 
+    public static Integer DISCOUNT_CONDITION_MINIMUM_ORDER_ITEM_COUNT {
+        get {
+            return 5;
+        }
+    }
 }
