@@ -26,8 +26,6 @@ public with sharing class AccountSearchController {
                 acc.Name = (String) accountData.get('Name');
                 acc.Industry = (String) accountData.get('Industry');
                 acc.Phone = (String) accountData.get('Phone');
-                
-                // Obsługa Owner.Email z nested object
                 Map<String, Object> ownerData = (Map<String, Object>) accountData.get('Owner');
                 if (ownerData != null) {
                     acc.Owner = new User();

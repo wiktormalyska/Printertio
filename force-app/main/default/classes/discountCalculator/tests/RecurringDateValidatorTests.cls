@@ -7,7 +7,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(null)
                 .withRecurringDateEnd(Datetime.now().addDays(1))
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)
                 .build();
 
         Test.startTest();
@@ -23,7 +23,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(Datetime.now())
                 .withRecurringDateEnd(null)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)
                 .build();
 
         Test.startTest();
@@ -44,7 +44,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(startTime)
                 .withRecurringDateEnd(endTime)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)
                 .build();
 
         Test.startTest();
@@ -65,7 +65,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(startTime)
                 .withRecurringDateEnd(endTime)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)
                 .build();
 
         Test.startTest();
@@ -86,7 +86,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(now)
                 .withRecurringDateEnd(now)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_WEEKLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.WEEKLY)
                 .build();
 
         Test.startTest();
@@ -106,7 +106,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(monday)
                 .withRecurringDateEnd(friday)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_WEEKLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.WEEKLY)
                 .build();
 
         Test.startTest();
@@ -133,7 +133,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(now)
                 .withRecurringDateEnd(now)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_MONTHLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.MONTHLY)
                 .build();
 
         Test.startTest();
@@ -154,7 +154,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(firstDay)
                 .withRecurringDateEnd(fifteenthDay)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_MONTHLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.MONTHLY)
                 .build();
 
         Test.startTest();
@@ -177,7 +177,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(now)
                 .withRecurringDateEnd(now)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_YEARLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.YEARLY)
                 .build();
 
         Test.startTest();
@@ -198,7 +198,7 @@ private class RecurringDateValidatorTests {
                 .withName('Test Discount')
                 .withRecurringDateStart(june)
                 .withRecurringDateEnd(august)
-                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_YEARLY)
+                .withRecurringDateRepeatBy(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.YEARLY)
                 .build();
 
         Test.startTest();

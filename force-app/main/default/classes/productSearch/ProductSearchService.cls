@@ -184,7 +184,7 @@ public with sharing class ProductSearchService {
         }
     }
 
-    @future
+    @Future
     public static void activateOrderAsync(Id orderId, Id contractId) {
         try {
             Contract contractToUpdate = [SELECT Id, Status FROM Contract WHERE Id = :contractId];
@@ -207,7 +207,7 @@ public with sharing class ProductSearchService {
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
                         Start_Date__c, End_Date__c,
-                        Condition_Logic__c
+                        Condition_Logic__c,
                         Recurring_Date_Start__c, Recurring_Date_End__c, Recurring_Date_Repeat_By__c
                 FROM Discount__c
                 WHERE Is_Active__c = TRUE

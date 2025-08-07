@@ -1,8 +1,8 @@
-public virtual class OrderItemTestDataFactory extends TestDataFactory {
+public virtual class OrderItemTestDataFactory implements TestDataFactory {
     private final Order order;
     private final PricebookEntry pricebookEntry;
 
-    protected override SObject prepare() {
+    public SObject prepare() {
 
         return OrderItemBuilder.create()
                 .withOrderId(this.order.Id)
@@ -17,7 +17,12 @@ public virtual class OrderItemTestDataFactory extends TestDataFactory {
         this.pricebookEntry = pricebookEntry;
     }
 
-    public virtual override SObject create() {
+    public virtual SObject create() {
         return prepare();
+    }
+
+    public void save() {
+        SObject orderItem = create();
+        insert orderItem;
     }
 }

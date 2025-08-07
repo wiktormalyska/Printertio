@@ -56,6 +56,17 @@
         <members>ProductSearchService</members>
         <members>ProductTestDataFactory</members>
         <members>TestDataFactory</members>
+        <members>DiscountConst.cls</members>
+        <members>OrderConst</members>
+        <members>DiscountConst</members>
+        <members>TA_Order_CalculateDiscountForOrder.cls</members>
+        <members>TA_Discount_ReAssignDiscounts_AfterInsert.cls</members>
+        <members>TA_Order_CalculateDiscountForOrder_OnInsert.cls</members>
+        <members>TA_Discount_ReAssign_AfterUpdate</members>
+        <members>TA_Discount_ReAssign_AfterDelete</members>
+        <members>TA_Order_CalculateDiscount_BeforeUpdate</members>
+        <members>TA_Discount_ReAssign_AfterInsert</members>
+        <members>TA_Order_CalculateDiscount_BeforeInsert</members>
         <name>ApexClass</name>
     </types>
     <types>

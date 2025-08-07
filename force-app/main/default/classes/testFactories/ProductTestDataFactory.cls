@@ -1,5 +1,5 @@
-public virtual class ProductTestDataFactory extends TestDataFactory {
-    protected override SObject prepare() {
+public virtual class ProductTestDataFactory implements TestDataFactory {
+    public SObject prepare() {
         return ProductBuilder.create()
                 .withName('Test Product')
                 .withIsActive(true)
@@ -8,8 +8,12 @@ public virtual class ProductTestDataFactory extends TestDataFactory {
                 .build();
     }
 
-    public virtual override SObject create() {
+    public virtual SObject create() {
         return prepare();
     }
 
+    public void save() {
+        SObject product = create();
+        insert product;
+    }
 }

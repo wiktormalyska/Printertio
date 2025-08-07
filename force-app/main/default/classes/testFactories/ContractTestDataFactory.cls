@@ -1,18 +1,23 @@
-public virtual class ContractTestDataFactory extends TestDataFactory{
+public virtual class ContractTestDataFactory implements TestDataFactory{
     private final Account account;
 
     public ContractTestDataFactory(Account account) {
         this.account = account;
     }
 
-    protected override SObject prepare() {
+    public SObject prepare() {
         return ContractBuilder.create()
                 .withAccountId(account.Id)
                 .withStartDate(Date.today())
                 .build();
     }
 
-    public virtual override SObject create() {
+    public virtual SObject create() {
         return prepare();
+    }
+
+    public void save() {
+        SObject contract = create();
+        insert contract;
     }
 }

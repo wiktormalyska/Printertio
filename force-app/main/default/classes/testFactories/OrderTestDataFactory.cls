@@ -1,7 +1,7 @@
-public virtual class OrderTestDataFactory extends TestDataFactory {
+public virtual class OrderTestDataFactory implements TestDataFactory {
     private final Account account;
 
-    protected override SObject prepare() {
+    public SObject prepare() {
         Id priceBookId = Test.getStandardPricebookId();
         Account account = this.account;
         return OrderBuilder.create()
@@ -16,7 +16,7 @@ public virtual class OrderTestDataFactory extends TestDataFactory {
         this.account = account;
     }
 
-    public virtual override SObject create() {
+    public virtual SObject create() {
         return prepare();
     }
 
@@ -26,5 +26,10 @@ public virtual class OrderTestDataFactory extends TestDataFactory {
             account.Type = 'Customer';
             return account;
         }
+    }
+
+    public void save() {
+        SObject order = create();
+        insert order;
     }
 }
