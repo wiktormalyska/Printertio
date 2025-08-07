@@ -14,8 +14,6 @@ public with sharing class OrgConnector {
             Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
             List<Object> records = (List<Object>) results.get('records');
 
-            System.debug('Downloaded ' + records.size() + ' records.');
-
             for (Object obj : records) {
                 Map<String, Object> acct = (Map<String, Object>) obj;
                 String accountId = (String) acct.get('Id');
@@ -25,12 +23,7 @@ public with sharing class OrgConnector {
                 account.Id = accountId;
                 account.Name = accountName;
                 accounts.add(account);
-
-                System.debug('ID: ' + accountId + ', Name: ' + accountName);
             }
-        } else {
-            System.debug('Request error. Status: ' + response.getStatus());
-            System.debug('Error message: ' + response.getBody());
         }
         
         return accounts;

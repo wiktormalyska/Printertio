@@ -36,10 +36,7 @@ public with sharing class AccountSearchController {
                 
                 accounts.add(acc);
             }
-        } else {
-            System.debug('Error ' + response.getStatus());
         }
-        System.debug(accounts);
         return accounts;
     }
 
@@ -87,7 +84,6 @@ public with sharing class AccountSearchController {
         if (response.getStatusCode() == 201) {
             Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
             String accountId = (String) responseMap.get('id');
-            System.debug('Account created with ID: ' + accountId);
             return accountId;
         } else {
             Map<String, Object> errorResponse = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
@@ -128,7 +124,6 @@ public with sharing class AccountSearchController {
         HttpResponse response = http.send(request);
 
         if (response.getStatusCode() == 204) {
-            System.debug('Account updated successfully: ' + accountId);
             return accountId;
         } else {
             Map<String, Object> errorResponse = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
