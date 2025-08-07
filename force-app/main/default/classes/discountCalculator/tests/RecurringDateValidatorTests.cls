@@ -115,10 +115,10 @@ private class RecurringDateValidatorTests {
 
         // This test will pass if today is Monday-Friday
         Datetime now = Datetime.now();
-        String currentDayName = now.format('EEEE');
-        Boolean shouldBeValid = (currentDayName == 'Monday' || currentDayName == 'Tuesday' ||
-                                currentDayName == 'Wednesday' || currentDayName == 'Thursday' ||
-                                currentDayName == 'Friday');
+        String todayName = now.format('EEEE');
+        Boolean shouldBeValid = (todayName == 'Monday' || todayName == 'Tuesday' ||
+                                todayName == 'Wednesday' || todayName == 'Thursday' ||
+                                todayName == 'Friday');
 
         System.assertEquals(shouldBeValid, isValid, 
             'Recurring date validity should match whether current day is in Monday-Friday range');

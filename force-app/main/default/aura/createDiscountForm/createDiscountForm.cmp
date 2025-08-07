@@ -2,6 +2,9 @@
                 implements="force:hasRecordId,force:hasSObjectName,lightning:actionOverride"
                 description="A form to create various types of discounts with a dynamic UI.">
 
+    <aura:attribute name="isLoading" type="Boolean" default="false"
+                    description="Controls loading spinner visibility"/>
+
     <aura:attribute name="discountRecord" type="Object" default="{}"
                     description="SObject for the new discount record."/>
     <aura:attribute name="discountName" type="String" default=""
@@ -11,7 +14,8 @@
     <aura:attribute name="discountValue" type="Decimal" description="Intermediate attribute for discount value"/>
     <aura:attribute name="selectedValueType" type="String" default="Percentage"
                     description="The currently selected value type (Percentage or Amount) for the discount."/>
-
+    <aura:attribute name="isActivated" type="Boolean" default="false"
+                    description="Controls whether the discount is activated."/>
     <aura:attribute name="isRecurring" type="Boolean" default="false"
                     description="Controls visibility of the Recurring section."/>
     <aura:attribute name="isTimeBound" type="Boolean" default="false"
@@ -43,6 +47,10 @@
     <aura:attribute name="repeatByOptions" type="List" default="[]"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.isLoading}">
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </aura:if>
 
     <lightning:card title="{!$Label.c.Create_Discount_Text}" iconName='action:new_custom17'>
         <div class="slds-p-around_large">
@@ -97,6 +105,15 @@
                                 </lightning:select>
                             </div>
                         </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-form-element"
+                         style="margin-top: 1rem; margin-left: 8px; padding-right: 20px;">
+                        <lightning:input name="isActivated"
+                                         label="Is Activated"
+                                         type="checkbox"
+                                         checked="{!v.isActivated}"
+                                         onchange="{!c.handleActivationChange}"
+                        />
                     </div>
 
 

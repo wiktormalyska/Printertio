@@ -53,7 +53,6 @@
     handleTypeChange: function(component, event, helper) {
         let selectedType = event.getSource().get("v.value");
         component.set("v.selectedDiscountType", selectedType);
-        console.log("Selected Discount Type: " + selectedType);
 
         helper.toggleVisibility(component, selectedType);
     },
@@ -139,7 +138,7 @@
                 return;
             }
         }
-
+        component.set("v.isLoading", true);
         let discount = component.get("v.discountRecord");
 
         discount.Name = discountName;
@@ -151,7 +150,8 @@
         discount.Recurring_Date_End__c = component.get("v.recurringEndDate");
         discount.Start_Date__c = component.get("v.timeBoundStartDate");
         discount.End_Date__c = component.get("v.timeBoundEndDate");
-        discount.Conditional_Criteria__c = component.get("v.conditionalCriteria");
+        discount.Condition_Logic__c = component.get("v.conditionalCriteria");
+        discount.Is_Active__c = component.get("v.isActivated");
 
         component.set("v.discountRecord", discount);
 
@@ -159,9 +159,8 @@
         action.setParams({ discount: discount });
 
         action.setCallback(this, function(response) {
+            component.set("v.isLoading", false);
             const state = response.getState();
-            console.log("Save response state: ", state);
-
             if (state === "SUCCESS") {
                 const discountId = response.getReturnValue();
 
@@ -201,5 +200,10 @@
     handleConditionalCriteriaChange: function(component, event, helper) {
         const conditionalCriteria = event.getSource().get("v.value");
         component.set("v.conditionalCriteria", conditionalCriteria);
+    },
+
+    handleActivationChange: function(component, event, helper) {
+        const isActive = event.getSource().get("v.checked");
+        component.set("v.isActivated", isActive);
     }
 });

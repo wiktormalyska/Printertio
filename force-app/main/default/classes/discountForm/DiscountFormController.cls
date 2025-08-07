@@ -10,6 +10,7 @@ public with sharing class DiscountFormController {
 
     @AuraEnabled
     public static Id saveDiscount(Discount__c discount) {
+        System.debug('DiscountFormController.saveDiscount called with discount: ' + discount);
         try {
             if (discount == null) {
                 throw new AuraHandledException(System.Label.Error_Discount_Null_Text);
