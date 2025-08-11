@@ -9,6 +9,12 @@
           <option name="defaultModuleName" value="printerio-dev" />
           <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/featureOrg/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
+        <IlluminatedCloudConnection>
+          <option name="connectionName" value="productSyncOrg" />
+          <option name="connectionType" value="OAUTH" />
+          <option name="defaultModuleName" value="productSync-dev" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/productSyncOrg/OfflineSymbolTable.zip" />
+        </IlluminatedCloudConnection>
       </list>
     </option>
     <option name="ignoreJavaScriptLanguageLevel" value="true" />
