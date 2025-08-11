@@ -1,4 +1,10 @@
-public with sharing class TA_Order_CalculateDiscount_BeforeUpdate implements TriggerAction.BeforeUpdate {
+public class TA_Order_CalculateDiscount implements TriggerAction.BeforeInsert, TriggerAction.BeforeUpdate {
+    public void beforeInsert(List<SObject> triggerNew) {
+        if(!triggerNew.isEmpty()) {
+            DiscountCalculatorHandler.applyDiscountsWhenOrderTriggered(triggerNew);
+        }
+    }
+
     public void beforeUpdate(List<Order> triggerNew, List<Order> triggerOld) {
         List<Order> ordersToUpdate = new List<Order>();
         Map<Id, Order> oldOrdersMap = new Map<Id, Order>(triggerOld);
