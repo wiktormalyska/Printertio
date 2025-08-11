@@ -64,6 +64,13 @@
         <members>TA_Order_CalculateDiscountForOrder_OnInsert.cls</members>
         <members>TA_Discount_ReAssign</members>
         <members>TA_Order_CalculateDiscount</members>
+        <members>TA_Products_Synchronise</members>
+        <members>SynchronizeService.cls</members>
+        <members>ConnectedAppsConst</members>
+        <members>EndpointConst</members>
+        <members>ProductSyncQueueable</members>
+        <members>SynchronizeService</members>
+        <members>ProductDeactivateQueueable</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -82,6 +89,8 @@
     <types>
         <members>OrderTrigger</members>
         <members>DiscountTrigger</members>
+        <members>ProductTrigger</members>
+        <members>ProductDeactivationEventTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
