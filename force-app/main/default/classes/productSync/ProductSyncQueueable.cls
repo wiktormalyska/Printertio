@@ -6,7 +6,7 @@ public with sharing class ProductSyncQueueable implements Queueable, Database.Al
     }
 
     public void execute(QueueableContext context) {
-        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 WHERE Id IN :productIds];
+        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c, IsSentFromOther__c FROM Product2 WHERE Id IN :productIds];
         SynchronizeService.synchronizeProducts(products);
     }
 }

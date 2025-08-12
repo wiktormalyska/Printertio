@@ -71,6 +71,7 @@
         <members>ProductSyncQueueable</members>
         <members>SynchronizeService</members>
         <members>ProductDeactivateQueueable</members>
+        <members>ProductSynchronizationLogBuilder</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -125,6 +126,8 @@
         <members>Order</members>
         <members>Discount_Settings__mdt</members>
         <members>Discount__c</members>
+        <members>Product2</members>
+        <members>Product_Synchronization_Log__c</members>
         <name>CustomObject</name>
     </types>
     <types>

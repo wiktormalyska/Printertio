@@ -2,7 +2,7 @@ public with sharing class ProductSearchService {
     public static List<Product2> getProducts(String searchTerm, String family) {
         if (String.isNotBlank(searchTerm) && String.isNotBlank(family)) {
             return [
-                    SELECT Id, Name, Family, ProductCode, (SELECT Id, UnitPrice
+                    SELECT Id, Name, Family, ProductCode, IsExternal__c, (SELECT Id, UnitPrice
                         FROM PricebookEntries
                         WHERE IsActive = TRUE
                         AND Pricebook2.IsStandard = TRUE
@@ -13,7 +13,7 @@ public with sharing class ProductSearchService {
             ];
         } else if (String.isNotBlank(searchTerm)) {
             return [
-                    SELECT Id, Name, Family, ProductCode, (SELECT Id, UnitPrice
+                    SELECT Id, Name, Family, ProductCode, IsExternal__c, (SELECT Id, UnitPrice
                     FROM PricebookEntries
                     WHERE IsActive = TRUE
                     AND Pricebook2.IsStandard = TRUE
@@ -23,7 +23,7 @@ public with sharing class ProductSearchService {
             ];
         } else if (String.isNotBlank(family)) {
             return [
-                    SELECT Id, Name, Family, ProductCode, (SELECT Id, UnitPrice
+                    SELECT Id, Name, Family, ProductCode, IsExternal__c,(SELECT Id, UnitPrice
                     FROM PricebookEntries
                     WHERE IsActive = TRUE
                     AND Pricebook2.IsStandard = TRUE
@@ -33,7 +33,7 @@ public with sharing class ProductSearchService {
             ];
         } else {
             return [
-                    SELECT Id, Name, Family, ProductCode, (SELECT Id, UnitPrice
+                    SELECT Id, Name, Family, ProductCode, IsExternal__c,(SELECT Id, UnitPrice
                     FROM PricebookEntries
                     WHERE IsActive = TRUE
                     AND Pricebook2.IsStandard = TRUE
