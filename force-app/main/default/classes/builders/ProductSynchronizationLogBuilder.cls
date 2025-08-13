@@ -3,6 +3,7 @@ public class ProductSynchronizationLogBuilder {
 
     private ProductSynchronizationLogBuilder() {
         this.log = new Product_Synchronization_Log__c();
+        this.log.Retry_Count__c = 0;
     }
 
     public static ProductSynchronizationLogBuilder create() {

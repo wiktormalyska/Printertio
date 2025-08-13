@@ -22,5 +22,9 @@ public with sharing class ConstUtil {
             return new EndpointConst();
         }
     }
-
+    public static ProductSyncConst PRODUCT_SYNC {
+        get {
+            return new ProductSyncConst();
+        }
+    }
 }

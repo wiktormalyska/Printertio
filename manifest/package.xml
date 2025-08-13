@@ -72,6 +72,9 @@
         <members>SynchronizeService</members>
         <members>ProductDeactivateQueueable</members>
         <members>ProductSynchronizationLogBuilder</members>
+        <members>ProductSyncRetryScheduledJob</members>
+        <members>ProductSyncSchedulerUtil</members>
+        <members>ProductSyncConst</members>
         <name>ApexClass</name>
     </types>
     <types>
