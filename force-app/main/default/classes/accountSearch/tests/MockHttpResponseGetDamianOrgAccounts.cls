@@ -1,4 +1,4 @@
-@isTest
+@IsTest
 global class MockHttpResponseGetDamianOrgAccounts implements HttpCalloutMock {
 
     global HttpResponse respond(HttpRequest req) {

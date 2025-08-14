@@ -25,7 +25,7 @@ private class OrderItemsConditionTests {
 
     @IsTest
     static void testGetMatchingDiscountBasedOnTotalAmount() {
-        Order order = [SELECT Id, TotalAmount, ( SELECT Quantity FROM OrderItems) FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        Order order = [SELECT Id, TotalAmount, ( SELECT Quantity FROM OrderItems) FROM Order WHERE Status = :ConstUtil.ORDER.STATUS.DRAFT LIMIT 1];
         Test.startTest();
         OrderItemsCondition condition = new OrderItemsCondition();
         Boolean isApplicable = condition.isApplicable(order);
@@ -39,6 +39,6 @@ private class OrderItemsConditionTests {
         OrderItemsCondition condition = new OrderItemsCondition();
         String name = condition.getName();
 
-        System.assertEquals('Order have more than ' + ConstUtil.DISCOUNT_CONDITION_MINIMUM_ORDER_ITEM_COUNT + ' items', name, 'Condition name does not match expected format');
+        System.assertEquals('Order have more than ' + ConstUtil.DISCOUNT.CONDITION_TYPE.MINIMUM_ORDER_ITEM_COUNT + ' items', name, 'Condition name does not match expected format');
     }
 }

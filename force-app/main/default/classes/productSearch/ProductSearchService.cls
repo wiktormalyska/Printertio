@@ -69,7 +69,6 @@ public with sharing class ProductSearchService {
         try {
             standardPricebookId = [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
         } catch (Exception e) {
-            System.debug('Error getting standard pricebook: ' + e.getMessage());
             return 0;
         }
 
@@ -96,7 +95,6 @@ public with sharing class ProductSearchService {
         ]) {
             pricebookEntries.put(pbe.Product2Id, pbe);
         }
-        System.debug('Pricebook entries: ' + pricebookEntries);
 
         // Calculate total
         for (ProductWrapper pw : products) {
@@ -107,7 +105,6 @@ public with sharing class ProductSearchService {
                 }
             }
         }
-        System.debug('Total amount calculated: ' + totalAmount);
 
         return totalAmount;
     }
@@ -187,7 +184,7 @@ public with sharing class ProductSearchService {
         }
     }
 
-    @future
+    @Future
     public static void activateOrderAsync(Id orderId, Id contractId) {
         try {
             Contract contractToUpdate = [SELECT Id, Status FROM Contract WHERE Id = :contractId];
@@ -198,9 +195,7 @@ public with sharing class ProductSearchService {
             orderToUpdate.Status = 'Activated';
             update orderToUpdate;
 
-            System.debug('Order and contract activated successfully: ' + orderId);
         } catch (Exception e) {
-            System.debug('Error activating order: ' + e.getMessage());
         }
     }
 
@@ -212,13 +207,12 @@ public with sharing class ProductSearchService {
         List<Discount__c> activeDiscounts = [
                 SELECT Id, Name, Discount_Type__c, Value_Type__c, Discount_Value__c,
                         Start_Date__c, End_Date__c,
-                        Condition_Logic_Field__c, Condition_Logic_Operator__c, Condition_Logic_Numeric_Value__c,
+                        Condition_Logic__c,
                         Recurring_Date_Start__c, Recurring_Date_End__c, Recurring_Date_Repeat_By__c
                 FROM Discount__c
                 WHERE Is_Active__c = TRUE
         ];
         Decimal totalAmount = getProductsTotalAmount(products);
-        System.debug('Total amount before discount: ' + totalAmount);
         DiscountSettings settings = new DiscountSettings();
 
         return DiscountFilter.calculateDiscountedAmount(activeDiscounts,settings,  totalAmount);

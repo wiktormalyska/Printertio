@@ -2,10 +2,10 @@ public with sharing class DiscountFormService {
     public static Map<String, String> getRecurringHelpTexts() {
         Map<String, String> helpTexts = new Map<String, String>();
 
-        helpTexts.put('Daily', ConstUtil.RECURRING_HELP_TIME_OF_DAY);
-        helpTexts.put('Weekly', ConstUtil.RECURRING_HELP_DAY_OF_WEEK);
-        helpTexts.put('Monthly', ConstUtil.RECURRING_HELP_MONTH);
-        helpTexts.put('Yearly', ConstUtil.RECURRING_HELP_YEAR);
+        helpTexts.put(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY, ConstUtil.DISCOUNT.RECURRING_TYPE.HELP_TEXTS.DAILY);
+        helpTexts.put(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.WEEKLY, ConstUtil.DISCOUNT.RECURRING_TYPE.HELP_TEXTS.WEEKLY);
+        helpTexts.put(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.MONTHLY, ConstUtil.DISCOUNT.RECURRING_TYPE.HELP_TEXTS.MONTHLY);
+        helpTexts.put(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.YEARLY, ConstUtil.DISCOUNT.RECURRING_TYPE.HELP_TEXTS.YEARLY);
 
         return helpTexts;
     }

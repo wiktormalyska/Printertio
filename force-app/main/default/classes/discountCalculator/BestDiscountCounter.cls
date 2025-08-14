@@ -5,16 +5,16 @@ public with sharing class BestDiscountCounter {
 
         for (Discount__c discount : discounts) {
             Decimal discountValue = 0;
-            if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
+            if (discount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.PERCENTAGE) {
                 discountValue = currentOrder.TotalAmount * discount.Discount_Value__c / 100;
-            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
+            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.PERCENTAGE) {
                 discountValue = discount.Discount_Value__c;
             }
 
-            if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_HIGHEST && discountValue > bestDiscountValue) {
+            if (settings.strategy == ConstUtil.DISCOUNT.STRATEGY.HIGHEST && discountValue > bestDiscountValue) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
-            } else if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
+            } else if (settings.strategy == ConstUtil.DISCOUNT.STRATEGY.LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
             }
@@ -29,16 +29,16 @@ public with sharing class BestDiscountCounter {
 
         for (Discount__c discount : discounts) {
             Decimal discountValue = 0;
-            if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
+            if (discount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.PERCENTAGE) {
                 discountValue = totalAmount * discount.Discount_Value__c / 100;
-            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
+            } else if (discount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.FIXED_AMOUNT) {
                 discountValue = discount.Discount_Value__c;
             }
 
-            if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_HIGHEST && discountValue > bestDiscountValue) {
+            if (settings.strategy == ConstUtil.DISCOUNT.STRATEGY.HIGHEST && discountValue > bestDiscountValue) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
-            } else if (settings.strategy == ConstUtil.DISCOUNT_STRATEGY_LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
+            } else if (settings.strategy == ConstUtil.DISCOUNT.STRATEGY.LOWEST && (bestDiscount == null || discountValue < bestDiscountValue)) {
                 bestDiscountValue = discountValue;
                 bestDiscount = discount;
             }

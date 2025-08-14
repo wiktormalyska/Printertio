@@ -25,9 +25,9 @@ public with sharing class DiscountCalculatorHandler {
             Decimal bestDiscountValue = 0;
             Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(filteredDiscounts, settings, currentOrder);
             if (bestDiscount != null) {
-                if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
+                if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.PERCENTAGE) {
                     bestDiscountValue = (currentOrder.TotalAmount * bestDiscount.Discount_Value__c / 100);
-                } else if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
+                } else if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.FIXED_AMOUNT) {
                     bestDiscountValue = bestDiscount.Discount_Value__c;
                 }
 
@@ -51,7 +51,7 @@ public with sharing class DiscountCalculatorHandler {
         List<Order> ordersToProcess = [
                 SELECT Id, TotalAmount, Discount__c, Status
                 FROM Order
-                WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT
+                WHERE Status = :ConstUtil.ORDER.STATUS.DRAFT
         ];
 
         DiscountSettings settings = new DiscountSettings();
@@ -70,9 +70,9 @@ public with sharing class DiscountCalculatorHandler {
                 Decimal bestDiscountValue = 0;
                 Discount__c bestDiscount = BestDiscountCounter.getMatchingDiscount(filteredDiscounts, settings, currentOrder);
                 if (bestDiscount != null) {
-                    if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_PERCENTAGE) {
+                    if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.PERCENTAGE) {
                         bestDiscountValue = (currentOrder.TotalAmount * bestDiscount.Discount_Value__c / 100);
-                    } else if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT_VALUE_TYPE_FIXED_AMOUNT) {
+                    } else if (bestDiscount.Value_Type__c == ConstUtil.DISCOUNT.VALUE.TYPE.FIXED_AMOUNT) {
                         bestDiscountValue = bestDiscount.Discount_Value__c;
                     }
 

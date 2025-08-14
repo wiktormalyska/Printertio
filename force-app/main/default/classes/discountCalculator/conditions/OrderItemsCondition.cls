@@ -11,10 +11,10 @@ public class OrderItemsCondition implements ICondition {
                 itemCount += (Integer) item.Quantity;
             }
         }
-        return itemCount >= ConstUtil.DISCOUNT_CONDITION_MINIMUM_ORDER_ITEM_COUNT;
+        return itemCount >= ConstUtil.DISCOUNT.CONDITION_TYPE.MINIMUM_ORDER_ITEM_COUNT;
     }
 
     public String getName() {
-        return 'Order have more than ' + ConstUtil.DISCOUNT_CONDITION_MINIMUM_ORDER_ITEM_COUNT + ' items';
+        return 'Order have more than ' + ConstUtil.DISCOUNT.CONDITION_TYPE.MINIMUM_ORDER_ITEM_COUNT + ' items';
     }
 }

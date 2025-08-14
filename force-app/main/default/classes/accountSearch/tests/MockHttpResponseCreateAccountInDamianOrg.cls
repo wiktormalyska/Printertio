@@ -1,4 +1,4 @@
-@isTest
+@IsTest
 global class MockHttpResponseCreateAccountInDamianOrg implements HttpCalloutMock {
     global HttpResponse respond(HttpRequest req) {
         System.assertEquals(true, req.getEndpoint().contains('callout:DamianOrg/services/data/v62.0/sobjects/Account/'));

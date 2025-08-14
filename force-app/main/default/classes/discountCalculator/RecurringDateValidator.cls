@@ -19,13 +19,13 @@ public with sharing class RecurringDateValidator {
         Datetime endDate = discount.Recurring_Date_End__c;
         Datetime today = Datetime.now();
 
-        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_DAILY)) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)) {
             if (today.time() >= startDate.time() && today.time() <= endDate.time()) {
                 return true;
             }
         }
 
-        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_WEEKLY)) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.WEEKLY)) {
             Integer todayDayOfWeek = weekdayMap.get(String.valueOf(today.format('EEEE')));
             if (todayDayOfWeek != null && todayDayOfWeek >= 1 && todayDayOfWeek <= 7) {
                 Integer startDayOfWeek = weekdayMap.get(String.valueOf(startDate.format('EEEE')));
@@ -37,13 +37,13 @@ public with sharing class RecurringDateValidator {
             }
         }
 
-        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_MONTHLY)) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.MONTHLY)) {
             if (today.day() >= startDate.day() && today.day() <= endDate.day()) {
                 return true;
             }
         }
 
-        if (repeatByOptions.equals(ConstUtil.DISCOUNT_RECURRING_DATE_REPEAT_BY_YEARLY)) {
+        if (repeatByOptions.equals(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.YEARLY)) {
             if (today.month() >= startDate.month() && today.month() <= endDate.month()) {
                 return true;
             }

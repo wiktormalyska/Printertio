@@ -21,11 +21,7 @@ public class GenerateOrderPdfAction {
         result.generatedCount = 0;
 
         try {
-            // Debug logging
-            System.debug('GenerateOrderPdfAction.generatePdf called with orderIds: ' + orderIds);
-
             Map<Id, Order> ordersMap = new Map<Id, Order>([SELECT OrderNumber FROM Order WHERE Id IN :orderIds]);
-            System.debug('Found orders: ' + ordersMap.keySet());
             List<ContentVersion> filesToInsert = new List<ContentVersion>();
 
             Map<Id, Integer> orderRevisionMap = new Map<Id, Integer>();
@@ -64,14 +60,9 @@ public class GenerateOrderPdfAction {
 
             for (Id orderId : orderIds) {
                 try {
-                    System.debug('Processing Order ID: ' + orderId);
                     PageReference pageRef = Page.OrderInvoicePDF;
                     pageRef.getParameters().put('id', String.valueOf(orderId));
                     pageRef.setRedirect(false);
-
-                    System.debug('PageReference URL: ' + pageRef.getUrl());
-                    System.debug('PageReference Parameters: ' + pageRef.getParameters());
-
                     Blob pdfBlob;
 
                     if (isTestRunning) {
@@ -79,8 +70,6 @@ public class GenerateOrderPdfAction {
                     } else {
                         pdfBlob = pageRef.getContentAsPDF();
                     }
-                    System.debug('PDF generated successfully, size: ' + pdfBlob.size() + ' bytes');
-
                     ContentVersion cv = new ContentVersion();
 
                     String baseTitle = 'Confirmation - ' + ordersMap.get(orderId).OrderNumber;
@@ -126,8 +115,6 @@ public class GenerateOrderPdfAction {
                     try {
                         insert activityEntries;
                     } catch (Exception activityException) {
-                        // Log error but don't fail the main operation
-                        System.debug('Failed to create Activity log: ' + activityException.getMessage());
                     }
                 }
             } else {
@@ -157,26 +144,21 @@ public class GenerateOrderPdfAction {
             ];
 
             if (!latestPdfVersions.isEmpty()) {
-                System.debug('Found latest PDF version ID: ' + latestPdfVersions[0].Id + ' for order: ' + orderId);
                 return latestPdfVersions[0].Id;
             } else {
-                System.debug('No PDF versions found for order: ' + orderId);
                 return null;
             }
 
         } catch (Exception e) {
-            System.debug('Error getting latest PDF version ID: ' + e.getMessage());
             return null;
         }
     }
 
-    // Public method for testing purposes - to get latest PDF version ID for an order
     @AuraEnabled
     public static String getLatestPdfVersionId(Id orderId) {
         return getLatestPdfVersionIdForOrder(orderId);
     }
 
-    // Alternative method that returns structured response with versionId
     @AuraEnabled
     public static Id createSignatureDocument(Id orderId, String signatureBase64) {
         try {

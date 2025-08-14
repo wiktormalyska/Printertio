@@ -13,8 +13,8 @@ public with sharing class DiscountSettings {
             this.strategy = settings.Discount_Strategy__c;
             this.maxDiscountPercent = settings.Max_Overall_Discount_Percentage__c;
         } else {
-            this.strategy = ConstUtil.DISCOUNT_STRATEGY_HIGHEST;
-            this.maxDiscountPercent = ConstUtil.DISCOUNT_MAXIMUM_PERCENTAGE_VALUE;
+            this.strategy = ConstUtil.DISCOUNT.STRATEGY.HIGHEST;
+            this.maxDiscountPercent = ConstUtil.DISCOUNT.VALUE.MAXIMUM_PERCENTAGE;
         }
     }
 

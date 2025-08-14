@@ -1,11 +1,11 @@
-public virtual class PricebookEntryTestDataFactory extends TestDataFactory {
+public virtual class PricebookEntryTestDataFactory implements TestDataFactory {
     private final Product2 product;
 
     public PricebookEntryTestDataFactory(Product2 product) {
         this.product = product;
     }
 
-    protected override SObject prepare() {
+    public SObject prepare() {
         return PricebookEntryBuilder.create()
                 .withPricebook2Id(Test.getStandardPricebookId())
                 .withProduct2Id(this.product.Id)
@@ -14,8 +14,12 @@ public virtual class PricebookEntryTestDataFactory extends TestDataFactory {
                 .build();
     }
 
-    public virtual override SObject create() {
+    public virtual SObject create() {
         return prepare();
     }
 
+    public void save() {
+        SObject pricebookEntry = create();
+        insert pricebookEntry;
+    }
 }

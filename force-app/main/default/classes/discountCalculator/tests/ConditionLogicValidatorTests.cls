@@ -35,7 +35,7 @@ private class ConditionLogicValidatorTests {
     @IsTest
     static void testFilterDiscountsByConditionLogic() {
         Discount__c discount = [SELECT Id, Name, Condition_Logic__c FROM Discount__c WHERE Is_Active__c = TRUE LIMIT 1];
-        Order order = [SELECT Id, TotalAmount, (SELECT Quantity FROM OrderItems) FROM Order WHERE Status = :ConstUtil.ORDER_STATUS_DRAFT LIMIT 1];
+        Order order = [SELECT Id, TotalAmount, (SELECT Quantity FROM OrderItems) FROM Order WHERE Status = :ConstUtil.ORDER.STATUS.DRAFT LIMIT 1];
         Test.startTest();
         Boolean filteredDiscounts = ConditionLogicValidator.filterDiscountsByConditionLogic(discount, order);
         Test.stopTest();

@@ -1,5 +1,4 @@
 import LightningModal from 'lightning/modal';
-import LightningToast from "lightning/toast";
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class CreateAccountModal extends NavigationMixin(LightningModal)  {
