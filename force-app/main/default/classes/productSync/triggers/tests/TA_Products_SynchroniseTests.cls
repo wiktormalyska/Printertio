@@ -2,6 +2,7 @@
 private class TA_Products_SynchroniseTests {
     @TestSetup
     static void setupTestData() {
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
         List<Product2> testProducts = new List<Product2>();
 
         testProducts.add(new Product2(
@@ -66,6 +67,7 @@ private class TA_Products_SynchroniseTests {
 
     @IsTest
     static void testAfterUpdateWithUserModification() {
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
         Product2 existingProduct = [
                 SELECT Id, Name, ProductCode, Description, IsActive, IsExternal__c, ExternalId
                 FROM Product2
@@ -88,27 +90,6 @@ private class TA_Products_SynchroniseTests {
         Test.stopTest();
 
         System.assertEquals(1, Limits.getQueueableJobs(), 'One queueable job should be enqueued for user modification');
-    }
-
-
-    @IsTest
-    static void testBeforeDeleteWithInternalProducts() {
-        Product2 internalProduct = [SELECT Id, IsExternal__c FROM Product2 WHERE ProductCode = 'INT001' LIMIT 1];
-
-        Test.startTest();
-        TA_Products_Synchronise handler = new TA_Products_Synchronise();
-
-        try {
-            handler.beforeDelete(new List<SObject>{
-                    internalProduct
-            });
-        } catch (Exception e) {
-
-        }
-
-        Test.stopTest();
-
-        System.assert(true, 'Before delete logic executed for internal product');
     }
 
     @IsTest

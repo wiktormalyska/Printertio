@@ -2,6 +2,7 @@
 private class BestDiscountCounterTests {
     @TestSetup
     static void setup() {
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
         Discount__c discount1 = (Discount__c) new TimeBoundDiscountDataFactory().create();
         insert discount1;
         Account account = (Account) new AccountTestDataFactory().create();

@@ -2,6 +2,7 @@
 private with sharing class ProductSyncRetryScheduledJobTests {
     @TestSetup
     static void setupTestData() {
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
         List<Product2> testProducts = new List<Product2>();
         for (Integer i = 1; i <= 5; i++) {
             Product2 product = (Product2) new ProductTestDataFactory().create();
@@ -112,6 +113,63 @@ private with sharing class ProductSyncRetryScheduledJobTests {
         ];
 
         Assert.areEqual(1, updatedLog.Retry_Count__c, 'Retry count should be set to 1 when initially null');
+    }
+
+    @IsTest
+    static void testProcessFailedSynchronizationsWithSyncException() {
+        List<Product2> products = [SELECT Id FROM Product2 LIMIT 1];
+
+        Product_Synchronization_Log__c failedLog = (Product_Synchronization_Log__c) new FailedProductSynchronizationLogFactory().create();
+        failedLog.Retry_Count__c = 1;
+        insert failedLog;
+
+        Product_Synchronization_Log_Item__c logItem = new Product_Synchronization_Log_Item__c(
+                Product_Synchronization_Log__c = failedLog.Id,
+                Product__c = products[0].Id
+        );
+        insert logItem;
+
+        Test.startTest();
+        ProductSyncRetryScheduledJob job = new ProductSyncRetryScheduledJob();
+        job.execute(null);
+        Test.stopTest();
+
+        Product_Synchronization_Log__c updatedLog = [
+                SELECT Status__c, Retry_Count__c, Response_Body__c
+                FROM Product_Synchronization_Log__c
+                WHERE Id = :failedLog.Id
+        ];
+
+        Assert.areEqual(2, updatedLog.Retry_Count__c, 'Retry count should be incremented even on exception');
+    }
+
+    @IsTest
+    static void testProcessFailedSynchronizationsWithMaxRetriesAndException() {
+        List<Product2> products = [SELECT Id FROM Product2 LIMIT 1];
+
+        Product_Synchronization_Log__c failedLog = (Product_Synchronization_Log__c) new FailedProductSynchronizationLogFactory().create();
+        failedLog.Retry_Count__c = 2; // Will reach max retries (3) after increment
+        insert failedLog;
+
+        Product_Synchronization_Log_Item__c logItem = new Product_Synchronization_Log_Item__c(
+                Product_Synchronization_Log__c = failedLog.Id,
+                Product__c = products[0].Id
+        );
+        insert logItem;
+
+        Test.startTest();
+        ProductSyncRetryScheduledJob job = new ProductSyncRetryScheduledJob();
+        job.execute(null);
+        Test.stopTest();
+
+        Product_Synchronization_Log__c updatedLog = [
+                SELECT Status__c, Retry_Count__c, Response_Body__c
+                FROM Product_Synchronization_Log__c
+                WHERE Id = :failedLog.Id
+        ];
+
+        Assert.areEqual('FAILED', updatedLog.Status__c, 'Status should be FAILED when max retries reached after exception');
+        Assert.areEqual(3, updatedLog.Retry_Count__c, 'Retry count should reach max attempts');
     }
 
     private class FailedProductSynchronizationLogFactory extends ProductSynchronizationLogTestDataFactory {

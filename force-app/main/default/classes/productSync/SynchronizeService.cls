@@ -66,37 +66,15 @@ public with sharing class SynchronizeService {
     }
 
     private static Map<String, String> getExistingProductIds(List<Product2> products) {
-        Set<String> idsToQuery = new Set<String>();
-        for (Product2 product : products) {
-            idsToQuery.add(product.Id);
-            if (String.isNotBlank(product.ExternalId)) {
-                idsToQuery.add(product.ExternalId);
-            }
-        }
-
+        Set<String> idsToQuery = getIdToQueryFromProductsExternalId(products);
         if (idsToQuery.isEmpty()) {
             return new Map<String, String>();
         }
 
-        String soqlQuery = 'SELECT Id, ExternalId FROM Product2 WHERE ExternalId IN (\'' +
-                String.join(new List<String>(idsToQuery), '\',\'') + '\') OR Id IN (\'' +
-                String.join(new List<String>(idsToQuery), '\',\'') + '\')';
-
-        HttpRequest request = new HttpRequest();
-        request.setEndpoint(NAMED_CREDENTIAL + '/services/data/' + API_VERSION + '/query?q=' + EncodingUtil.urlEncode(soqlQuery, 'UTF-8'));
-        request.setMethod('GET');
-        request.setHeader('Content-Type', 'application/json');
-        request.setTimeout(60000);
-
-        HttpResponse response = new Http().send(request);
-
-        if (response.getStatusCode() != 200) {
-            throw new CalloutException('Błąd zapytania o produkty (' + response.getStatusCode() + '): ' + response.getBody());
-        }
+        String soqlQuery = createSoqlQueryReceivingProductsByExternalId(idsToQuery);
 
         Map<String, String> idMapping = new Map<String, String>();
-        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
-        List<Object> records = (List<Object>) responseMap.get('records');
+        List<Object> records = getProductsFromExternalOrg(soqlQuery);
 
         for (Object recordObj : records) {
             Map<String, Object> record = (Map<String, Object>) recordObj;
@@ -117,7 +95,9 @@ public with sharing class SynchronizeService {
 
         for (Product2 product : products) {
             recordsToProcess.add(new Map<String, Object>{
-                    'attributes' => new Map<String, Object>{'type' => 'Product2'},
+                    'attributes' => new Map<String, Object>{
+                            'type' => 'Product2'
+                    },
                     'Name' => product.Name,
                     'ProductCode' => product.ProductCode,
                     'Description' => product.Description,
@@ -137,7 +117,9 @@ public with sharing class SynchronizeService {
 
         for (Product2 product : products) {
             recordsToProcess.add(new Map<String, Object>{
-                    'attributes' => new Map<String, Object>{'type' => 'Product2'},
+                    'attributes' => new Map<String, Object>{
+                            'type' => 'Product2'
+                    },
                     'Id' => product.ExternalId,
                     'Name' => product.Name,
                     'ProductCode' => product.ProductCode,
@@ -149,8 +131,8 @@ public with sharing class SynchronizeService {
 
         Map<Id, Boolean> results = performCompositeRequest('PATCH', recordsToProcess, sourceProductIds);
         List<Product2> successfulUpdates = new List<Product2>();
-        for(Product2 p : products){
-            if(results.get(p.Id) == true){
+        for (Product2 p : products) {
+            if (results.get(p.Id) == true) {
                 successfulUpdates.add(p);
             }
         }
@@ -178,21 +160,20 @@ public with sharing class SynchronizeService {
             createLogWithItems(jsonBody, response.getBody(), response.getStatusCode(), sourceProductIds);
 
             if (response.getStatusCode() == 200) {
-                List<Object> results = (List<Object>)JSON.deserializeUntyped(response.getBody());
+                List<Object> results = (List<Object>) JSON.deserializeUntyped(response.getBody());
                 for (Integer i = 0; i < results.size(); i++) {
                     Map<String, Object> result = (Map<String, Object>) results[i];
                     Boolean success = (Boolean) result.get('success');
                     operationStatusById.put(sourceProductIds[i], success);
                 }
             } else {
-                for(Id productId : sourceProductIds) {
+                for (Id productId : sourceProductIds) {
                     operationStatusById.put(productId, false);
                 }
             }
         } catch (Exception e) {
-            System.debug('Wyjątek podczas calloutu Composite: ' + e.getMessage());
-            createErrorLog('Wyjątek podczas calloutu Composite: ' + e.getMessage(), jsonBody);
-            for(Id productId : sourceProductIds) {
+            createErrorLog('Error making composite callout:' + e.getMessage(), jsonBody);
+            for (Id productId : sourceProductIds) {
                 operationStatusById.put(productId, false);
             }
         }
@@ -226,9 +207,59 @@ public with sharing class SynchronizeService {
     private static void createErrorLog(String errorMessage, String requestPayload) {
         Product_Synchronization_Log__c log = ProductSynchronizationLogBuilder.create()
                 .withRequestBody(requestPayload)
-                .withResponseBody('Błąd krytyczny: ' + errorMessage)
+                .withResponseBody('Critical error: ' + errorMessage)
                 .withStatus(ProductSynchronizationLogBuilder.LogStatus.ERROR)
                 .build();
         insert log;
+    }
+
+    private static void updateLocalProductsAfterSync(List<Product2> successfulUpdates) {
+        if (!successfulUpdates.isEmpty()) {
+            List<Product2> localProductsToUpdate = new List<Product2>();
+            for (Product2 prod : successfulUpdates) {
+                localProductsToUpdate.add(new Product2(
+                        Id = prod.Id,
+                        IsSentFromOther__c = false
+                ));
+            }
+            update localProductsToUpdate;
+        }
+    }
+
+    private static Set<String> getIdToQueryFromProductsExternalId(List<Product2> products) {
+        Set<String> idsToQuery = new Set<String>();
+        for (Product2 product : products) {
+            idsToQuery.add(product.Id);
+            if (String.isNotBlank(product.ExternalId)) {
+                idsToQuery.add(product.ExternalId);
+            }
+        }
+        return idsToQuery;
+    }
+
+    private static String createSoqlQueryReceivingProductsByExternalId(Set<String> idsToQuery){
+        return 'SELECT Id, ExternalId FROM Product2 WHERE ExternalId IN (\'' +
+                String.join(new List<String>(idsToQuery), '\',\'') + '\') OR Id IN (\'' +
+                String.join(new List<String>(idsToQuery), '\',\'') + '\')';
+    }
+
+    private static List<Object> getProductsFromExternalOrg(String soqlQuery){
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(NAMED_CREDENTIAL + '/services/data/' + API_VERSION + '/query?q=' + EncodingUtil.urlEncode(soqlQuery, 'UTF-8'));
+        request.setMethod('GET');
+        request.setHeader('Content-Type', 'application/json');
+        request.setTimeout(60000);
+
+        HttpResponse response = new Http().send(request);
+
+        if (response.getStatusCode() != 200) {
+            throw new CalloutException('Error receiving products from external Org');
+        }
+
+
+        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+        List<Object> records = (List<Object>) responseMap.get('records');
+
+        return records;
     }
 }

@@ -80,6 +80,7 @@
         <members>ProductSyncSchedulerUtilTests</members>
         <members>TA_Products_SynchroniseTests</members>
         <members>SynchronizeServiceTests</members>
+        <members>MockHttpResponseGenerator</members>
         <name>ApexClass</name>
     </types>
     <types>

@@ -2,6 +2,7 @@
 public with sharing class TestGenerateOrderPdfAction {
     @TestSetup
     static void setup() {
+        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
         Account acc = new Account(Name = 'Test Account');
         insert acc;
 
