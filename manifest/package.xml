@@ -75,6 +75,11 @@
         <members>ProductSyncRetryScheduledJob</members>
         <members>ProductSyncSchedulerUtil</members>
         <members>ProductSyncConst</members>
+        <members>ProductSyncRetryScheduledJobTests</members>
+        <members>ProductSynchronizationLogTestDataFactory</members>
+        <members>ProductSyncSchedulerUtilTests</members>
+        <members>TA_Products_SynchroniseTests</members>
+        <members>SynchronizeServiceTests</members>
         <name>ApexClass</name>
     </types>
     <types>

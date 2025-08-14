@@ -45,6 +45,12 @@ public class ProductSynchronizationLogBuilder {
     public enum LogStatus {
         SUCCESS,
         ERROR,
-        RESOLVED
+        RESOLVED,
+        FAILED
+    }
+
+    public ProductSynchronizationLogBuilder withRetryCount(Integer retryCount) {
+        this.log.Retry_Count__c = retryCount;
+        return this;
     }
 }

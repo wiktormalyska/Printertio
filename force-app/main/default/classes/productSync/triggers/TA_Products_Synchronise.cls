@@ -61,7 +61,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         }
     }
 
-    private Boolean isUserModification(Product2 newProduct, Product2 oldProduct) {
+    public Boolean isUserModification(Product2 newProduct, Product2 oldProduct) {
         if (oldProduct.IsExternal__c != true && newProduct.IsExternal__c == true) {
             return false;
         }
