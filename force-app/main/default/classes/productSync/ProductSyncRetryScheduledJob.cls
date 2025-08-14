@@ -55,7 +55,6 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
                 if (log.Retry_Count__c >= MAX_RETRY_ATTEMPTS) {
                     log.Status__c = 'FAILED';
                     maxRetriesLogs.add(log);
-                    System.debug('Max retry attempts reached for log: ' + log.Id);
                 }
             }
 
@@ -74,7 +73,6 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
     }
 
     private void sendFailureNotifications(List<Product_Synchronization_Log__c> failedLogs) {
-        System.debug('Sending failure notifications for logs: ' + failedLogs.size());
         List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
 
         for (Product_Synchronization_Log__c log : failedLogs) {
@@ -91,7 +89,6 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
                 ];
 
                 Messaging.SingleEmailMessage email = createFailureEmail(log, products);
-                System.debug('Sending failure email for log: ' + log.Id);
                 emails.add(email);
             }
         }
@@ -99,9 +96,7 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
         if (!emails.isEmpty()) {
             try {
                 Messaging.sendEmail(emails);
-                System.debug('Notification emails sent successfully');
             } catch (Exception e) {
-                System.debug('Failed to send notification emails: ' + e.getMessage());
             }
         }
     }
@@ -111,12 +106,10 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
                 ConstUtil.PRODUCT_SYNC.EMAIL,
                 'admin@company.com'
         };
-        System.debug('Sending failure email to: ' + toAddresses);
 
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
         email.setToAddresses(toAddresses);
         email.setSubject('Product Synchronization Failed - Max Retries Exceeded');
-        System.debug('Creating failure email for log: ' + log.Id);
 
         String emailBody = 'Product synchronization has failed after ' + MAX_RETRY_ATTEMPTS + ' attempts.\n\n';
         emailBody += 'Log Details:\n';
@@ -132,9 +125,7 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
         emailBody += '\nOriginal Request:\n' + (log.Request_Body__c != null ? log.Request_Body__c : 'N/A');
         emailBody += '\n\nLast Error Response:\n' + (log.Response_Body__c != null ? log.Response_Body__c : 'N/A');
 
-        System.debug('Email body created: ' + emailBody);
         email.setPlainTextBody(emailBody);
-        System.debug(email);
         return email;
     }
 }

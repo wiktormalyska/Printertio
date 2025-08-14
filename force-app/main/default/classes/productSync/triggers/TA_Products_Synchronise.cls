@@ -1,7 +1,6 @@
 public with sharing class TA_Products_Synchronise implements TriggerAction.BeforeInsert, TriggerAction.AfterInsert, TriggerAction.AfterUpdate, TriggerAction.BeforeDelete {
 
     public void beforeInsert(List<Product2> triggerNew) {
-        System.debug('Trigger beforeInsert called');
         for (Product2 product : triggerNew) {
             if (product.IsSentFromOther__c == true) {
                 product.isExternal__c = true;
@@ -11,7 +10,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
     }
 
     public void afterInsert(List<SObject> triggerNew) {
-        System.debug('Trigger afterInsert called');
 
         List<Id> productIds = new List<Id>();
         for (SObject productObj : Trigger.new) {
@@ -26,8 +24,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
     }
 
     public void afterUpdate(List<Product2> triggerNew, List<Product2> triggerOld) {
-        System.debug('Trigger afterUpdate called');
-
         List<Id> productIds = new List<Id>();
         for (Integer i = 0; i < triggerNew.size(); i++) {
             Product2 newProduct = (Product2) triggerNew[i];
@@ -44,7 +40,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
     }
 
     public void beforeDelete(List<SObject> triggerOld) {
-        System.debug('Trigger beforeDelete called');
 
         List<Product_Deactivation__e> events = new List<Product_Deactivation__e>();
 
@@ -56,7 +51,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
             }
         }
         if (!events.isEmpty()) {
-            System.debug('Publishing events for productIds: ' + events.size());
             EventBus.publish(events);
         }
     }
@@ -73,7 +67,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         Boolean externalIdChanged = newProduct.ExternalId != oldProduct.ExternalId;
 
         if (!nameChanged && !codeChanged && !descChanged && !activeChanged && !externalChanged && !externalIdChanged) {
-            System.debug('Only IsSentFromOther__c flag changed, skipping synchronization for product: ' + newProduct.Name);
             return false;
         }
 

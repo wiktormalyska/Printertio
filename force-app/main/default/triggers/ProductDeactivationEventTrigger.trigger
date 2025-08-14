@@ -5,6 +5,5 @@ trigger ProductDeactivationEventTrigger on Product_Deactivation__e (after insert
         productIds.add(Id.valueOf(event.Product_Id__c));
     }
 
-    System.debug('Processing deactivation events for: ' + productIds);
     System.enqueueJob(new ProductDeactivateQueueable(productIds));
 }

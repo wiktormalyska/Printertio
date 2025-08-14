@@ -6,7 +6,6 @@ public with sharing class SynchronizeService {
 
     public static void synchronizeProducts(List<Product2> products) {
         if (products.isEmpty()) {
-            System.debug('Brak produktów do synchronizacji.');
             return;
         }
 
@@ -14,8 +13,7 @@ public with sharing class SynchronizeService {
         try {
             existingProductsMap = getExistingProductIds(products);
         } catch (Exception e) {
-            System.debug('Krytyczny błąd podczas sprawdzania istniejących produktów: ' + e.getMessage());
-            createErrorLog('Błąd podczas weryfikacji produktów w orgu docelowym: ' + e.getMessage(), JSON.serialize(products));
+            createErrorLog('Error verifying external org products: ' + e.getMessage(), JSON.serialize(products));
             return;
         }
 
@@ -39,12 +37,10 @@ public with sharing class SynchronizeService {
         List<Product2> successfulUpdates = new List<Product2>();
 
         if (!productsToCreate.isEmpty()) {
-            System.debug('Tworzenie ' + productsToCreate.size() + ' nowych produktów.');
             createProducts(productsToCreate);
         }
 
         if (!productsToUpdate.isEmpty()) {
-            System.debug('Aktualizowanie ' + productsToUpdate.size() + ' istniejących produktów.');
             successfulUpdates = updateProducts(productsToUpdate);
         }
 
@@ -59,8 +55,7 @@ public with sharing class SynchronizeService {
                 }
                 update localProductsToUpdate;
             } catch (Exception e) {
-                System.debug('Błąd podczas aktualizacji flagi IsSentFromOther__c: ' + e.getMessage());
-                createErrorLog('Błąd podczas aktualizacji flagi w orgu źródłowym: ' + e.getMessage(), JSON.serialize(successfulUpdates));
+                createErrorLog('Error when updating internal org flags: ' + e.getMessage(), JSON.serialize(successfulUpdates));
             }
         }
     }

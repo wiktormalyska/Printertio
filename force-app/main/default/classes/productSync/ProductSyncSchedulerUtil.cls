@@ -5,9 +5,7 @@ public class ProductSyncSchedulerUtil {
 
         try {
             System.schedule('Product Sync Retry Job', cronExpression, new ProductSyncRetryScheduledJob());
-            System.debug('Product Sync Retry Job scheduled successfully');
         } catch (Exception e) {
-            System.debug('Failed to schedule retry job: ' + e.getMessage());
         }
     }
 
