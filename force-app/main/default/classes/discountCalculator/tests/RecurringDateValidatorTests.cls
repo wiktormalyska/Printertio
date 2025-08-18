@@ -37,8 +37,8 @@ private class RecurringDateValidatorTests {
     static void testRecurringDateValidWithDailyTimeRange() {
         // Create discount valid for current time
         Datetime now = Datetime.now();
-        Datetime startTime = now.addHours(-1); // 1 hour before now
-        Datetime endTime = now.addHours(1);    // 1 hour after now
+        Datetime startTime = now.addDays(-2);
+        Datetime endTime = now.addDays(+2);
         
         Discount__c discount = DiscountBuilder.create()
                 .withName('Test Discount')

@@ -80,7 +80,11 @@
         <members>ProductSyncSchedulerUtilTests</members>
         <members>TA_Products_SynchroniseTests</members>
         <members>SynchronizeServiceTests</members>
-        <members>MockHttpResponseGenerator</members>
+        <members>ProductSyncMockHttpSuccess.cls</members>
+        <members>ProductSyncMockHttpFailed</members>
+        <members>SynchronizeServiceHttpMock</members>
+        <members>SynchronizeServiceQueryHttpMock</members>
+        <members>SynchronizeServiceMultiMock</members>
         <name>ApexClass</name>
     </types>
     <types>

@@ -2,7 +2,7 @@
 private class TA_Products_SynchroniseTests {
     @TestSetup
     static void setupTestData() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         List<Product2> testProducts = new List<Product2>();
 
         testProducts.add(new Product2(
@@ -67,7 +67,7 @@ private class TA_Products_SynchroniseTests {
 
     @IsTest
     static void testAfterUpdateWithUserModification() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         Product2 existingProduct = [
                 SELECT Id, Name, ProductCode, Description, IsActive, IsExternal__c, ExternalId
                 FROM Product2

@@ -2,7 +2,7 @@
 private class ConditionLogicValidatorTests {
     @TestSetup
     static void setup() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         Account account = (Account) new AccountTestDataFactory().create();
         insert account;
 

@@ -1,4 +1,4 @@
-public class MockHttpResponseGenerator implements HttpCalloutMock {
+public class ProductSyncMockHttpFailed implements HttpCalloutMock {
     public HttpResponse respond(HttpRequest request) {
         HttpResponse response = new HttpResponse();
         response.setStatusCode(200);
@@ -8,7 +8,7 @@ public class MockHttpResponseGenerator implements HttpCalloutMock {
             response.setBody('{"records": []}');
         } else if (request.getMethod() == 'POST' || request.getMethod() == 'PATCH') {
             // Mock composite API response
-            response.setBody('[{"success": true, "id": "testId123"}]');
+            response.setBody('[{"success": false, "id": "testId123"}]');
         }
 
         return response;

@@ -208,19 +208,6 @@ public with sharing class SynchronizeService {
         insert log;
     }
 
-    private static void updateLocalProductsAfterSync(List<Product2> successfulUpdates) {
-        if (!successfulUpdates.isEmpty()) {
-            List<Product2> localProductsToUpdate = new List<Product2>();
-            for (Product2 prod : successfulUpdates) {
-                localProductsToUpdate.add(new Product2(
-                        Id = prod.Id,
-                        IsSentFromOther__c = false
-                ));
-            }
-            update localProductsToUpdate;
-        }
-    }
-
     private static Set<String> getIdToQueryFromProductsExternalId(List<Product2> products) {
         Set<String> idsToQuery = new Set<String>();
         for (Product2 product : products) {

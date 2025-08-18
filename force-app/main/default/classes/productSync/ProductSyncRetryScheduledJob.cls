@@ -39,13 +39,7 @@ public class ProductSyncRetryScheduledJob implements Schedulable {
                 }
 
                 if (!productIds.isEmpty()) {
-                    List<Product2> productsToRetry = [
-                            SELECT Id, Name, ProductCode, Description, IsActive, ExternalId
-                            FROM Product2
-                            WHERE Id IN :productIds
-                    ];
-
-                    SynchronizeService.synchronizeProducts(productsToRetry);
+                    System.enqueueJob(new ProductSyncQueueable(productIds));
                     log.Status__c = 'SUCCESS';
                     log.Response_Body__c = 'Retry successful on attempt ' + log.Retry_Count__c;
                 }

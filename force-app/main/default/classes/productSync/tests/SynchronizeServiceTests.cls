@@ -3,7 +3,7 @@ private class SynchronizeServiceTests {
 
     @TestSetup
     static void makeData() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         List<Product2> testProducts = new List<Product2>();
         for (Integer i = 0; i < 5; i++) {
             testProducts.add(new Product2(
@@ -20,7 +20,7 @@ private class SynchronizeServiceTests {
 
     @IsTest
     static void testSynchronizeProducts_EmptyList() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         try {
@@ -39,7 +39,7 @@ private class SynchronizeServiceTests {
     static void testSynchronizeProducts_CreateNewProducts() {
         List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 2];
 
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         SynchronizeService.synchronizeProducts(products);
@@ -54,7 +54,7 @@ private class SynchronizeServiceTests {
     static void testSynchronizeProducts_UpdateExistingProducts() {
         List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 2];
 
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         SynchronizeService.synchronizeProducts(products);
@@ -71,7 +71,7 @@ private class SynchronizeServiceTests {
     static void testSynchronizeProducts_MixedCreateAndUpdate() {
         List<Product2> allProducts = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 4];
 
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         SynchronizeService.synchronizeProducts(allProducts);
@@ -85,7 +85,7 @@ private class SynchronizeServiceTests {
     static void testSynchronizeProducts_SuccessfulSynchronization() {
         List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 1];
 
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         SynchronizeService.synchronizeProducts(products);
@@ -100,7 +100,7 @@ private class SynchronizeServiceTests {
     static void testSynchronizeProducts_CompositeRequest() {
         List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 1];
 
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
         Test.startTest();
         SynchronizeService.synchronizeProducts(products);
@@ -108,5 +108,37 @@ private class SynchronizeServiceTests {
 
         List<Product_Synchronization_Log__c> logs = [SELECT Response_Body__c FROM Product_Synchronization_Log__c];
         System.assert(logs.size() > 0, 'Logs should be created for composite requests');
+    }
+
+    @IsTest
+    static void testSynchronizeProducts_ExternalProducts() {
+        Test.setMock(HttpCalloutMock.class, new SynchronizeServiceMultiMock());
+
+        Product2 externalProduct = (Product2) new ExternalProductTestDataFactory().create();
+        Product2 existingProduct = [
+                SELECT Id, ExternalId
+                FROM Product2
+                LIMIT 1
+        ];
+        externalProduct.ExternalId = existingProduct.Id;
+        insert externalProduct;
+        List<Product2> externalProducts = new List<Product2>{
+                externalProduct
+        };
+
+        Test.startTest();
+        SynchronizeService.synchronizeProducts(externalProducts);
+        Test.stopTest();
+
+        // Verify that both callouts were made
+        System.assertEquals(0, Limits.getCallouts());
+    }
+
+    private class ExternalProductTestDataFactory extends ProductTestDataFactory {
+        public override SObject create() {
+            Product2 exteralProduct = (Product2) super.create();
+            exteralProduct.IsExternal__c = true;
+            return exteralProduct;
+        }
     }
 }

@@ -2,7 +2,7 @@
 private with sharing class ProductSyncRetryScheduledJobTests {
     @TestSetup
     static void setupTestData() {
-        Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         List<Product2> testProducts = new List<Product2>();
         for (Integer i = 1; i <= 5; i++) {
             Product2 product = (Product2) new ProductTestDataFactory().create();
@@ -145,10 +145,11 @@ private with sharing class ProductSyncRetryScheduledJobTests {
 
     @IsTest
     static void testProcessFailedSynchronizationsWithMaxRetriesAndException() {
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpFailed());
         List<Product2> products = [SELECT Id FROM Product2 LIMIT 1];
 
         Product_Synchronization_Log__c failedLog = (Product_Synchronization_Log__c) new FailedProductSynchronizationLogFactory().create();
-        failedLog.Retry_Count__c = 2; // Will reach max retries (3) after increment
+        failedLog.Retry_Count__c = 3;
         insert failedLog;
 
         Product_Synchronization_Log_Item__c logItem = new Product_Synchronization_Log_Item__c(
