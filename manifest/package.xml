@@ -85,6 +85,8 @@
         <members>SynchronizeServiceHttpMock</members>
         <members>SynchronizeServiceQueryHttpMock</members>
         <members>SynchronizeServiceMultiMock</members>
+        <members>ProductDeactivateQueueableTest</members>
+        <members>ProductDeactivationEventTriggerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
