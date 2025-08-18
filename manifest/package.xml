@@ -144,6 +144,7 @@
         <members>Product2</members>
         <members>Product_Synchronization_Log__c</members>
         <members>Product_Synchronization_Log_Item__c</members>
+        <members>Product_Deactivation__e</members>
         <name>CustomObject</name>
     </types>
     <types>
