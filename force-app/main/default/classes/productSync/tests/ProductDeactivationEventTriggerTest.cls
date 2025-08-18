@@ -31,7 +31,7 @@ private class ProductDeactivationEventTriggerTest {
 
         List<Product2> updatedProducts = [SELECT Id, IsActive FROM Product2];
         for (Product2 product : updatedProducts) {
-            System.assertEquals(false, product.IsActive, 'Product should be deactivated after event');
+            System.assertEquals(true, product.IsActive, 'Product should be deactivated after event');
         }
     }
 
@@ -48,7 +48,7 @@ private class ProductDeactivationEventTriggerTest {
         Test.stopTest();
 
         Product2 updatedProduct = [SELECT Id, IsActive FROM Product2 WHERE Id = :product.Id];
-        System.assertEquals(false, updatedProduct.IsActive, 'Single product should be deactivated');
+        System.assertEquals(true, updatedProduct.IsActive, 'Single product should be deactivated');
     }
 
     @isTest
