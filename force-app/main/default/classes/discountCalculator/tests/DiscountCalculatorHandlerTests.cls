@@ -2,6 +2,7 @@
 private class DiscountCalculatorHandlerTests {
     @TestSetup
     static void setup() {
+        Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         Product2 product1 = (Product2) new ProductTestDataFactory().create();
         insert product1;
 

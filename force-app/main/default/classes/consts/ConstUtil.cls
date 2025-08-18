@@ -10,4 +10,21 @@ public with sharing class ConstUtil {
             return new OrderConst();
         }
     }
+
+    public static ConnectedAppsConst CONNECTED_APPS {
+        get {
+            return new ConnectedAppsConst();
+        }
+    }
+
+    public static EndpointConst ENDPOINT {
+        get {
+            return new EndpointConst();
+        }
+    }
+    public static ProductSyncConst PRODUCT_SYNC {
+        get {
+            return new ProductSyncConst();
+        }
+    }
 }

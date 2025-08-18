@@ -9,6 +9,11 @@ public class ProductBuilder {
         return new ProductBuilder();
     }
 
+    public ProductBuilder withId(Id id) {
+        this.product.Id = id;
+        return this;
+    }
+
     public ProductBuilder withName(String name) {
         this.product.Name = name;
         return this;
@@ -26,6 +31,11 @@ public class ProductBuilder {
 
     public ProductBuilder withDescription(String description) {
         this.product.Description = description;
+        return this;
+    }
+
+    public ProductBuilder withExternalId(String externalId) {
+        this.product.ExternalId = externalId;
         return this;
     }
 

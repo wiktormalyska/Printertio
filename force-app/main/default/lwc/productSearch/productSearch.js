@@ -63,6 +63,7 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
         { label: 'Product Code', fieldName: 'ProductCode', type: 'text' },
         { label: 'Product Family', fieldName: 'Family', type: 'text' },
         { label: 'Price', fieldName: 'UnitPrice', type: 'currency' },
+        { label: 'Is External', fieldName: 'IsExternal__c', type: 'boolean' }
     ]
 
     summaryColumns = [
@@ -70,7 +71,8 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
         { label: 'Product Code', fieldName: 'ProductCode', type: 'text' },
         { label: 'Product Family', fieldName: 'Family', type: 'text' },
         { label: 'Price', fieldName: 'UnitPrice', type: 'currency' },
-        { label: 'Quantity', fieldName: 'Quantity', type: 'number', editable: true }
+        { label: 'Quantity', fieldName: 'Quantity', type: 'number', editable: true },
+        { label: 'Is External', fieldName: 'IsExternal__c', type: 'boolean' }
     ]
 
     showSpinner = false;
@@ -143,7 +145,8 @@ export default class ProductSearch extends NavigationMixin(LightningModal) {
                 ...product,
                 UnitPrice: product.PricebookEntries && product.PricebookEntries.length > 0
                     ? product.PricebookEntries[0].UnitPrice
-                    : 0
+                    : 0,
+                IsExternal__c: product.IsExternal__c === true
             }));
 
             this.totalRecords = this.allProducts.length;

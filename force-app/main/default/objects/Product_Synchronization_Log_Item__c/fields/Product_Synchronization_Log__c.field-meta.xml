@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product_Synchronization_Log__c</fullName>
+    <label>Product Synchronization Log</label>
+    <referenceTo>Product_Synchronization_Log__c</referenceTo>
+    <relationshipLabel>Product Synchronization Log Items</relationshipLabel>
+    <relationshipName>Product_Synchronization_Log_Items</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

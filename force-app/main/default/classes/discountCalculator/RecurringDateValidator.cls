@@ -20,7 +20,7 @@ public with sharing class RecurringDateValidator {
         Datetime today = Datetime.now();
 
         if (repeatByOptions.equals(ConstUtil.DISCOUNT.RECURRING_TYPE.REPEAT.DAILY)) {
-            if (today.time() >= startDate.time() && today.time() <= endDate.time()) {
+            if (today >= startDate && today <= endDate) {
                 return true;
             }
         }
