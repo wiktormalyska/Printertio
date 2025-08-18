@@ -20,11 +20,6 @@
                 <label>ERROR</label>
             </value>
             <value>
-                <fullName>RESOLVED</fullName>
-                <default>false</default>
-                <label>RESOLVED</label>
-            </value>
-            <value>
                 <fullName>FAILED</fullName>
                 <default>false</default>
                 <label>FAILED</label>

@@ -72,7 +72,6 @@
         <members>SynchronizeService</members>
         <members>ProductDeactivateQueueable</members>
         <members>ProductSynchronizationLogBuilder</members>
-        <members>ProductSyncRetryScheduledJob</members>
         <members>ProductSyncSchedulerUtil</members>
         <members>ProductSyncConst</members>
         <members>ProductSyncRetryScheduledJobTests</members>
@@ -87,6 +86,10 @@
         <members>SynchronizeServiceMultiMock</members>
         <members>ProductDeactivateQueueableTest</members>
         <members>ProductDeactivationEventTriggerTest</members>
+        <members>ProductSyncRetryBatchJob</members>
+        <members>ScheduleProductSyncRetry</members>
+        <members>ProductSyncMassBatchJob</members>
+        <members>ProductSyncMassUtil</members>
         <name>ApexClass</name>
     </types>
     <types>

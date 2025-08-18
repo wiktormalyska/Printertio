@@ -4,6 +4,16 @@ public with sharing class SynchronizeService {
     private static final String NAMED_CREDENTIAL = ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL;
     private static final String API_VERSION = 'v64.0';
 
+    public class CompositeResult {
+        public Boolean isSuccess { get; set; }
+        public String errorMessage { get; set; }
+
+        public CompositeResult(Boolean isSuccess, String errorMessage) {
+            this.isSuccess = isSuccess;
+            this.errorMessage = errorMessage;
+        }
+    }
+
     public static void synchronizeProducts(List<Product2> products) {
         if (products.isEmpty()) {
             return;
@@ -27,8 +37,9 @@ public with sharing class SynchronizeService {
             }
 
             if (String.isNotBlank(targetId)) {
-                product.ExternalId = targetId;
-                productsToUpdate.add(product);
+                Product2 productClone = product.clone(true, true);
+                productClone.ExternalId = targetId; // Modyfikujemy klona, a nie oryginał
+                productsToUpdate.add(productClone);
             } else {
                 productsToCreate.add(product);
             }
@@ -86,116 +97,162 @@ public with sharing class SynchronizeService {
 
     private static void createProducts(List<Product2> products) {
         List<Map<String, Object>> recordsToProcess = new List<Map<String, Object>>();
-        List<Id> sourceProductIds = new List<Id>();
+        Map<Integer, Id> indexToProductIdMap = new Map<Integer, Id>();
 
-        for (Product2 product : products) {
-            recordsToProcess.add(new Map<String, Object>{
-                    'attributes' => new Map<String, Object>{
-                            'type' => 'Product2'
-                    },
-                    'Name' => product.Name,
-                    'ProductCode' => product.ProductCode,
-                    'Description' => product.Description,
-                    'IsActive' => product.IsActive,
-                    'ExternalId' => product.Id,
-                    'IsSentFromOther__c' => true
-            });
-            sourceProductIds.add(product.Id);
+        for (Integer i = 0; i < products.size(); i++) {
+            Product2 product = products[i];
+
+            // FIX: Create a new, writable map from the read-only one
+            Map<String, Object> productMap = new Map<String, Object>(product.getPopulatedFieldsAsMap());
+
+            // Now you can safely modify the new map
+            productMap.put('ExternalId', product.Id);
+            productMap.put('IsSentFromOther__c', true);
+            productMap.remove('Id');
+
+            Map<String, Object> recordData = new Map<String, Object>{
+                    'attributes' => new Map<String, Object>{'type' => 'Product2'}
+            };
+            recordData.putAll(productMap);
+            recordsToProcess.add(recordData);
+            indexToProductIdMap.put(i, product.Id);
         }
 
-        performCompositeRequest('POST', recordsToProcess, sourceProductIds);
+        performCompositeRequest('POST', recordsToProcess, indexToProductIdMap);
     }
+
 
     private static List<Product2> updateProducts(List<Product2> products) {
         List<Map<String, Object>> recordsToProcess = new List<Map<String, Object>>();
-        List<Id> sourceProductIds = new List<Id>();
+        Map<Integer, Id> indexToProductIdMap = new Map<Integer, Id>();
 
-        for (Product2 product : products) {
-            recordsToProcess.add(new Map<String, Object>{
-                    'attributes' => new Map<String, Object>{
-                            'type' => 'Product2'
-                    },
-                    'Id' => product.ExternalId,
-                    'Name' => product.Name,
-                    'ProductCode' => product.ProductCode,
-                    'Description' => product.Description,
-                    'IsActive' => product.IsActive
-            });
-            sourceProductIds.add(product.Id);
+        for (Integer i = 0; i < products.size(); i++) {
+            Product2 product = products[i];
+            Map<String, Object> productMap = product.getPopulatedFieldsAsMap();
+            if (productMap.containsKey('ExternalId')) {
+                productMap.put('Id', productMap.get('ExternalId'));
+                productMap.remove('ExternalId');
+            }
+
+            Map<String, Object> recordToProcess = new Map<String, Object>{
+                    'attributes' => new Map<String, Object>{'type' => 'Product2'}
+            };
+            recordToProcess.putAll(productMap);
+            recordsToProcess.add(recordToProcess);
+            indexToProductIdMap.put(i, product.Id);
         }
 
-        Map<Id, Boolean> results = performCompositeRequest('PATCH', recordsToProcess, sourceProductIds);
+        Map<Id, CompositeResult> results = performCompositeRequest('PATCH', recordsToProcess, indexToProductIdMap);
+
         List<Product2> successfulUpdates = new List<Product2>();
         for (Product2 p : products) {
-            if (results.get(p.Id) == true) {
+            if (results.containsKey(p.Id) && results.get(p.Id).isSuccess) {
                 successfulUpdates.add(p);
             }
         }
         return successfulUpdates;
     }
 
-    private static Map<Id, Boolean> performCompositeRequest(String httpMethod, List<Map<String, Object>> records, List<Id> sourceProductIds) {
+    private static Map<Id, CompositeResult> performCompositeRequest(String httpMethod, List<Map<String, Object>> records, Map<Integer, Id> indexToProductIdMap) {
         HttpRequest request = new HttpRequest();
         request.setEndpoint(NAMED_CREDENTIAL + PRODUCT_ENDPOINT);
         request.setMethod(httpMethod);
         request.setHeader('Content-Type', 'application/json');
         request.setTimeout(120000);
 
-        Map<String, Object> requestBody = new Map<String, Object>{
+        Map<String, Object> requestBodyMap = new Map<String, Object>{
                 'allOrNone' => false,
                 'records' => records
         };
-        String jsonBody = JSON.serialize(requestBody);
+        String jsonBody = JSON.serialize(requestBodyMap);
         request.setBody(jsonBody);
 
-        Map<Id, Boolean> operationStatusById = new Map<Id, Boolean>();
+        Map<Id, CompositeResult> resultsById = new Map<Id, CompositeResult>();
+        List<Id> sourceProductIds = new List<Id>(indexToProductIdMap.values());
 
         try {
             HttpResponse response = new Http().send(request);
-            createLogWithItems(jsonBody, response.getBody(), response.getStatusCode(), sourceProductIds);
 
-            if (response.getStatusCode() == 200) {
+            // Logujemy wyniki za pomocą nowej, uproszczonej metody
+            logResults(jsonBody, response.getBody(), response.getStatusCode(), indexToProductIdMap);
+
+            if (response.getStatusCode() == 200 || response.getStatusCode() == 201) {
                 List<Object> results = (List<Object>) JSON.deserializeUntyped(response.getBody());
                 for (Integer i = 0; i < results.size(); i++) {
                     Map<String, Object> result = (Map<String, Object>) results[i];
                     Boolean success = (Boolean) result.get('success');
-                    operationStatusById.put(sourceProductIds[i], success);
+                    Id sourceProductId = indexToProductIdMap.get(i);
+                    String errorMessage = '';
+
+                    if (!success) {
+                        List<Object> errors = (List<Object>) result.get('errors');
+                        if (errors != null && !errors.isEmpty()) {
+                            Map<String, Object> firstError = (Map<String, Object>) errors[0];
+                            errorMessage = (String) firstError.get('message');
+                        }
+                    }
+                    resultsById.put(sourceProductId, new CompositeResult(success, errorMessage));
                 }
             } else {
+                String errorDetails = 'Callout failed with status code: ' + response.getStatusCode() + ' and body: ' + response.getBody();
                 for (Id productId : sourceProductIds) {
-                    operationStatusById.put(productId, false);
+                    resultsById.put(productId, new CompositeResult(false, errorDetails));
                 }
             }
         } catch (Exception e) {
-            createErrorLog('Error making composite callout:' + e.getMessage(), jsonBody);
             for (Id productId : sourceProductIds) {
-                operationStatusById.put(productId, false);
+                resultsById.put(productId, new CompositeResult(false, 'Exception during callout: ' + e.getMessage()));
             }
+            logResults(jsonBody, 'Exception: ' + e.getMessage(), 500, indexToProductIdMap);
         }
-        return operationStatusById;
+        return resultsById;
     }
 
-    private static void createLogWithItems(String requestBody, String responseBody, Integer statusCode, List<Id> productIds) {
-        ProductSynchronizationLogBuilder.LogStatus status = (statusCode == 200) ?
-                ProductSynchronizationLogBuilder.LogStatus.SUCCESS :
-                ProductSynchronizationLogBuilder.LogStatus.ERROR;
+    private static void logResults(String requestBody, String responseBody, Integer statusCode, Map<Integer, Id> indexToProductIdMap) {
+        List<Product_Synchronization_Log__c> logsToInsert = new List<Product_Synchronization_Log__c>();
 
-        Product_Synchronization_Log__c log = ProductSynchronizationLogBuilder.create()
-                .withRequestBody(requestBody)
-                .withResponseBody(responseBody)
-                .withStatus(status)
-                .build();
-        insert log;
+        Map<String, Object> parsedRequest = (Map<String, Object>) JSON.deserializeUntyped(requestBody);
+        List<Object> requestRecords = (List<Object>) parsedRequest.get('records');
 
-        List<Product_Synchronization_Log_Item__c> logItems = new List<Product_Synchronization_Log_Item__c>();
-        for (Id prodId : productIds) {
-            logItems.add(new Product_Synchronization_Log_Item__c(
-                    Product__c = prodId,
-                    Product_Synchronization_Log__c = log.Id
+        List<Object> responseResults = new List<Object>();
+        // Sprawdzamy, czy odpowiedź jest w poprawnym formacie JSON i czy da się ją zdeserializować
+        if ((statusCode == 200 || statusCode == 201) && String.isNotBlank(responseBody) && responseBody.startsWith('[')) {
+            try {
+                responseResults = (List<Object>) JSON.deserializeUntyped(responseBody);
+            } catch (Exception e) {
+                // Jeśli deserializacja się nie powiedzie, traktujemy całą odpowiedź jako tekst błędu
+                responseResults = new List<Object>();
+            }
+        }
+
+        for (Integer i = 0; i < requestRecords.size(); i++) {
+            Id productId = indexToProductIdMap.get(i);
+            if (productId == null) continue;
+
+            String singleRequestPayload = JSON.serialize(requestRecords[i]);
+            String singleResponsePayload = '';
+            String statusValue = 'ERROR';
+
+            if (i < responseResults.size()) {
+                Map<String, Object> result = (Map<String, Object>) responseResults[i];
+                singleResponsePayload = JSON.serialize(result);
+                if (result.containsKey('success') && result.get('success') instanceOf Boolean && (Boolean)result.get('success')) {
+                    statusValue = 'SUCCESS';
+                }
+            } else {
+                singleResponsePayload = 'Callout failed with status code: ' + statusCode + '. Full response: ' + responseBody;
+            }
+
+            logsToInsert.add(new Product_Synchronization_Log__c(
+                    Product__c = productId,
+                    Request_Body__c = singleRequestPayload,
+                    Response_Body__c = singleResponsePayload,
+                    Status__c = statusValue
             ));
         }
-        if (!logItems.isEmpty()) {
-            insert logItems;
+
+        if (!logsToInsert.isEmpty()) {
+            insert logsToInsert;
         }
     }
 
@@ -238,10 +295,7 @@ public with sharing class SynchronizeService {
             throw new CalloutException('Error receiving products from external Org');
         }
 
-
         Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
-        List<Object> records = (List<Object>) responseMap.get('records');
-
-        return records;
+        return (List<Object>) responseMap.get('records');
     }
 }

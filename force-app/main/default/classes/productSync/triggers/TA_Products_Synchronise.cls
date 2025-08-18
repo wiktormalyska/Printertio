@@ -10,7 +10,6 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
     }
 
     public void afterInsert(List<SObject> triggerNew) {
-
         List<Id> productIds = new List<Id>();
         for (SObject productObj : Trigger.new) {
             Product2 product = (Product2) productObj;
@@ -19,7 +18,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
             }
         }
         if (!productIds.isEmpty()) {
-            System.enqueueJob(new ProductSyncQueueable(productIds));
+            ProductSyncMassUtil.synchronizeMassProducts(productIds); // Zmiana tutaj
         }
     }
 
@@ -35,7 +34,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         }
 
         if (!productIds.isEmpty()) {
-            System.enqueueJob(new ProductSyncQueueable(productIds));
+            ProductSyncMassUtil.synchronizeMassProducts(productIds); // Zmiana tutaj
         }
     }
 
