@@ -13,12 +13,12 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         List<Id> productIds = new List<Id>();
         for (SObject productObj : Trigger.new) {
             Product2 product = (Product2) productObj;
-            if (product.IsExternal__c != true) {
+            if (product.IsExternal__c == false) {
                 productIds.add(product.Id);
             }
         }
         if (!productIds.isEmpty()) {
-            ProductSyncMassUtil.synchronizeMassProducts(productIds); // Zmiana tutaj
+            ProductSyncMassUtil.synchronizeMassProducts(productIds);
         }
     }
 
@@ -34,7 +34,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         }
 
         if (!productIds.isEmpty()) {
-            ProductSyncMassUtil.synchronizeMassProducts(productIds); // Zmiana tutaj
+            ProductSyncMassUtil.synchronizeMassProducts(productIds);
         }
     }
 
@@ -44,7 +44,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
 
         for (SObject productObject : triggerOld) {
             Product2 product = (Product2) productObject;
-            if (product.IsExternal__c != true) {
+            if (product.IsExternal__c == false) {
                 events.add(new Product_Deactivation__e(Product_Id__c = product.Id));
                 product.addError('Deletion prevented. Product will be deactivated instead.');
             }

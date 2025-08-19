@@ -11,7 +11,7 @@ public class ProductSyncMassBatchJob implements Database.Batchable<Product2>, Da
                 SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c
                 FROM Product2
                 WHERE Id IN :productIds
-                AND IsExternal__c != true
+                AND IsExternal__c = false
         ];
     }
 

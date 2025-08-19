@@ -13,6 +13,6 @@ public class ProductDeactivateQueueable implements Queueable, Database.AllowsCal
             product.IsActive = false;
         }
         update productsToDeactivate;
-        SynchronizeService.synchronizeProducts(productsToDeactivate);
+        Database.executeBatch(new ProductSyncMassBatchJob(productIds), 1);
     }
 }

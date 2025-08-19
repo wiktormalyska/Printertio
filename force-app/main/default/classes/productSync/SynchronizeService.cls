@@ -38,7 +38,7 @@ public with sharing class SynchronizeService {
 
             if (String.isNotBlank(targetId)) {
                 Product2 productClone = product.clone(true, true);
-                productClone.ExternalId = targetId; // Modyfikujemy klona, a nie oryginał
+                productClone.ExternalId = targetId;
                 productsToUpdate.add(productClone);
             } else {
                 productsToCreate.add(product);
@@ -102,10 +102,8 @@ public with sharing class SynchronizeService {
         for (Integer i = 0; i < products.size(); i++) {
             Product2 product = products[i];
 
-            // FIX: Create a new, writable map from the read-only one
             Map<String, Object> productMap = new Map<String, Object>(product.getPopulatedFieldsAsMap());
 
-            // Now you can safely modify the new map
             productMap.put('ExternalId', product.Id);
             productMap.put('IsSentFromOther__c', true);
             productMap.remove('Id');
@@ -215,12 +213,10 @@ public with sharing class SynchronizeService {
         List<Object> requestRecords = (List<Object>) parsedRequest.get('records');
 
         List<Object> responseResults = new List<Object>();
-        // Sprawdzamy, czy odpowiedź jest w poprawnym formacie JSON i czy da się ją zdeserializować
         if ((statusCode == 200 || statusCode == 201) && String.isNotBlank(responseBody) && responseBody.startsWith('[')) {
             try {
                 responseResults = (List<Object>) JSON.deserializeUntyped(responseBody);
             } catch (Exception e) {
-                // Jeśli deserializacja się nie powiedzie, traktujemy całą odpowiedź jako tekst błędu
                 responseResults = new List<Object>();
             }
         }
@@ -231,13 +227,13 @@ public with sharing class SynchronizeService {
 
             String singleRequestPayload = JSON.serialize(requestRecords[i]);
             String singleResponsePayload = '';
-            String statusValue = 'ERROR';
+            String statusValue = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.ERROR;
 
             if (i < responseResults.size()) {
                 Map<String, Object> result = (Map<String, Object>) responseResults[i];
                 singleResponsePayload = JSON.serialize(result);
                 if (result.containsKey('success') && result.get('success') instanceOf Boolean && (Boolean)result.get('success')) {
-                    statusValue = 'SUCCESS';
+                    statusValue = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.SUCCESS;
                 }
             } else {
                 singleResponsePayload = 'Callout failed with status code: ' + statusCode + '. Full response: ' + responseBody;
