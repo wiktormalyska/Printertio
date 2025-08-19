@@ -8,10 +8,9 @@ public class ProductSyncMassBatchJob implements Database.Batchable<Product2>, Da
 
     public Iterable<Product2> start(Database.BatchableContext bc) {
         return [
-                SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c
+                SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c, Family
                 FROM Product2
                 WHERE Id IN :productIds
-                AND IsExternal__c = false
         ];
     }
 

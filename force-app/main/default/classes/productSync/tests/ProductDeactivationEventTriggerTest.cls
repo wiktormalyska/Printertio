@@ -48,7 +48,7 @@ private class ProductDeactivationEventTriggerTest {
         System.enqueueJob(new ProductDeactivateQueueable(productIds));
         Test.stopTest();
 
-        List<Product2> updatedProducts = [SELECT Id, IsActive FROM Product2];
+        List<Product2> updatedProducts = [SELECT Id,Family, IsActive FROM Product2];
         for (Product2 product : updatedProducts) {
             System.assertEquals(false, product.IsActive, 'Product should be deactivated');
         }

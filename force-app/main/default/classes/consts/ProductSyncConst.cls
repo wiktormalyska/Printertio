@@ -1,10 +1,14 @@
 public class ProductSyncConst {
     public ProductSyncLogConst LOGS { get {return new ProductSyncLogConst();} }
+    public final Integer SYNCHRONIZE_BATCH_SIZE { get {return 100;} }
+    public final Integer DEACTIVATE_BATCH_SIZE { get {return 100;} }
+    public final Integer RETRY_SYNCHRONIZATION_BATCH_SIZE { get {return 100;} }
 
     public class ProductSyncLogConst {
         public ProductSyncLogEmail EMAIL { get {return new ProductSyncLogEmail();} }
         public ProductSyncLogStatus STATUS { get {return new ProductSyncLogStatus();} }
         public final Integer MAX_RETRY_ATTEMPTS { get {return 3;} }
+
     }
     public class ProductSyncLogStatus {
         public final String SUCCESS { get {return 'SUCCESS';} }

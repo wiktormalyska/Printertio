@@ -90,6 +90,7 @@
         <members>ScheduleProductSyncRetry</members>
         <members>ProductSyncMassBatchJob</members>
         <members>ProductSyncMassUtil</members>
+        <members>ProductSyncMockHttpSuccess</members>
         <name>ApexClass</name>
     </types>
     <types>

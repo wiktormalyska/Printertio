@@ -94,7 +94,6 @@ public with sharing class SynchronizeService {
         }
         return idMapping;
     }
-
     private static void createProducts(List<Product2> products) {
         List<Map<String, Object>> recordsToProcess = new List<Map<String, Object>>();
         Map<Integer, Id> indexToProductIdMap = new Map<Integer, Id>();
@@ -108,6 +107,10 @@ public with sharing class SynchronizeService {
             productMap.put('IsSentFromOther__c', true);
             productMap.remove('Id');
 
+            if (!productMap.containsKey('Family') && String.isNotBlank(product.Family)) {
+                productMap.put('Family', product.Family);
+            }
+
             Map<String, Object> recordData = new Map<String, Object>{
                     'attributes' => new Map<String, Object>{'type' => 'Product2'}
             };
@@ -120,13 +123,15 @@ public with sharing class SynchronizeService {
     }
 
 
+
     private static List<Product2> updateProducts(List<Product2> products) {
         List<Map<String, Object>> recordsToProcess = new List<Map<String, Object>>();
         Map<Integer, Id> indexToProductIdMap = new Map<Integer, Id>();
 
         for (Integer i = 0; i < products.size(); i++) {
             Product2 product = products[i];
-            Map<String, Object> productMap = product.getPopulatedFieldsAsMap();
+            Map<String, Object> productMap = new Map<String, Object>(product.getPopulatedFieldsAsMap());
+
             if (productMap.containsKey('ExternalId')) {
                 productMap.put('Id', productMap.get('ExternalId'));
                 productMap.remove('ExternalId');
@@ -273,7 +278,7 @@ public with sharing class SynchronizeService {
     }
 
     private static String createSoqlQueryReceivingProductsByExternalId(Set<String> idsToQuery){
-        return 'SELECT Id, ExternalId FROM Product2 WHERE ExternalId IN (\'' +
+        return 'SELECT Id, ExternalId, Family FROM Product2 WHERE ExternalId IN (\'' +
                 String.join(new List<String>(idsToQuery), '\',\'') + '\') OR Id IN (\'' +
                 String.join(new List<String>(idsToQuery), '\',\'') + '\')';
     }

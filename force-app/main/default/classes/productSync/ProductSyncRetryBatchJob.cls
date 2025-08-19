@@ -8,7 +8,7 @@ public class ProductSyncRetryBatchJob implements Database.Batchable<Product_Sync
                         Product__c, Product__r.Name, Product__r.ProductCode, Product__r.Description,
                         Product__r.IsActive, Product__r.ExternalId, Product__r.IsExternal__c
                 FROM Product_Synchronization_Log__c
-                WHERE Status__c = 'ERROR'
+                WHERE Status__c = :ConstUtil.PRODUCT_SYNC.LOGS.STATUS.ERROR
         ];
     }
 
@@ -19,8 +19,7 @@ public class ProductSyncRetryBatchJob implements Database.Batchable<Product_Sync
 
         for (Product_Synchronization_Log__c log : scope) {
             if (log.Product__c == null) {
-                log.Status__c = 'FAILED';
-                log.Response_Body__c = 'Log is invalid, no related Product found.';
+                log.Status__c = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.FAILED;
                 logsThatFailedPermanently.add(log);
                 logsToUpdate.add(log);
                 continue;
@@ -29,11 +28,11 @@ public class ProductSyncRetryBatchJob implements Database.Batchable<Product_Sync
             Integer retryCount = (log.Retry_Count__c == null) ? 0 : Integer.valueOf(log.Retry_Count__c);
 
             if (retryCount >= MAX_RETRY_ATTEMPTS) {
-                log.Status__c = 'FAILED';
+                log.Status__c = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.FAILED;
                 logsThatFailedPermanently.add(log);
             } else {
                 log.Retry_Count__c = retryCount + 1;
-                log.Status__c = 'ERROR';
+                log.Status__c = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.ERROR;
                 productsToRetry.add(log.Product__r);
             }
             logsToUpdate.add(log);
@@ -74,7 +73,7 @@ public class ProductSyncRetryBatchJob implements Database.Batchable<Product_Sync
     }
 
     private Messaging.SingleEmailMessage createFailureEmail(Product_Synchronization_Log__c log) {
-        List<String> toAddresses = new List<String>{ 'wiktormalyska03@gmail.com' };
+        List<String> toAddresses = new List<String>{ ConstUtil.PRODUCT_SYNC.LOGS.EMAIL.RECEIVER_EMAIL };
 
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
         email.setToAddresses(toAddresses);

@@ -4,6 +4,6 @@ public class ProductSyncMassUtil {
         if (productIds.isEmpty()) {
             return;
         }
-        Database.executeBatch(new ProductSyncMassBatchJob(productIds), 1);
+        Database.executeBatch(new ProductSyncMassBatchJob(productIds), ConstUtil.PRODUCT_SYNC.SYNCHRONIZE_BATCH_SIZE);
     }
 }

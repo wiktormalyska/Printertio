@@ -1,6 +1,9 @@
 public with sharing class TA_Products_Synchronise implements TriggerAction.BeforeInsert, TriggerAction.AfterInsert, TriggerAction.AfterUpdate, TriggerAction.BeforeDelete {
 
     public void beforeInsert(List<Product2> triggerNew) {
+        System.debug('Reqinfo '+Request.getCurrent());
+        Request reqInfo = Request.getCurrent();
+        System.debug('Reqinfoquid '+reqInfo?.getQuiddity());
         for (Product2 product : triggerNew) {
             if (product.IsSentFromOther__c == true) {
                 product.isExternal__c = true;
@@ -64,8 +67,9 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         Boolean activeChanged = newProduct.IsActive != oldProduct.IsActive;
         Boolean externalChanged = newProduct.IsExternal__c != oldProduct.IsExternal__c;
         Boolean externalIdChanged = newProduct.ExternalId != oldProduct.ExternalId;
+        Boolean productFamilyChanged = newProduct.Family != oldProduct.Family;
 
-        if (!nameChanged && !codeChanged && !descChanged && !activeChanged && !externalChanged && !externalIdChanged) {
+        if (!nameChanged && !codeChanged && !descChanged && !activeChanged && !externalChanged && !externalIdChanged && !productFamilyChanged) {
             return false;
         }
 

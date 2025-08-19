@@ -14,7 +14,7 @@ public class ProductSyncQueueable implements Queueable, Database.AllowsCallouts 
         }
 
         List<Product2> products = [
-                SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c
+                SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, IsExternal__c, Family
                 FROM Product2
                 WHERE Id IN :productIds
                 AND IsExternal__c != true

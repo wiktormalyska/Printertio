@@ -7,12 +7,12 @@ public class ProductDeactivateQueueable implements Queueable, Database.AllowsCal
     }
 
     public void execute(QueueableContext context) {
-        List<Product2> productsToDeactivate = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 WHERE Id IN :productIds];
+        List<Product2> productsToDeactivate = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId, Family FROM Product2 WHERE Id IN :productIds];
 
         for (Product2 product : productsToDeactivate) {
             product.IsActive = false;
         }
         update productsToDeactivate;
-        Database.executeBatch(new ProductSyncMassBatchJob(productIds), 1);
+        Database.executeBatch(new ProductSyncMassBatchJob(productIds), ConstUtil.PRODUCT_SYNC.DEACTIVATE_BATCH_SIZE);
     }
 }
