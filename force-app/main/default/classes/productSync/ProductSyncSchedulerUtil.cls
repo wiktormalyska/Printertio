@@ -1,8 +1,8 @@
 public class ProductSyncSchedulerUtil {
 
     public static void scheduleRetryJob() {
-        String cronExpression = '0 0 0 * * ?';
-        String jobName = 'Product Sync Retry Job';
+        String cronExpression = ConstUtil.PRODUCT_SYNC.LOGS.RETRY.CRON_EXPRESSION;
+        String jobName = ConstUtil.PRODUCT_SYNC.LOGS.RETRY.JOB_NAME;
 
         try {
             System.schedule(jobName, cronExpression, new ScheduleProductSyncRetry());
@@ -14,7 +14,7 @@ public class ProductSyncSchedulerUtil {
         List<CronTrigger> jobs = [
                 SELECT Id
                 FROM CronTrigger
-                WHERE CronJobDetail.Name LIKE 'Product Sync Retry Job%'
+                WHERE CronJobDetail.Name LIKE :ConstUtil.PRODUCT_SYNC.LOGS.RETRY.JOB_NAME+'%'
         ];
 
         if (jobs.isEmpty()) {

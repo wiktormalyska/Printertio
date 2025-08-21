@@ -91,6 +91,16 @@
         <members>ProductSyncMassBatchJob</members>
         <members>ProductSyncMassUtil</members>
         <members>ProductSyncMockHttpSuccess</members>
+        <members>ComplaintFormController</members>
+        <members>ComplaintFormService</members>
+        <members>ExternalComplaintCallout</members>
+        <members>TA_ExternalComplaint.cls</members>
+        <members>SendProductComplaintsBatchJob</members>
+        <members>TA_ExternalComplaint.cls</members>
+        <members>ComplaintSubmissionResult</members>
+        <members>ExternalComplaintApprovalStatusCallout</members>
+        <members>TA_ExternalComplaintApprovalStatus</members>
+        <members>TA_ExternalComplaint</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -111,6 +121,8 @@
         <members>DiscountTrigger</members>
         <members>ProductTrigger</members>
         <members>ProductDeactivationEventTrigger</members>
+        <members>ExternalComplaintEventTrigger</members>
+        <members>ExternalComplaintApprovalStatusEventTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -149,6 +161,9 @@
         <members>Product_Synchronization_Log__c</members>
         <members>Product_Synchronization_Log_Item__c</members>
         <members>Product_Deactivation__e</members>
+        <members>Complaint_Approval_Request__c</members>
+        <members>External_Complaint__e</members>
+        <members>Case</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -195,6 +210,7 @@
         <members>editExternalAccount</members>
         <members>electronicSignature</members>
         <members>productSearch</members>
+        <members>complaintForm</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -234,6 +250,7 @@
     <types>
         <members>Order.Sign_an_Invoice</members>
         <members>Opportunity.Search_Product</members>
+        <members>Order.Complaint_Form</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -252,6 +269,8 @@
     </types>
     <types>
         <members>Case.ChangePriorityToHigh</members>
+        <members>Complaint_Approval_Request__c.Rejected_Status</members>
+        <members>Complaint_Approval_Request__c.Status_to_Approved</members>
         <name>WorkflowFieldUpdate</name>
     </types>
     <types>
@@ -309,6 +328,14 @@
         <members>Time_Bound_Discount_Details</members>
         <members>Total_Price_Text</members>
         <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>Complaint_Approval_Request__c.Approving_Complaint</members>
+        <name>ApprovalProcess</name>
+    </types>
+    <types>
+        <members>Standard_Users</members>
+        <name>Queue</name>
     </types>
     <version>64.0</version>
 </Package>

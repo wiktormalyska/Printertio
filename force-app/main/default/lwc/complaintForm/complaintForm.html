@@ -1,0 +1,24 @@
+<template>
+    <lightning-modal-header>
+        <h1 style="font-size: 1.5rem">Complaint Form</h1>
+    </lightning-modal-header>
+    <lightning-modal-body>
+        <template lwc:if={isLoading}>
+            <lightning-spinner></lightning-spinner>
+        </template>
+        <template lwc:if={isNotLoading}>
+            <lightning-datatable
+                    columns={columns}
+                    data={orderItems}
+                    onrowselection={handleRowSelection}
+                    key-field="Id">
+            </lightning-datatable>
+        </template>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <template lwc:if={isNotLoading}>
+            <lightning-button variant="brand" label="Submit Complaint"
+                              onclick={handleComplaintSubmit}></lightning-button>
+        </template>
+    </lightning-modal-footer>
+</template>
