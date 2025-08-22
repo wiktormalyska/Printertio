@@ -86,24 +86,25 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
     selectedOrderItems = []
 
     async connectedCallback() {
-        this.loadOrderProducts()
-        this.registerErrorListener()
-        this.subscribeToEvents()
+        this.channelName = await getExternalComplaintApprovalStatusChannel();
+        this.loadOrderProducts();
+        this.registerErrorListener();
+        await this.subscribeToEvents(this.channelName);
     }
 
     disconnectedCallback() {
         this.unsubscribeFromEvents();
     }
 
-    subscribeToEvents() {
-        const messageCallback = (response) => {
-            this.handlePlatformEvent(response);
+    async subscribeToEvents(channelName) {
+        const messageCallback = async (response) => {
+            await this.handlePlatformEvent(response);
         };
-
-        subscribe(this.channelName, -1, messageCallback).then(response => {
+        subscribe(channelName, -1, messageCallback).then(response => {
             this.subscription = response;
         });
     }
+
     unsubscribeFromEvents() {
         unsubscribe(this.subscription, response => {
         });
@@ -117,11 +118,12 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
 
 
 
-    handlePlatformEvent(response) {
+    async handlePlatformEvent(response) {
         const eventData = response.data.payload;
         if (eventData.External_Complaint_Request_ID__c === this.currentUUID) {
             this.isLoading = false;
-            if (eventData.Status__c === getExternalComplaintApprovalStatus_StatusSuccess) {
+            let statusSuccess = await getExternalComplaintApprovalStatus_StatusSuccess();
+            if (eventData.Status__c === statusSuccess) {
                 this.handleSuccessfulApproval();
             } else {
                 this.showErrorToast(this.label.Complaint_approval_failed_for_external_product);
