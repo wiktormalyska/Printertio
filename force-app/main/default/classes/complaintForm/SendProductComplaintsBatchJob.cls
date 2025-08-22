@@ -15,30 +15,28 @@ public with sharing class SendProductComplaintsBatchJob implements Database.Batc
 
         for (Product2 prod : scope) {
             HttpRequest request = new HttpRequest();
-            request.setEndpoint(ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL + '/services/data/v61.0/sobjects/External_Complaint__e/');
+            request.setEndpoint(ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL + ConstUtil.ENDPOINT.PLATFORM_EVENTS.EXTERNAL_COMPLAINT);
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json;charset=UTF-8');
 
             Map<String, String> bodyMap = new Map<String, String>{
-                    'Product_ID__c' => prod.ExternalId,
-                    'External_Complaint_Request_ID__c' => randomUUID.toString()
+                    External_Complaint__e.Product_ID__c.toString() => prod.ExternalId,
+                    External_Complaint__e.External_Complaint_Request_ID__c.toString() => randomUUID.toString()
             };
             request.setBody(JSON.serialize(bodyMap));
 
             try {
                 HttpResponse response = http.send(request);
                 if (response.getStatusCode() == 201) {
-                    System.debug('SUCCESS: Complaint sent for Product ID: ' + prod.Id);
                 } else {
-                    System.debug('ERROR: Callout for Product ID ' + prod.Id + ' failed. Status: ' + response.getStatus() + '. Body: ' + response.getBody());
+                    throw new CalloutException(System.Label.Error_sending_complaint);
                 }
             } catch (Exception e) {
-                System.debug('EXCEPTION: Callout for Product ID ' + prod.Id + ' threw an exception. Message: ' + e.getMessage());
+                throw new CalloutException(System.Label.Error_sending_complaint);
             }
         }
     }
 
     public void finish(Database.BatchableContext bc) {
-        System.debug('SendProductComplaintsBatch has finished processing a specific list of products.');
     }
 }

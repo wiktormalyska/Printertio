@@ -101,6 +101,8 @@
         <members>ExternalComplaintApprovalStatusCallout</members>
         <members>TA_ExternalComplaintApprovalStatus</members>
         <members>TA_ExternalComplaint</members>
+        <members>PlatformEventConst</members>
+        <members>ComplaintApprovalRequestConst</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -327,6 +329,27 @@
         <members>Selected_Products_Summary_Text</members>
         <members>Time_Bound_Discount_Details</members>
         <members>Total_Price_Text</members>
+        <members>Complaint_Form</members>
+        <members>Complaint_approval_failed_for_external_product</members>
+        <members>Complaint_approved_successfully</members>
+        <members>Complaint_sent_waiting_for_response</members>
+        <members>Error_creating_approval_request</members>
+        <members>Error_in_Complaint_Form</members>
+        <members>Error_processing_complaint</members>
+        <members>Error_sending_complaint</members>
+        <members>Error_sending_complaint_approval_status</members>
+        <members>Error_with_subscription_API</members>
+        <members>Is_External</members>
+        <members>Name</members>
+        <members>Pick_at_least_one_product_to_create_complaint</members>
+        <members>Product_Code</members>
+        <members>Product_Synchronization_Log_Email_Body_part1</members>
+        <members>Product_Synchronization_Log_Email_Subject</members>
+        <members>Quantity</members>
+        <members>Submit_Complaint</members>
+        <members>Success</members>
+        <members>Unit_Price</members>
+        <members>You_must_select_at_least_one_product</members>
         <name>CustomLabel</name>
     </types>
     <types>

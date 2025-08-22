@@ -6,12 +6,54 @@ import submitComplaintForApproval from '@salesforce/apex/ComplaintFormController
 import LightningToast from "lightning/toast";
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
 
+import getExternalComplaintApprovalStatusChannel from '@salesforce/apex/PlatformEventConst.getExternalComplaintApprovalStatusChannel';
+import getExternalComplaintApprovalStatus_StatusSuccess from '@salesforce/apex/PlatformEventConst.getExternalComplaintApprovalStatus_StatusSuccess'
+import getExternalComplaintApprovalStatus_StatusFailed from '@salesforce/apex/PlatformEventConst.getExternalComplaintApprovalStatus_StatusFailed'
+
+import Submit_Complaint from "@salesforce/label/c.Submit_Complaint";
+import Name from "@salesforce/label/c.Name";
+import Product_Code from "@salesforce/label/c.Product_Code"
+import Quantity from "@salesforce/label/c.Quantity"
+import Unit_Price from "@salesforce/label/c.Unit_Price"
+import Is_External from "@salesforce/label/c.Is_External"
+import Error_with_subscription_API from "@salesforce/label/c.Error_with_subscription_API"
+import Complaint_approval_failed_for_external_product from "@salesforce/label/c.Complaint_approval_failed_for_external_product"
+import Complaint_approved_successfully from "@salesforce/label/c.Complaint_approved_successfully"
+import Error_in_Complaint_Form from "@salesforce/label/c.Error_in_Complaint_Form"
+import Success from "@salesforce/label/c.Success"
+import Pick_at_least_one_product_to_create_complaint from "@salesforce/label/c.Pick_at_least_one_product_to_create_complaint"
+import Complaint_sent_waiting_for_response from "@salesforce/label/c.Complaint_sent_waiting_for_response"
+import Complaint_Form from "@salesforce/label/c.Complaint_Form"
+
+import PRODUCT_NAME_FIELD from '@salesforce/schema/Product2.Name'
+import PRODUCT_CODE_FIELD from '@salesforce/schema/Product2.ProductCode'
+import QUANTITY_FIELD from '@salesforce/schema/OrderItem.Quantity'
+import TOTAL_PRICE_FIELD from '@salesforce/schema/OrderItem.TotalPrice'
+import PRODUCT_IS_EXTERNAL_FIELD from '@salesforce/schema/Product2.IsExternal__c'
+
 export default class ComplaintForm extends NavigationMixin(LightningModal) {
+    label = {
+        Submit_Complaint,
+        Name,
+        Product_Code,
+        Quantity,
+        Unit_Price,
+        Is_External,
+        Error_with_subscription_API,
+        Complaint_approval_failed_for_external_product,
+        Complaint_approved_successfully,
+        Error_in_Complaint_Form,
+        Success,
+        Pick_at_least_one_product_to_create_complaint,
+        Complaint_sent_waiting_for_response,
+        Complaint_Form
+    }
+
     _recordId;
     currentUUID;
     caseId;
     subscription = {};
-    channelName = '/event/External_Complaint_Approval_Status__e';
+    channelName = getExternalComplaintApprovalStatusChannel();
     isLoading = false;
 
     get isNotLoading() {
@@ -30,18 +72,20 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
         return this._recordId;
     }
 
-    columns = [
-        { label: 'Name', fieldName: 'Name', type: 'text' },
-        { label: 'Product Code', fieldName: 'ProductCode', type: 'text' },
-        { label: 'Quantity', fieldName: 'Quantity', type: 'number' },
-        { label: 'Unit Price', fieldName: 'TotalPrice', type: 'currency' },
-        { label: 'Is External', fieldName: 'IsExternal', type: 'boolean' }
-    ];
+    get columns() {
+        return [
+            { label: this.label.Name, fieldName: PRODUCT_NAME_FIELD.fieldApiName, type: 'text' },
+            { label: this.label.Product_Code, fieldName: PRODUCT_CODE_FIELD.fieldApiName, type: 'text' },
+            { label: this.label.Quantity, fieldName: QUANTITY_FIELD.fieldApiName, type: 'number' },
+            { label: this.label.Unit_Price, fieldName: TOTAL_PRICE_FIELD.fieldApiName, type: 'currency' },
+            { label: this.label.Is_External, fieldName: PRODUCT_IS_EXTERNAL_FIELD.fieldApiName, type: 'boolean' }
+        ];
+    }
 
     orderItems = []
     selectedOrderItems = []
 
-    connectedCallback() {
+    async connectedCallback() {
         this.loadOrderProducts()
         this.registerErrorListener()
         this.subscribeToEvents()
@@ -58,19 +102,16 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
 
         subscribe(this.channelName, -1, messageCallback).then(response => {
             this.subscription = response;
-            console.log('Subscribed to platform events');
         });
     }
     unsubscribeFromEvents() {
         unsubscribe(this.subscription, response => {
-            console.log('Unsubscribed from platform events');
         });
     }
 
     registerErrorListener() {
         onError(error => {
-            console.error('Błąd serwera lub utrata połączenia: ', JSON.stringify(error));
-            this.showErrorToast('Error with subscription API');
+            this.showErrorToast(this.label.Error_with_subscription_API);
         });
     }
 
@@ -78,20 +119,18 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
 
     handlePlatformEvent(response) {
         const eventData = response.data.payload;
-        console.log('Received platform event:', eventData);
-
         if (eventData.External_Complaint_Request_ID__c === this.currentUUID) {
             this.isLoading = false;
-            if (eventData.Status__c === 'SUCCESS') {
+            if (eventData.Status__c === getExternalComplaintApprovalStatus_StatusSuccess) {
                 this.handleSuccessfulApproval();
             } else {
-                this.showErrorToast('Complaint approval failed for external product');
+                this.showErrorToast(this.label.Complaint_approval_failed_for_external_product);
             }
         }
     }
 
     async handleSuccessfulApproval() {
-        this.showSuccessToast('Complaint approved successfully');
+        this.showSuccessToast(this.label.Complaint_approved_successfully);
         if (this.caseId) {
             this.navigateToCase(this.caseId);
         }
@@ -110,7 +149,7 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
                 ProductCode: item.Product2?.ProductCode,
                 Quantity: item.Quantity,
                 TotalPrice: item.TotalPrice,
-                IsExternal: item.Product2?.IsExternal__c
+                IsExternal__c: item.Product2?.IsExternal__c
             }));
         } catch (error) {
             this.showErrorToast(error.message)
@@ -120,7 +159,7 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
 
     showErrorToast(message) {
         LightningToast.show({
-            label: "Error in Complaint Form",
+            label: this.label.Error_in_Complaint_Form,
             message: message,
             variant: "error",
             mode: "sticky"
@@ -129,14 +168,13 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
 
     showSuccessToast(message) {
         LightningToast.show({
-            label: "Success",
+            label: this.label.Success,
             message: message,
             variant: "success"
         })
     }
 
     navigateToCase(caseId) {
-        console.log(caseId)
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
@@ -154,7 +192,7 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
     async handleComplaintSubmit() {
         this.isLoading = true;
         if (this.selectedOrderItems.length === 0) {
-            this.showErrorToast('Pick at least one product to create complaint');
+            this.showErrorToast(this.label.Pick_at_least_one_product_to_create_complaint);
             this.isLoading = false;
             return;
         }
@@ -163,8 +201,7 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
             const response = await submitComplaintForApproval({ orderItemIds: this.selectedOrderItems.map(item => item.Id) });
             this.currentUUID = response.uuid;
             this.caseId = response.caseId;
-            console.log('Tracking UUID Saved: ', this.currentUUID);
-            this.showSuccessToast('Complaint sent, waiting for response...');
+            this.showSuccessToast(this.label.Complaint_sent_waiting_for_response);
         } catch (error) {
             this.showErrorToast(error.body?.message || error.message);
         }

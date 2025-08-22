@@ -5,14 +5,12 @@ public with sharing class ComplaintFormService {
                 FROM OrderItem
                 WHERE OrderId = :orderId
         ];
-        System.debug(orderItems);
         return orderItems;
     }
 
     public static ComplaintSubmissionResult submitComplaintForApproval(List<Id> orderItemIds) {
-        System.debug(orderItemIds);
         if (orderItemIds == null || orderItemIds.isEmpty()) {
-            throw new AuraHandledException('You must select at least one product.');
+            throw new AuraHandledException(System.Label.You_must_select_at_least_one_product);
         }
 
         List<OrderItem> itemsToProcess = [
@@ -20,7 +18,6 @@ public with sharing class ComplaintFormService {
                 FROM OrderItem
                 WHERE Id IN :orderItemIds
         ];
-        System.debug(itemsToProcess);
 
         List<Approval.ProcessSubmitRequest> internalApprovalRequests = new List<Approval.ProcessSubmitRequest>();
         List<Product2> externalComplaintEvents = new List<Product2>();
@@ -29,7 +26,6 @@ public with sharing class ComplaintFormService {
                 Order__c = itemsToProcess[0].OrderId
         );
         insert caseForComplaint;
-        System.debug(caseForComplaint);
 
         List<Complaint_Approval_Request__c> complaintApprovalRequests = new List<Complaint_Approval_Request__c>();
 
@@ -39,18 +35,17 @@ public with sharing class ComplaintFormService {
             } else {
                 Complaint_Approval_Request__c complaintApprovalRequest = new Complaint_Approval_Request__c();
                 complaintApprovalRequest.Case__c = caseForComplaint.Id;
-                complaintApprovalRequest.Status__c = 'Pending Approval';
+                complaintApprovalRequest.Status__c = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.STATUS.PENDING_APPROVAL;
                 complaintApprovalRequest.Product__c = item.Product2Id;
                 complaintApprovalRequests.add(complaintApprovalRequest);
             }
         }
-        System.debug(complaintApprovalRequests);
         insert complaintApprovalRequests;
 
         for (Complaint_Approval_Request__c complaintApprovalRequest: complaintApprovalRequests) {
             Approval.ProcessSubmitRequest request = new Approval.ProcessSubmitRequest();
             request.setObjectId(complaintApprovalRequest.Id);
-            request.setProcessDefinitionNameOrId('Approving_Complaint');
+            request.setProcessDefinitionNameOrId(ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.PROCESS_DEFINITION_NAME);
             internalApprovalRequests.add(request);
         }
         System.debug(internalApprovalRequests);
@@ -59,7 +54,7 @@ public with sharing class ComplaintFormService {
                 Approval.ProcessResult[] processResults = Approval.process(internalApprovalRequests, false);
                 for (Approval.ProcessResult processResult : processResults) {
                     if (!processResult.success) {
-                        throw new AuraHandledException('Error creating approval request: '+processResult.getErrors());
+                        throw new AuraHandledException(System.Label.Error_creating_approval_request+processResult.getErrors());
                     }
                 }
                 System.debug(processResults);
@@ -71,7 +66,7 @@ public with sharing class ComplaintFormService {
             }
             return new ComplaintSubmissionResult(caseForComplaint.Id, randomUUID?.toString());
         } catch (Exception e) {
-            throw new AuraHandledException('Error processing complaint: ' + e.getMessage());
+            throw new AuraHandledException(System.Label.Error_creating_approval_request+ e.getMessage());
         }
     }
 }

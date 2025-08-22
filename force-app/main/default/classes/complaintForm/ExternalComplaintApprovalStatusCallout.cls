@@ -18,26 +18,23 @@ public class ExternalComplaintApprovalStatusCallout implements Queueable, Databa
         Http http = new Http();
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL + '/services/data/v61.0/sobjects/External_Complaint_Approval_Status__e/');
+        request.setEndpoint(ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL + ConstUtil.ENDPOINT.PLATFORM_EVENTS.EXTERNAL_COMPLAINT_APPROVAL_STATUS);
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/json;charset=UTF-8');
 
         Map<String, String> bodyMap = new Map<String, String>{
-                'Status__c' => status,
-                'External_Complaint_Request_ID__c' => randomUUID
+                External_Complaint_Approval_Status__e.Status__c.toString() => status,
+                External_Complaint_Approval_Status__e.External_Complaint_Request_ID__c.toString() => randomUUID
         };
         request.setBody(JSON.serialize(bodyMap));
-        System.debug(JSON.serialize(bodyMap));
         try {
             HttpResponse response = http.send(request);
-            System.debug(response);
             if (response.getStatusCode() == 201) {
-                System.debug('SUCCESS: Complaint approval status sent for UUID: ' + randomUUID);
             } else {
-                System.debug('ERROR: Callout for UUID ' + randomUUID + ' failed. Status: ' + response.getStatus() + '. Body: ' + response.getBody());
+                throw new CalloutException(System.Label.Error_sending_complaint_approval_status);
             }
         } catch (Exception e) {
-            System.debug('EXCEPTION: Callout for UUID ' + randomUUID + ' threw an exception. Message: ' + e.getMessage());
+            throw new CalloutException(System.Label.Error_sending_complaint_approval_status);
         }
 
     }
