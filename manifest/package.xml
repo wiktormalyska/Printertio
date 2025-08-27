@@ -383,7 +383,6 @@
         <name>CustomLabel</name>
     </types>
     <types>
-        <members>Complaint_Approval_Request__c.Approving_Complaint</members>
         <name>ApprovalProcess</name>
     </types>
     <types>
