@@ -126,6 +126,8 @@
         <members>CaseBuilder</members>
         <members>Complaint_Approval_Request_cBuilder</members>
         <members>CARTestDataFactory</members>
+        <members>ExternalCAStatusEventTriggerTests</members>
+        <members>ExternalComplaintEventTriggerTests</members>
         <name>ApexClass</name>
     </types>
     <types>

@@ -4,9 +4,9 @@ public class ComplaintApprovalMockProductNotFound implements HttpCalloutMock {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         res.setStatusCode(200);
-
+        
         String endpoint = req.getEndpoint();
-
+        
         if (endpoint.contains('OrderItem')) {
             // Order product query - return products but with different product IDs that won't match
             res.setBody('{"records": [{"Product2Id": "different_prod_id", "UnitPrice": 100.50}]}');
@@ -23,7 +23,7 @@ public class ComplaintApprovalMockProductNotFound implements HttpCalloutMock {
             // Default response
             res.setBody('{"records": []}');
         }
-
+        
         return res;
     }
 }
