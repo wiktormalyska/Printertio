@@ -1,23 +1,21 @@
 public class ExternalComplaintCallout implements Queueable, Database.AllowsCallouts {
-    private List<Product2> products;
+    private Map<String, String> externalComplaintEvents;
     private UUID randomUUID;
 
-    public ExternalComplaintCallout(List<Product2> products, UUID randomUUID) {
-        this.products = products;
+    public ExternalComplaintCallout(Map<String, String> externalComplaintEvents, UUID randomUUID) {
+        this.externalComplaintEvents = externalComplaintEvents;
         this.randomUUID = randomUUID;
     }
 
-    public static void sendComplaintsAsync(List<Product2> products, UUID randomUUID) {
-        if (products != null && !products.isEmpty()) {
-            System.enqueueJob(new ExternalComplaintCallout(products, randomUUID));
+    public static void sendComplaintsAsync(Map<String, String> externalComplaintEvents, UUID randomUUID) {
+        if (externalComplaintEvents != null && !externalComplaintEvents.isEmpty()) {
+            System.enqueueJob(new ExternalComplaintCallout(externalComplaintEvents, randomUUID));
         }
     }
 
     public void execute(QueueableContext context) {
-        if (products != null && !products.isEmpty()) {
-            SendProductComplaintsBatchJob batchJob = new SendProductComplaintsBatchJob(this.products, this.randomUUID);
-            System.debug(this.products);
-            Database.executeBatch(batchJob, 1);
-        }
+        SendProductComplaintsBatchJob batchJob = new SendProductComplaintsBatchJob(this.externalComplaintEvents, this.randomUUID);
+        System.debug(this.externalComplaintEvents);
+        Database.executeBatch(batchJob, 1);
     }
 }

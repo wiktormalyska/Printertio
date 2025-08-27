@@ -99,10 +99,33 @@
         <members>TA_ExternalComplaint.cls</members>
         <members>ComplaintSubmissionResult</members>
         <members>ExternalComplaintApprovalStatusCallout</members>
-        <members>TA_ExternalComplaintApprovalStatus</members>
         <members>TA_ExternalComplaint</members>
         <members>PlatformEventConst</members>
         <members>ComplaintApprovalRequestConst</members>
+        <members>SendToSecondOrgFlowAction</members>
+        <members>Complaint_CompositeRequestQueueable</members>
+        <members>ComplaintApprovalPriceRetrieverAction</members>
+        <members>Complaint_CompositeRequestQueueableTests</members>
+        <members>Complaint_CompositeMockHttp</members>
+        <members>Complaint_CompositeMockHttpError</members>
+        <members>ComplaintApprovalPriceActionTests</members>
+        <members>ComplaintApprovalMockSuccess</members>
+        <members>ComplaintApprovalMockNoRecords</members>
+        <members>ComplaintApprovalMockError</members>
+        <members>ComplaintApprovalMockProductNotFound</members>
+        <members>ComplaintFormControllerTests</members>
+        <members>ExternalComplaintApprovalCalloutTests</members>
+        <members>ExternalComplaintCalloutTests</members>
+        <members>SendProductComplaintsBatchJobTests</members>
+        <members>SendToSecondOrgFlowActionTests</members>
+        <members>TA_ExternalComplaintTests</members>
+        <members>MockHttpResponseGeneratorWithExec</members>
+        <members>MockHttpExceptionGenerator</members>
+        <members>MockHttpResponseGenerator</members>
+        <members>CaseTestDataFactory</members>
+        <members>CaseBuilder</members>
+        <members>Complaint_Approval_Request_cBuilder</members>
+        <members>CARTestDataFactory</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -166,6 +189,7 @@
         <members>Complaint_Approval_Request__c</members>
         <members>External_Complaint__e</members>
         <members>Case</members>
+        <members>External_Complaint_Approval_Status__e</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -197,6 +221,12 @@
     <types>
         <members>Control_Account_Creation</members>
         <members>Generate_PDF_On_Order_Active</members>
+        <members>Complaint_Approval_Process</members>
+        <members>Flow_Approval_Process_Refund_Type</members>
+        <members>Update_Complaint_Approval_Request_Status</members>
+        <members>Approval_Process_Refund_Type</members>
+        <members>Case_Every_Complaint_Approved</members>
+        <members>Complaint_Approval_Request_Send_to_other_org_via_PlatformEvent</members>
         <name>Flow</name>
     </types>
     <types>

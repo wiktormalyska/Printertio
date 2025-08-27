@@ -32,34 +32,36 @@ public with sharing class TA_ExternalComplaint implements TriggerAction.AfterIns
 
         List<Complaint_Approval_Request__c> complaintApprovalRequests = new List<Complaint_Approval_Request__c>();
 
+        System.debug('Events >>> '+events);
         for (External_Complaint__e event : events) {
             Product2 product = productMap.get(event.Product_ID__c);
             if (product != null) {
                 Complaint_Approval_Request__c complaintApprovalRequest = new Complaint_Approval_Request__c(
                         Case__c = newCase.Id,
                         Product__c = product.Id,
-                        Status__c = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.STATUS.PENDING_APPROVAL
+                        Status__c = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.STATUS.PENDING_APPROVAL,
+                        Is_External__c = True,
+                        External_ID__c = event.External_Complaint_ID__c
                 );
                 complaintApprovalRequests.add(complaintApprovalRequest);
             }
         }
         insert complaintApprovalRequests;
 
-        List<Approval.ProcessSubmitRequest> internalApprovalRequests = new List<Approval.ProcessSubmitRequest>();
-        for (Complaint_Approval_Request__c complaintApprovalRequest : complaintApprovalRequests) {
-            Approval.ProcessSubmitRequest request = new Approval.ProcessSubmitRequest();
-            request.setObjectId(complaintApprovalRequest.Id);
-            request.setProcessDefinitionNameOrId(ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.PROCESS_DEFINITION_NAME);
-            internalApprovalRequests.add(request);
-        }
-
         try {
-            Approval.ProcessResult[] processResults = Approval.process(internalApprovalRequests, false);
+            String flowApiName = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.PROCESS_DEFINITION_NAME;
             Boolean allSuccess = true;
-            for (Approval.ProcessResult processResult : processResults) {
-                if (!processResult.success) {
+
+            for (Complaint_Approval_Request__c complaintApprovalRequest : complaintApprovalRequests) {
+                try {
+                    Map<String, Object> params = new Map<String, Object>();
+                    params.put('recordId', complaintApprovalRequest.Id);
+                    params.put('submitter', UserInfo.getUserId());
+                    System.debug('Flow Params >>> ' + params);
+                    Flow.Interview.createInterview(flowApiName, params).start();
+                } catch (Exception flowException) {
                     allSuccess = false;
-                    throw new DmlException(System.Label.Error_creating_approval_request + processResult.getErrors());
+                    throw new DmlException(System.Label.Error_creating_approval_request + flowException.getMessage());
                 }
             }
 

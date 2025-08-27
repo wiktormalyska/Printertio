@@ -1,6 +1,6 @@
 public with sharing class SynchronizeService {
 
-    private static final String PRODUCT_ENDPOINT = ConstUtil.ENDPOINT.COMPOSITE;
+    private static final String PRODUCT_ENDPOINT = ConstUtil.ENDPOINT.COMPOSITE_SOBJECTS;
     private static final String NAMED_CREDENTIAL = ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL;
     private static final String API_VERSION = 'v64.0';
 
@@ -237,7 +237,7 @@ public with sharing class SynchronizeService {
             if (i < responseResults.size()) {
                 Map<String, Object> result = (Map<String, Object>) responseResults[i];
                 singleResponsePayload = JSON.serialize(result);
-                if (result.containsKey('success') && result.get('success') instanceOf Boolean && (Boolean)result.get('success')) {
+                if (result.containsKey('success') && result.get('success') instanceof Boolean && (Boolean)result.get('success')) {
                     statusValue = ConstUtil.PRODUCT_SYNC.LOGS.STATUS.SUCCESS;
                 }
             } else {

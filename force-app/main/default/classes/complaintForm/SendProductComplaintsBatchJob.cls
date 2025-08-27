@@ -1,19 +1,21 @@
 public with sharing class SendProductComplaintsBatchJob implements Database.Batchable<SObject>, Database.AllowsCallouts, Database.Stateful {
-    private final List<Product2> productsToProcess;
+    private final Map<String, String> externalComplaintEvents;
     private final UUID randomUUID;
 
-    public SendProductComplaintsBatchJob(List<Product2> products, UUID randomUUID) {
-        this.productsToProcess = products;
+    public SendProductComplaintsBatchJob(Map<String, String> externalComplaintEvents, UUID randomUUID) {
+        this.externalComplaintEvents = externalComplaintEvents;
         this.randomUUID = randomUUID;
     }
 
     public Iterable<SObject> start(Database.BatchableContext bc) {
-        return this.productsToProcess;
+        Set<String> productIds = this.externalComplaintEvents.keySet();
+        return [SELECT Id, ExternalId FROM Product2 WHERE Id IN :productIds];
     }
     public void execute(Database.BatchableContext bc, List<Product2> scope) {
         Http http = new Http();
-
         for (Product2 prod : scope) {
+            String externalComplaintId = this.externalComplaintEvents.get(prod.Id);
+
             HttpRequest request = new HttpRequest();
             request.setEndpoint(ConstUtil.CONNECTED_APPS.PRODUCT_SYNC.NAMED_CREDENTIAL + ConstUtil.ENDPOINT.PLATFORM_EVENTS.EXTERNAL_COMPLAINT);
             request.setMethod('POST');
@@ -21,7 +23,8 @@ public with sharing class SendProductComplaintsBatchJob implements Database.Batc
 
             Map<String, String> bodyMap = new Map<String, String>{
                     External_Complaint__e.Product_ID__c.toString() => prod.ExternalId,
-                    External_Complaint__e.External_Complaint_Request_ID__c.toString() => randomUUID.toString()
+                    External_Complaint__e.External_Complaint_Request_ID__c.toString() => randomUUID.toString(),
+                    External_Complaint__e.External_Complaint_ID__c.toString() => externalComplaintId
             };
             request.setBody(JSON.serialize(bodyMap));
 

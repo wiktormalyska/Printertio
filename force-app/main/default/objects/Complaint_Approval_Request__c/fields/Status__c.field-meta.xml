@@ -29,6 +29,11 @@
                 <default>false</default>
                 <label>Rejected</label>
             </value>
+            <value>
+                <fullName>Waiting for response from external source</fullName>
+                <default>false</default>
+                <label>Waiting for response from external source</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

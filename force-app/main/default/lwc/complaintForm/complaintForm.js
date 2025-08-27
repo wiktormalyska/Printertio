@@ -89,7 +89,6 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
         this.channelName = await getExternalComplaintApprovalStatusChannel();
         this.loadOrderProducts();
         this.registerErrorListener();
-        await this.subscribeToEvents(this.channelName);
     }
 
     disconnectedCallback() {
@@ -200,11 +199,22 @@ export default class ComplaintForm extends NavigationMixin(LightningModal) {
         }
 
         try {
+            const hasExternalProducts = this.selectedOrderItems.some(item => item.IsExternal__c === true);
+
             const response = await submitComplaintForApproval({ orderItemIds: this.selectedOrderItems.map(item => item.Id) });
             this.currentUUID = response.uuid;
             this.caseId = response.caseId;
-            this.showSuccessToast(this.label.Complaint_sent_waiting_for_response);
+
+            if (hasExternalProducts) {
+                // Only subscribe to events when we have external products
+                await this.subscribeToEvents(this.channelName);
+                this.showSuccessToast(this.label.Complaint_sent_waiting_for_response);
+            } else {
+                this.isLoading = false;
+                this.handleSuccessfulApproval();
+            }
         } catch (error) {
+            this.isLoading = false;
             this.showErrorToast(error.body?.message || error.message);
         }
     }
