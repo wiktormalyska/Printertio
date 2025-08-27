@@ -1,32 +1,29 @@
-@isTest
+@IsTest
 public class ComplaintApprovalMockSuccess implements HttpCalloutMock {
-    private Integer callCount = 0;
-
     public HttpResponse respond(HttpRequest req) {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         res.setStatusCode(200);
 
-        String responseBody;
-        callCount++;
+        String endpoint = req.getEndpoint();
 
-        if (req.getEndpoint().contains('Complaint_Approval_Request__c') && req.getEndpoint().contains('Case__c')) {
-            // First call - complaint approval query
-            responseBody = '{"records":[{"Id":"a001234567890ABC","Case__c":"5001234567890ABC"}]}';
-        } else if (req.getEndpoint().contains('Case') && req.getEndpoint().contains('Order__c')) {
-            // Second call - case query
-            responseBody = '{"records":[{"Id":"5001234567890ABC","Order__c":"8011234567890ABC"}]}';
-        } else if (req.getEndpoint().contains('OrderItem')) {
-            // Third call - order items query
-            responseBody = '{"records":[{"Id":"80i1234567890ABC","Product2Id":"01t1234567890ABC","UnitPrice":100.50}]}';
-        } else if (req.getEndpoint().contains('Product__c')) {
-            // Fourth call - product query
-            responseBody = '{"records":[{"Id":"a001234567890ABC","Product__c":"01t1234567890ABC"}]}';
+        if (endpoint.contains('OrderItem')) {
+            // Order product query - return list of products
+            res.setBody('{"records": [{"Product2Id": "prod123", "UnitPrice": 100.50}, {"Product2Id": "prod456", "UnitPrice": 200.75}]}');
+        } else if (endpoint.contains('Case__c')) {
+            // Complaint approval query for case - return single record with case ID
+            res.setBody('{"records": [{"Case__c": "case123"}]}');
+        } else if (endpoint.contains('Order__c')) {
+            // Case query for order - return single record with order ID
+            res.setBody('{"records": [{"Order__c": "order123"}]}');
+        } else if (endpoint.contains('Product__c')) {
+            // Complaint approval query for product - return single record with product ID
+            res.setBody('{"records": [{"Product__c": "prod123"}]}');
         } else {
-            responseBody = '{"records":[]}';
+            // Default response
+            res.setBody('{"records": []}');
         }
 
-        res.setBody(responseBody);
         return res;
     }
 }

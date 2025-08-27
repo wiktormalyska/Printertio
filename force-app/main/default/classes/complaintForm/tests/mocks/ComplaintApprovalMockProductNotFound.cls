@@ -1,24 +1,29 @@
-@isTest
+@IsTest
 public class ComplaintApprovalMockProductNotFound implements HttpCalloutMock {
     public HttpResponse respond(HttpRequest req) {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         res.setStatusCode(200);
 
-        String responseBody;
-        if (req.getEndpoint().contains('Complaint_Approval_Request__c') && req.getEndpoint().contains('Case__c')) {
-            responseBody = '{"records":[{"Id":"a001234567890ABC","Case__c":"5001234567890ABC"}]}';
-        } else if (req.getEndpoint().contains('Case') && req.getEndpoint().contains('Order__c')) {
-            responseBody = '{"records":[{"Id":"5001234567890ABC","Order__c":"8011234567890ABC"}]}';
-        } else if (req.getEndpoint().contains('OrderItem')) {
-            responseBody = '{"records":[{"Id":"80i1234567890ABC","Product2Id":"01tDIFFERENT123","UnitPrice":100.50}]}';
-        } else if (req.getEndpoint().contains('Product__c')) {
-            responseBody = '{"records":[{"Id":"a001234567890ABC","Product__c":"01t1234567890ABC"}]}';
+        String endpoint = req.getEndpoint();
+
+        if (endpoint.contains('OrderItem')) {
+            // Order product query - return products but with different product IDs that won't match
+            res.setBody('{"records": [{"Product2Id": "different_prod_id", "UnitPrice": 100.50}]}');
+        } else if (endpoint.contains('Case__c')) {
+            // Complaint approval query for case - return single record with case ID
+            res.setBody('{"records": [{"Case__c": "case123"}]}');
+        } else if (endpoint.contains('Order__c')) {
+            // Case query for order - return single record with order ID
+            res.setBody('{"records": [{"Order__c": "order123"}]}');
+        } else if (endpoint.contains('Product__c')) {
+            // Complaint approval query for product - return a product ID that won't match the order products
+            res.setBody('{"records": [{"Product__c": "nonexistent_prod_id"}]}');
         } else {
-            responseBody = '{"records":[]}';
+            // Default response
+            res.setBody('{"records": []}');
         }
 
-        res.setBody(responseBody);
         return res;
     }
 }

@@ -66,12 +66,21 @@ public class Complaint_CompositeRequestQueueableTests {
 
         Test.setMock(HttpCalloutMock.class, new Complaint_CompositeMockHttpError());
 
-        Test.startTest();
         Complaint_CompositeRequestQueueable queueable = new Complaint_CompositeRequestQueueable(requests);
-        System.enqueueJob(queueable);
-        Test.stopTest();
 
-        System.assert(true, 'Queueable handled error response');
+        Test.startTest();
+        try {
+            // Call execute directly to catch the exception in the test context
+            queueable.execute(null);
+
+            // If we reach here, the test should fail because we expected an exception
+            System.assert(false, 'Expected CalloutException to be thrown');
+        } catch (CalloutException e) {
+            // Verify the exception contains the expected message
+            System.assert(e.getMessage().contains('Error in composite request'), 'Expected error message about composite request');
+            System.assert(e.getMessage().contains('400'), 'Expected 400 status code in error message');
+        }
+        Test.stopTest();
     }
 
     @isTest

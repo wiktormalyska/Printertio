@@ -27,12 +27,41 @@ public with sharing class Complaint_CompositeRequestQueueable implements Queueab
             return;
         }
 
+        // Convert CompositeSubRequest objects to the format expected by Salesforce Composite API
+        List<Map<String, Object>> formattedRequests = new List<Map<String, Object>>();
+        Integer requestCounter = 0;
+
+        for (CompositeSubRequest subReq : subRequests) {
+            // Ensure reference ID is valid for Composite API (alphanumeric + underscore, starts with letter)
+            String validReferenceId = 'ref_' + requestCounter;
+            if (String.isNotBlank(subReq.referenceId)) {
+                // Clean the reference ID by removing invalid characters and ensuring it starts with a letter
+                validReferenceId = 'ref_' + subReq.referenceId.replaceAll('[^a-zA-Z0-9_]', '_');
+            }
+
+            Map<String, Object> formattedRequest = new Map<String, Object>{
+                'method' => subReq.method,
+                'url' => subReq.url,
+                'referenceId' => validReferenceId
+            };
+
+            // Only add body for methods that support it (POST, PATCH, PUT)
+            if (subReq.body != null && (subReq.method == 'POST' || subReq.method == 'PATCH' || subReq.method == 'PUT')) {
+                formattedRequest.put('body', subReq.body);
+            }
+
+            formattedRequests.add(formattedRequest);
+            requestCounter++;
+        }
+
         Map<String, Object> compositeRequest = new Map<String, Object>{
                 'allOrNone' => false,
-                'compositeRequest' => this.subRequests
+                'compositeRequest' => formattedRequests
         };
 
         String jsonBody = JSON.serialize(compositeRequest);
+        System.debug('Composite Request JSON: ' + jsonBody);
+
         HttpRequest req = new HttpRequest();
         req.setEndpoint(NAMED_CREDENTIAL + ConstUtil.ENDPOINT.COMPOSITE);
         req.setMethod('POST');
@@ -43,8 +72,11 @@ public with sharing class Complaint_CompositeRequestQueueable implements Queueab
         try {
             HttpResponse res = http.send(req);
 
+            System.debug('Response Status Code: ' + res.getStatusCode());
+            System.debug('Response Body: ' + res.getBody());
+
             if (res.getStatusCode() != 200) {
-                throw new CalloutException(System.Label.Error_in_composite_request + res.getStatusCode().toString() + ' ' + res.getStatus());
+                throw new CalloutException(System.Label.Error_in_composite_request + res.getStatusCode().toString() + ' ' + res.getStatus() + ' - Response: ' + res.getBody());
             }
         } catch (Exception e) {
             throw new CalloutException(System.Label.Error_in_composite_request + e.getMessage());

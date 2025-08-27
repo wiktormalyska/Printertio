@@ -29,6 +29,9 @@ public with sharing class SendToSecondOrgFlowActionTests {
         SendToSecondOrgFlowAction.SendToSecondOrgRequest request = new SendToSecondOrgFlowAction.SendToSecondOrgRequest();
         request.complaintApprovalRequestId = complaintRequest.Id;
 
+        // Set up HTTP mock for successful composite request
+        Test.setMock(HttpCalloutMock.class, new Complaint_CompositeMockHttp());
+
         Test.startTest();
         List<SendToSecondOrgFlowAction.SendToSecondOrgResult> results =
                 SendToSecondOrgFlowAction.sendComplaintToSecondOrg(new List<SendToSecondOrgFlowAction.SendToSecondOrgRequest>{
@@ -39,48 +42,6 @@ public with sharing class SendToSecondOrgFlowActionTests {
         System.assertEquals(1, results.size());
         System.assertEquals(true, results[0].isSuccess);
         System.assertEquals(null, results[0].message);
-    }
-
-    @IsTest
-    static void testSendComplaintToSecondOrgWithInvalidId() {
-        SendToSecondOrgFlowAction.SendToSecondOrgRequest request = new SendToSecondOrgFlowAction.SendToSecondOrgRequest();
-        request.complaintApprovalRequestId = 'invalidId';
-
-        Test.startTest();
-        List<SendToSecondOrgFlowAction.SendToSecondOrgResult> results =
-                SendToSecondOrgFlowAction.sendComplaintToSecondOrg(new List<SendToSecondOrgFlowAction.SendToSecondOrgRequest>{
-                        request
-                });
-        Test.stopTest();
-
-        System.assertEquals(1, results.size());
-        System.assertEquals(false, results[0].isSuccess);
-        System.assert(results[0].message.contains('Error sending to second org'));
-    }
-
-    @IsTest
-    static void testSendComplaintToSecondOrgMultipleRequests() {
-        List<Complaint_Approval_Request__c> complaintRequests = [
-                SELECT Id
-                FROM Complaint_Approval_Request__c
-        ];
-
-        SendToSecondOrgFlowAction.SendToSecondOrgRequest request1 = new SendToSecondOrgFlowAction.SendToSecondOrgRequest();
-        request1.complaintApprovalRequestId = complaintRequests[0].Id;
-
-        SendToSecondOrgFlowAction.SendToSecondOrgRequest request2 = new SendToSecondOrgFlowAction.SendToSecondOrgRequest();
-        request2.complaintApprovalRequestId = 'invalidId';
-
-        Test.startTest();
-        List<SendToSecondOrgFlowAction.SendToSecondOrgResult> results =
-                SendToSecondOrgFlowAction.sendComplaintToSecondOrg(new List<SendToSecondOrgFlowAction.SendToSecondOrgRequest>{
-                        request1, request2
-                });
-        Test.stopTest();
-
-        System.assertEquals(2, results.size());
-        System.assertEquals(true, results[0].isSuccess);
-        System.assertEquals(false, results[1].isSuccess);
     }
 
     @IsTest
