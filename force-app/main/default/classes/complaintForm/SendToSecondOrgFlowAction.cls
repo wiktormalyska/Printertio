@@ -32,7 +32,7 @@ public with sharing class SendToSecondOrgFlowAction {
 
     private static void sendUpdateCompositeTo2ndOrg(Complaint_Approval_Request__c complaintRequest) {
         String httpMethod = 'PATCH';
-        String recordUrl = ConstUtil.ENDPOINT.SOBJECTS.COMPLAINT_APPROVAL_REQUEST__C + complaintRequest.External_ID__c;
+        String recordUrl = ConstUtil.ENDPOINT.SOBJECTS.COMPLAINT_APPROVAL_REQUEST_C + complaintRequest.External_ID__c;
 
         Map<String, Object> bodyMap = new Map<String, Object>{
                 Complaint_Approval_Request__c.Status__c.toString() => complaintRequest.Status__c,

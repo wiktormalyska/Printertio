@@ -11,6 +11,6 @@ public with sharing class EndpointConst {
     }
 
     public class SObjectEndpoints {
-        public final String COMPLAINT_APPROVAL_REQUEST__C { get {return '/services/data/v64.0/sobjects/Complaint_Approval_Request__c/';} }
+        public final String COMPLAINT_APPROVAL_REQUEST_C { get {return '/services/data/v64.0/sobjects/Complaint_Approval_Request__c/';} }
     }
 }
