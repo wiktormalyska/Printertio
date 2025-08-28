@@ -56,20 +56,18 @@
         <members>ProductSearchService</members>
         <members>ProductTestDataFactory</members>
         <members>TestDataFactory</members>
-        <members>DiscountConst.cls</members>
-        <members>OrderConst</members>
         <members>DiscountConst</members>
-        <members>TA_Order_CalculateDiscountForOrder.cls</members>
-        <members>TA_Discount_ReAssignDiscounts_AfterInsert.cls</members>
-        <members>TA_Order_CalculateDiscountForOrder_OnInsert.cls</members>
+        <members>OrderConst</members>
+        <members>TA_Order_CalculateDiscountForOrder</members>
+        <members>TA_Discount_ReAssignDiscounts_AfterInsert</members>
+        <members>TA_Order_CalculateDiscountForOrder_OnInsert</members>
         <members>TA_Discount_ReAssign</members>
         <members>TA_Order_CalculateDiscount</members>
         <members>TA_Products_Synchronise</members>
-        <members>SynchronizeService.cls</members>
+        <members>SynchronizeService</members>
         <members>ConnectedAppsConst</members>
         <members>EndpointConst</members>
         <members>ProductSyncQueueable</members>
-        <members>SynchronizeService</members>
         <members>ProductDeactivateQueueable</members>
         <members>ProductSynchronizationLogBuilder</members>
         <members>ProductSyncSchedulerUtil</members>
@@ -78,7 +76,7 @@
         <members>ProductSyncSchedulerUtilTests</members>
         <members>TA_Products_SynchroniseTests</members>
         <members>SynchronizeServiceTests</members>
-        <members>ProductSyncMockHttpSuccess.cls</members>
+        <members>ProductSyncMockHttpSuccess</members>
         <members>ProductSyncMockHttpFailed</members>
         <members>SynchronizeServiceHttpMock</members>
         <members>SynchronizeServiceQueryHttpMock</members>
@@ -89,13 +87,10 @@
         <members>ScheduleProductSyncRetry</members>
         <members>ProductSyncMassBatchJob</members>
         <members>ProductSyncMassUtil</members>
-        <members>ProductSyncMockHttpSuccess</members>
         <members>ComplaintFormController</members>
         <members>ComplaintFormService</members>
         <members>ExternalComplaintCallout</members>
-        <members>TA_ExternalComplaint.cls</members>
         <members>SendProductComplaintsBatchJob</members>
-        <members>TA_ExternalComplaint.cls</members>
         <members>ComplaintSubmissionResult</members>
         <members>ExternalComplaintApprovalStatusCallout</members>
         <members>TA_ExternalComplaint</members>
