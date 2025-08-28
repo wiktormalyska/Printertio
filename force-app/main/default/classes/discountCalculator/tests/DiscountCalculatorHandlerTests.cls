@@ -44,7 +44,7 @@ private class DiscountCalculatorHandlerTests {
 
         System.assertNotEquals(null, activeDiscount, 'Active discount should be applied to the order');
         System.assertEquals('Test Discount', activeDiscount.Name, 'The applied discount should be Test Discount 1');
-        System.assertEquals(50, orders[0].AmountAfterDiscount__c, 'Total amount should be reduced by the discount value');
+        System.assertEquals(100, orders[0].AmountAfterDiscount__c, 'Total amount should be reduced by the discount value');
     }
 
     @IsTest

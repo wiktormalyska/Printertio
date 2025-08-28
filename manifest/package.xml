@@ -125,6 +125,7 @@
         <members>ProductSyncMassUtilTest</members>
         <members>ProductSyncQueueableTests</members>
         <members>ProductSyncRetryBatchJobTest</members>
+        <members>ComplaintCalloutMock</members>
         <name>ApexClass</name>
     </types>
     <types>

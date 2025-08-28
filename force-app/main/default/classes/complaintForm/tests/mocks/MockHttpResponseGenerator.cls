@@ -1,3 +1,4 @@
+@IsTest
 public class MockHttpResponseGenerator implements HttpCalloutMock {
     private Integer statusCode;
     private String status;
