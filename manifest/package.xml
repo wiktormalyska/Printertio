@@ -381,6 +381,10 @@
         <members>Success</members>
         <members>Unit_Price</members>
         <members>You_must_select_at_least_one_product</members>
+        <members>Error_in_composite_request</members>
+        <members>Error_sending_to_second_org</members>
+        <members>No_records_found</members>
+        <members>Unit_price_not_found_for_complaint_approval</members>
         <name>CustomLabel</name>
     </types>
     <types>

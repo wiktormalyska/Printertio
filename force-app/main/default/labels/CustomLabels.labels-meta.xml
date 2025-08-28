@@ -276,6 +276,13 @@
         <value>Error in Complaint Form</value>
     </labels>
     <labels>
+        <fullName>Error_in_composite_request</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error in composite request:</shortDescription>
+        <value>Error in composite request:</value>
+    </labels>
+    <labels>
         <fullName>Error_processing_complaint</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -295,6 +302,13 @@
         <protected>true</protected>
         <shortDescription>Error sending complaint approval status</shortDescription>
         <value>Error sending complaint approval status</value>
+    </labels>
+    <labels>
+        <fullName>Error_sending_to_second_org</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error sending to second org:</shortDescription>
+        <value>Error sending to second org:</value>
     </labels>
     <labels>
         <fullName>Error_with_subscription_API</fullName>
@@ -330,6 +344,13 @@
         <protected>true</protected>
         <shortDescription>Next Text</shortDescription>
         <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>No_records_found</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No records found</shortDescription>
+        <value>No records found</value>
     </labels>
     <labels>
         <fullName>Pick_at_least_one_product_to_create_complaint</fullName>
@@ -512,6 +533,13 @@
         <protected>true</protected>
         <shortDescription>Unit Price</shortDescription>
         <value>Unit Price</value>
+    </labels>
+    <labels>
+        <fullName>Unit_price_not_found_for_complaint_approval</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Unit price not found for complaint approval:</shortDescription>
+        <value>Unit price not found for complaint approval:</value>
     </labels>
     <labels>
         <fullName>You_must_select_at_least_one_product</fullName>
