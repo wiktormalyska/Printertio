@@ -56,9 +56,9 @@
             <actionType>stepApproval</actionType>
             <assignees>
                 <assignee>
-                    <stringValue>wiktor.malyska827@agentforce.com</stringValue>
+                    <stringValue>Standard_Users</stringValue>
                 </assignee>
-                <assigneeType>User</assigneeType>
+                <assigneeType>Queue</assigneeType>
             </assignees>
             <canAssigneeEdit>false</canAssigneeEdit>
             <debugSimulateStep>false</debugSimulateStep>
