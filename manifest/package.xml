@@ -157,6 +157,7 @@
     </types>
     <types>
         <members>DamianOrgAuthProvider</members>
+        <members>ProductSyncOrg</members>
         <name>AuthProvider</name>
     </types>
     <types>
@@ -249,6 +250,7 @@
     </types>
     <types>
         <members>DamianOrg</members>
+        <members>ProductSyncOrg</members>
         <name>NamedCredential</name>
     </types>
     <types>
@@ -387,6 +389,14 @@
     <types>
         <members>Standard_Users</members>
         <name>Queue</name>
+    </types>
+    <types>
+        <members>ProductSyncOrg_Connection</members>
+        <name>ConnectedApp</name>
+    </types>
+    <types>
+        <members>ProductSyncOrgExternalCreds</members>
+        <name>ExternalCredential</name>
     </types>
     <version>64.0</version>
 </Package>
