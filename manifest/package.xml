@@ -74,7 +74,6 @@
         <members>ProductSynchronizationLogBuilder</members>
         <members>ProductSyncSchedulerUtil</members>
         <members>ProductSyncConst</members>
-        <members>ProductSyncRetryScheduledJobTests</members>
         <members>ProductSynchronizationLogTestDataFactory</members>
         <members>ProductSyncSchedulerUtilTests</members>
         <members>TA_Products_SynchroniseTests</members>
@@ -128,6 +127,9 @@
         <members>CARTestDataFactory</members>
         <members>ExternalCAStatusEventTriggerTests</members>
         <members>ExternalComplaintEventTriggerTests</members>
+        <members>ProductSyncMassUtilTest</members>
+        <members>ProductSyncQueueableTests</members>
+        <members>ProductSyncRetryBatchJobTest</members>
         <name>ApexClass</name>
     </types>
     <types>
