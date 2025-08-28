@@ -56,37 +56,76 @@
         <members>ProductSearchService</members>
         <members>ProductTestDataFactory</members>
         <members>TestDataFactory</members>
-        <members>DiscountConst.cls</members>
-        <members>OrderConst</members>
         <members>DiscountConst</members>
-        <members>TA_Order_CalculateDiscountForOrder.cls</members>
-        <members>TA_Discount_ReAssignDiscounts_AfterInsert.cls</members>
-        <members>TA_Order_CalculateDiscountForOrder_OnInsert.cls</members>
+        <members>OrderConst</members>
+        <members>TA_Order_CalculateDiscountForOrder</members>
+        <members>TA_Discount_ReAssignDiscounts_AfterInsert</members>
+        <members>TA_Order_CalculateDiscountForOrder_OnInsert</members>
         <members>TA_Discount_ReAssign</members>
         <members>TA_Order_CalculateDiscount</members>
         <members>TA_Products_Synchronise</members>
-        <members>SynchronizeService.cls</members>
+        <members>SynchronizeService</members>
         <members>ConnectedAppsConst</members>
         <members>EndpointConst</members>
         <members>ProductSyncQueueable</members>
-        <members>SynchronizeService</members>
         <members>ProductDeactivateQueueable</members>
         <members>ProductSynchronizationLogBuilder</members>
-        <members>ProductSyncRetryScheduledJob</members>
         <members>ProductSyncSchedulerUtil</members>
         <members>ProductSyncConst</members>
-        <members>ProductSyncRetryScheduledJobTests</members>
         <members>ProductSynchronizationLogTestDataFactory</members>
         <members>ProductSyncSchedulerUtilTests</members>
         <members>TA_Products_SynchroniseTests</members>
         <members>SynchronizeServiceTests</members>
-        <members>ProductSyncMockHttpSuccess.cls</members>
+        <members>ProductSyncMockHttpSuccess</members>
         <members>ProductSyncMockHttpFailed</members>
         <members>SynchronizeServiceHttpMock</members>
         <members>SynchronizeServiceQueryHttpMock</members>
         <members>SynchronizeServiceMultiMock</members>
         <members>ProductDeactivateQueueableTest</members>
         <members>ProductDeactivationEventTriggerTest</members>
+        <members>ProductSyncRetryBatchJob</members>
+        <members>ScheduleProductSyncRetry</members>
+        <members>ProductSyncMassBatchJob</members>
+        <members>ProductSyncMassUtil</members>
+        <members>ComplaintFormController</members>
+        <members>ComplaintFormService</members>
+        <members>ExternalComplaintCallout</members>
+        <members>SendProductComplaintsBatchJob</members>
+        <members>ComplaintSubmissionResult</members>
+        <members>ExternalComplaintApprovalStatusCallout</members>
+        <members>TA_ExternalComplaint</members>
+        <members>PlatformEventConst</members>
+        <members>ComplaintApprovalRequestConst</members>
+        <members>SendToSecondOrgFlowAction</members>
+        <members>Complaint_CompositeRequestQueueable</members>
+        <members>ComplaintApprovalPriceRetrieverAction</members>
+        <members>Complaint_CompositeRequestQueueableTests</members>
+        <members>Complaint_CompositeMockHttp</members>
+        <members>Complaint_CompositeMockHttpError</members>
+        <members>ComplaintApprovalPriceActionTests</members>
+        <members>ComplaintApprovalMockSuccess</members>
+        <members>ComplaintApprovalMockNoRecords</members>
+        <members>ComplaintApprovalMockError</members>
+        <members>ComplaintApprovalMockProductNotFound</members>
+        <members>ComplaintFormControllerTests</members>
+        <members>ExternalComplaintApprovalCalloutTests</members>
+        <members>ExternalComplaintCalloutTests</members>
+        <members>SendProductComplaintsBatchJobTests</members>
+        <members>SendToSecondOrgFlowActionTests</members>
+        <members>TA_ExternalComplaintTests</members>
+        <members>MockHttpResponseGeneratorWithExec</members>
+        <members>MockHttpExceptionGenerator</members>
+        <members>MockHttpResponseGenerator</members>
+        <members>CaseTestDataFactory</members>
+        <members>CaseBuilder</members>
+        <members>Complaint_Approval_Request_cBuilder</members>
+        <members>CARTestDataFactory</members>
+        <members>ExternalCAStatusEventTriggerTests</members>
+        <members>ExternalComplaintEventTriggerTests</members>
+        <members>ProductSyncMassUtilTest</members>
+        <members>ProductSyncQueueableTests</members>
+        <members>ProductSyncRetryBatchJobTest</members>
+        <members>ComplaintCalloutMock</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -107,6 +146,8 @@
         <members>DiscountTrigger</members>
         <members>ProductTrigger</members>
         <members>ProductDeactivationEventTrigger</members>
+        <members>ExternalComplaintEventTrigger</members>
+        <members>ExternalComplaintApprovalStatusEventTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -116,6 +157,7 @@
     </types>
     <types>
         <members>DamianOrgAuthProvider</members>
+        <members>ProductSyncOrg</members>
         <name>AuthProvider</name>
     </types>
     <types>
@@ -143,8 +185,11 @@
         <members>Discount__c</members>
         <members>Product2</members>
         <members>Product_Synchronization_Log__c</members>
-        <members>Product_Synchronization_Log_Item__c</members>
         <members>Product_Deactivation__e</members>
+        <members>Complaint_Approval_Request__c</members>
+        <members>External_Complaint__e</members>
+        <members>Case</members>
+        <members>External_Complaint_Approval_Status__e</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -171,11 +216,18 @@
         <members>Printerio_UtilityBar</members>
         <members>Opportunity_Record_Page</members>
         <members>Discount_Record_Page</members>
+        <members>Complaint_Approval_Request_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
         <members>Control_Account_Creation</members>
         <members>Generate_PDF_On_Order_Active</members>
+        <members>Complaint_Approval_Process</members>
+        <members>Flow_Approval_Process_Refund_Type</members>
+        <members>Update_Complaint_Approval_Request_Status</members>
+        <members>Approval_Process_Refund_Type</members>
+        <members>Case_Every_Complaint_Approved</members>
+        <members>Complaint_Approval_Request_Send_to_other_org_via_PlatformEvent</members>
         <name>Flow</name>
     </types>
     <types>
@@ -191,6 +243,7 @@
         <members>editExternalAccount</members>
         <members>electronicSignature</members>
         <members>productSearch</members>
+        <members>complaintForm</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -198,6 +251,7 @@
     </types>
     <types>
         <members>DamianOrg</members>
+        <members>ProductSyncOrg</members>
         <name>NamedCredential</name>
     </types>
     <types>
@@ -230,6 +284,7 @@
     <types>
         <members>Order.Sign_an_Invoice</members>
         <members>Opportunity.Search_Product</members>
+        <members>Order.Complaint_Form</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -248,6 +303,8 @@
     </types>
     <types>
         <members>Case.ChangePriorityToHigh</members>
+        <members>Complaint_Approval_Request__c.Rejected_Status</members>
+        <members>Complaint_Approval_Request__c.Status_to_Approved</members>
         <name>WorkflowFieldUpdate</name>
     </types>
     <types>
@@ -304,7 +361,46 @@
         <members>Selected_Products_Summary_Text</members>
         <members>Time_Bound_Discount_Details</members>
         <members>Total_Price_Text</members>
+        <members>Complaint_Form</members>
+        <members>Complaint_approval_failed_for_external_product</members>
+        <members>Complaint_approved_successfully</members>
+        <members>Complaint_sent_waiting_for_response</members>
+        <members>Error_creating_approval_request</members>
+        <members>Error_in_Complaint_Form</members>
+        <members>Error_processing_complaint</members>
+        <members>Error_sending_complaint</members>
+        <members>Error_sending_complaint_approval_status</members>
+        <members>Error_with_subscription_API</members>
+        <members>Is_External</members>
+        <members>Name</members>
+        <members>Pick_at_least_one_product_to_create_complaint</members>
+        <members>Product_Code</members>
+        <members>Product_Synchronization_Log_Email_Body_part1</members>
+        <members>Product_Synchronization_Log_Email_Subject</members>
+        <members>Quantity</members>
+        <members>Submit_Complaint</members>
+        <members>Success</members>
+        <members>Unit_Price</members>
+        <members>You_must_select_at_least_one_product</members>
+        <members>Error_in_composite_request</members>
+        <members>Error_sending_to_second_org</members>
+        <members>No_records_found</members>
+        <members>Unit_price_not_found_for_complaint_approval</members>
         <name>CustomLabel</name>
+    </types>
+    <types>
+        <name>ApprovalProcess</name>
+    </types>
+    <types>
+        <members>Standard_Users</members>
+        <name>Queue</name>
+    </types>
+    <types>
+        <name>ConnectedApp</name>
+    </types>
+    <types>
+        <members>ProductSyncOrgExternalCreds</members>
+        <name>ExternalCredential</name>
     </types>
     <version>64.0</version>
 </Package>

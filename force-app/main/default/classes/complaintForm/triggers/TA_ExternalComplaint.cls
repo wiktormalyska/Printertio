@@ -1,0 +1,77 @@
+public with sharing class TA_ExternalComplaint implements TriggerAction.AfterInsert {
+    public void afterInsert(List<External_Complaint__e> triggerNew) {
+        if (!triggerNew.isEmpty()) {
+            createComplaintCases(triggerNew);
+        }
+    }
+
+    private void createComplaintCases(List<External_Complaint__e> events) {
+        Case newCase = new Case(
+                Is_External__c = true
+        );
+        insert newCase;
+
+        List<Id> productIds = new List<Id>();
+        String randomUUID;
+        for (External_Complaint__e event : events) {
+            productIds.add(event.Product_ID__c);
+            if (event.External_Complaint_Request_ID__c != null) {
+                randomUUID = event.External_Complaint_Request_ID__c;
+            }
+        }
+        List<Product2> products = [
+                SELECT Id, Name, ExternalId
+                FROM Product2
+                WHERE Id IN :productIds
+        ];
+
+        Map<String, Product2> productMap = new Map<String, Product2>();
+        for (Product2 product : products) {
+            productMap.put(product.Id, product);
+        }
+
+        List<Complaint_Approval_Request__c> complaintApprovalRequests = new List<Complaint_Approval_Request__c>();
+
+        System.debug('Events >>> '+events);
+        for (External_Complaint__e event : events) {
+            Product2 product = productMap.get(event.Product_ID__c);
+            if (product != null) {
+                Complaint_Approval_Request__c complaintApprovalRequest = new Complaint_Approval_Request__c(
+                        Case__c = newCase.Id,
+                        Product__c = product.Id,
+                        Status__c = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.STATUS.PENDING_APPROVAL,
+                        Is_External__c = True,
+                        External_ID__c = event.External_Complaint_ID__c
+                );
+                complaintApprovalRequests.add(complaintApprovalRequest);
+            }
+        }
+        insert complaintApprovalRequests;
+
+        try {
+            String flowApiName = ConstUtil.COMPLAINT_APPROVAL_REQUEST_CONST.PROCESS_DEFINITION_NAME;
+            Boolean allSuccess = true;
+
+            for (Complaint_Approval_Request__c complaintApprovalRequest : complaintApprovalRequests) {
+                try {
+                    Map<String, Object> params = new Map<String, Object>();
+                    params.put('recordId', complaintApprovalRequest.Id);
+                    params.put('submitter', UserInfo.getUserId());
+                    System.debug('Flow Params >>> ' + params);
+                    Flow.Interview.createInterview(flowApiName, params).start();
+                } catch (Exception flowException) {
+                    allSuccess = false;
+                    throw new DmlException(System.Label.Error_creating_approval_request + flowException.getMessage());
+                }
+            }
+
+            if (allSuccess) {
+                ExternalComplaintApprovalStatusCallout.sendComplaintApprovalStatusesAsync(
+                        ConstUtil.PLATFORM_EVENTS.EXTERNAL_COMPLAINT_APPROVAL_STATUS.STATUS.SUCCESS,
+                        randomUUID);
+            }
+        } catch (Exception e) {
+            throw new CalloutException(System.Label.Error_processing_complaint + e.getMessage());
+        }
+    }
+}

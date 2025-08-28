@@ -27,4 +27,16 @@ public with sharing class ConstUtil {
             return new ProductSyncConst();
         }
     }
+
+    public static PlatformEventConst PLATFORM_EVENTS {
+        get {
+            return new PlatformEventConst();
+        }
+    }
+
+    public static ComplaintApprovalRequestConst COMPLAINT_APPROVAL_REQUEST_CONST {
+        get {
+            return new ComplaintApprovalRequestConst();
+        }
+    }
 }

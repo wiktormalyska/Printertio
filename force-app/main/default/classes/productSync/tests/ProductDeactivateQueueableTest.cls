@@ -27,7 +27,7 @@ private class ProductDeactivateQueueableTest {
         System.enqueueJob(new ProductDeactivateQueueable(productIds));
         Test.stopTest();
 
-        List<Product2> updatedProducts = [SELECT Id, IsActive FROM Product2 WHERE Id IN :productIds];
+        List<Product2> updatedProducts = [SELECT Id, IsActive, Family FROM Product2 WHERE Id IN :productIds];
         for (Product2 product : updatedProducts) {
             System.assertEquals(false, product.IsActive, 'Product should be deactivated');
         }
@@ -41,7 +41,7 @@ private class ProductDeactivateQueueableTest {
         System.enqueueJob(new ProductDeactivateQueueable(emptyProductIds));
         Test.stopTest();
 
-        List<Product2> products = [SELECT Id, IsActive FROM Product2];
+        List<Product2> products = [SELECT Id, Family, IsActive FROM Product2];
         for (Product2 product : products) {
             System.assertEquals(true, product.IsActive, 'Products should remain active');
         }

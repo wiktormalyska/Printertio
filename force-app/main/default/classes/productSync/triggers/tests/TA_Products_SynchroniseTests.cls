@@ -69,7 +69,7 @@ private class TA_Products_SynchroniseTests {
     static void testAfterUpdateWithUserModification() {
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
         Product2 existingProduct = [
-                SELECT Id, Name, ProductCode, Description, IsActive, IsExternal__c, ExternalId
+                SELECT Id, Name, ProductCode, Description, IsActive, IsExternal__c, ExternalId, Family
                 FROM Product2
                 WHERE ProductCode = 'INT001'
                 LIMIT 1

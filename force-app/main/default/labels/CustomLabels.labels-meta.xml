@@ -8,6 +8,41 @@
         <value>Cancel</value>
     </labels>
     <labels>
+        <fullName>Category_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Category Text</shortDescription>
+        <value>Category</value>
+    </labels>
+    <labels>
+        <fullName>Complaint_Form</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Complaint Form</shortDescription>
+        <value>Complaint Form</value>
+    </labels>
+    <labels>
+        <fullName>Complaint_approval_failed_for_external_product</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Complaint approval failed for external product</shortDescription>
+        <value>Complaint approval failed for external product</value>
+    </labels>
+    <labels>
+        <fullName>Complaint_approved_successfully</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Complaint approved successfully</shortDescription>
+        <value>Complaint approved successfully</value>
+    </labels>
+    <labels>
+        <fullName>Complaint_sent_waiting_for_response</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Complaint sent, waiting for response...</shortDescription>
+        <value>Complaint sent, waiting for response...</value>
+    </labels>
+    <labels>
         <fullName>Conditional_Criteria_Placeholder_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -37,6 +72,13 @@
         <value>Create Discount</value>
     </labels>
     <labels>
+        <fullName>Create_Order_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Order Text</shortDescription>
+        <value>Create Order</value>
+    </labels>
+    <labels>
         <fullName>Description_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -64,6 +106,13 @@
         <protected>true</protected>
         <shortDescription>Discount Saved Successfully Text</shortDescription>
         <value>Discount saved successfully.</value>
+    </labels>
+    <labels>
+        <fullName>Discount_Search_Products_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Discount Search Products Text</shortDescription>
+        <value>Search Products by Name or Product Code</value>
     </labels>
     <labels>
         <fullName>Discount_Type_Option_Conditional</fullName>
@@ -213,11 +262,144 @@
         <value>Value Type is required.</value>
     </labels>
     <labels>
+        <fullName>Error_creating_approval_request</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error creating approval request:</shortDescription>
+        <value>Error creating approval request:</value>
+    </labels>
+    <labels>
+        <fullName>Error_in_Complaint_Form</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error in Complaint Form</shortDescription>
+        <value>Error in Complaint Form</value>
+    </labels>
+    <labels>
+        <fullName>Error_in_composite_request</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error in composite request:</shortDescription>
+        <value>Error in composite request:</value>
+    </labels>
+    <labels>
+        <fullName>Error_processing_complaint</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error processing complaint:</shortDescription>
+        <value>Error processing complaint:</value>
+    </labels>
+    <labels>
+        <fullName>Error_sending_complaint</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error sending complaint</shortDescription>
+        <value>Error sending complaint</value>
+    </labels>
+    <labels>
+        <fullName>Error_sending_complaint_approval_status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error sending complaint approval status</shortDescription>
+        <value>Error sending complaint approval status</value>
+    </labels>
+    <labels>
+        <fullName>Error_sending_to_second_org</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error sending to second org:</shortDescription>
+        <value>Error sending to second org:</value>
+    </labels>
+    <labels>
+        <fullName>Error_with_subscription_API</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error with subscription API</shortDescription>
+        <value>Error with subscription API</value>
+    </labels>
+    <labels>
+        <fullName>Is_External</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Is External</shortDescription>
+        <value>Is External</value>
+    </labels>
+    <labels>
         <fullName>Loading_Products_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Loading Products Text</shortDescription>
         <value>Loading Products...</value>
+    </labels>
+    <labels>
+        <fullName>Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Name</shortDescription>
+        <value>Name</value>
+    </labels>
+    <labels>
+        <fullName>Next_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Next Text</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>No_records_found</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No records found</shortDescription>
+        <value>No records found</value>
+    </labels>
+    <labels>
+        <fullName>Pick_at_least_one_product_to_create_complaint</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Pick at least one product to create complaint</shortDescription>
+        <value>Pick at least one product to create complaint</value>
+    </labels>
+    <labels>
+        <fullName>Previous_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Previous Text</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>Price_After_Discount_Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Price After Discount Text</shortDescription>
+        <value>Price after discount:</value>
+    </labels>
+    <labels>
+        <fullName>Product_Code</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Code</shortDescription>
+        <value>Product Code</value>
+    </labels>
+    <labels>
+        <fullName>Product_Synchronization_Log_Email_Body_part1</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Synchronization Log - Email Body part1</shortDescription>
+        <value>Product synchronization has failed after</value>
+    </labels>
+    <labels>
+        <fullName>Product_Synchronization_Log_Email_Subject</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Synchronization Log - Email Subject</shortDescription>
+        <value>Product Synchronization Failed - Max Retries Exceeded</value>
+    </labels>
+    <labels>
+        <fullName>Quantity</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Quantity</shortDescription>
+        <value>Quantity</value>
     </labels>
     <labels>
         <fullName>Recurring_Discount_Details_Text</fullName>
@@ -297,18 +479,11 @@
         <value>Save</value>
     </labels>
     <labels>
-        <fullName>Time_Bound_Discount_Details</fullName>
+        <fullName>Search_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Time-Bound Discount Details</shortDescription>
-        <value>Time-Bound Discount Details</value>
-    </labels>
-    <labels>
-        <fullName>Discount_Search_Products_Text</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Discount Search Products Text</shortDescription>
-        <value>Search Products by Name or Product Code</value>
+        <shortDescription>Search Text</shortDescription>
+        <value>Search</value>
     </labels>
     <labels>
         <fullName>Select_Category_Placeholder_Text</fullName>
@@ -318,34 +493,6 @@
         <value>Select Category</value>
     </labels>
     <labels>
-        <fullName>Category_Text</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Category Text</shortDescription>
-        <value>Category</value>
-    </labels>
-    <labels>
-        <fullName>Search_Text</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Search Text</shortDescription>
-        <value>Search</value>
-    </labels>
-    <labels>
-        <fullName>Previous_Text</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Previous Text</shortDescription>
-        <value>Previous</value>
-    </labels>
-    <labels>
-        <fullName>Next_Text</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Next Text</shortDescription>
-        <value>Next</value>
-    </labels>
-    <labels>
         <fullName>Selected_Products_Summary_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -353,25 +500,52 @@
         <value>Summary for Selected Products</value>
     </labels>
     <labels>
-        <fullName>Create_Order_Text</fullName>
+        <fullName>Submit_Complaint</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Create Order Text</shortDescription>
-        <value>Create Order</value>
+        <shortDescription>Submit Complaint</shortDescription>
+        <value>Submit Complaint</value>
+    </labels>
+    <labels>
+        <fullName>Success</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>Time_Bound_Discount_Details</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Time-Bound Discount Details</shortDescription>
+        <value>Time-Bound Discount Details</value>
     </labels>
     <labels>
         <fullName>Total_Price_Text</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Total Price Text</shortDescription>
-        <value>Total price: </value>
+        <value>Total price:</value>
     </labels>
     <labels>
-        <fullName>Price_After_Discount_Text</fullName>
+        <fullName>Unit_Price</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Price After Discount Text</shortDescription>
-        <value>Price after discount: </value>
+        <shortDescription>Unit Price</shortDescription>
+        <value>Unit Price</value>
     </labels>
-
+    <labels>
+        <fullName>Unit_price_not_found_for_complaint_approval</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Unit price not found for complaint approval:</shortDescription>
+        <value>Unit price not found for complaint approval:</value>
+    </labels>
+    <labels>
+        <fullName>You_must_select_at_least_one_product</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>You must select at least one product.</shortDescription>
+        <value>You must select at least one product.</value>
+    </labels>
 </CustomLabels>

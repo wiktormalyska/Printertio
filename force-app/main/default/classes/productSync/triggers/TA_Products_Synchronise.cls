@@ -1,6 +1,9 @@
 public with sharing class TA_Products_Synchronise implements TriggerAction.BeforeInsert, TriggerAction.AfterInsert, TriggerAction.AfterUpdate, TriggerAction.BeforeDelete {
 
     public void beforeInsert(List<Product2> triggerNew) {
+        System.debug('Reqinfo '+Request.getCurrent());
+        Request reqInfo = Request.getCurrent();
+        System.debug('Reqinfoquid '+reqInfo?.getQuiddity());
         for (Product2 product : triggerNew) {
             if (product.IsSentFromOther__c == true) {
                 product.isExternal__c = true;
@@ -10,16 +13,15 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
     }
 
     public void afterInsert(List<SObject> triggerNew) {
-
         List<Id> productIds = new List<Id>();
         for (SObject productObj : Trigger.new) {
             Product2 product = (Product2) productObj;
-            if (product.IsExternal__c != true) {
+            if (product.IsExternal__c == false) {
                 productIds.add(product.Id);
             }
         }
         if (!productIds.isEmpty()) {
-            System.enqueueJob(new ProductSyncQueueable(productIds));
+            ProductSyncMassUtil.synchronizeMassProducts(productIds);
         }
     }
 
@@ -35,7 +37,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         }
 
         if (!productIds.isEmpty()) {
-            System.enqueueJob(new ProductSyncQueueable(productIds));
+            ProductSyncMassUtil.synchronizeMassProducts(productIds);
         }
     }
 
@@ -45,7 +47,7 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
 
         for (SObject productObject : triggerOld) {
             Product2 product = (Product2) productObject;
-            if (product.IsExternal__c != true) {
+            if (product.IsExternal__c == false) {
                 events.add(new Product_Deactivation__e(Product_Id__c = product.Id));
                 product.addError('Deletion prevented. Product will be deactivated instead.');
             }
@@ -65,8 +67,9 @@ public with sharing class TA_Products_Synchronise implements TriggerAction.Befor
         Boolean activeChanged = newProduct.IsActive != oldProduct.IsActive;
         Boolean externalChanged = newProduct.IsExternal__c != oldProduct.IsExternal__c;
         Boolean externalIdChanged = newProduct.ExternalId != oldProduct.ExternalId;
+        Boolean productFamilyChanged = newProduct.Family != oldProduct.Family;
 
-        if (!nameChanged && !codeChanged && !descChanged && !activeChanged && !externalChanged && !externalIdChanged) {
+        if (!nameChanged && !codeChanged && !descChanged && !activeChanged && !externalChanged && !externalIdChanged && !productFamilyChanged) {
             return false;
         }
 

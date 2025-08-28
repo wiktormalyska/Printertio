@@ -5,4 +5,3 @@ public with sharing class ConnectedAppsConst {
         public final String NAMED_CREDENTIAL = 'callout:ProductSyncOrg';
     }
 }
-

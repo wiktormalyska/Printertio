@@ -37,7 +37,7 @@ private class SynchronizeServiceTests {
 
     @IsTest
     static void testSynchronizeProducts_CreateNewProducts() {
-        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 2];
+        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, Family, ExternalId FROM Product2 LIMIT 2];
 
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
@@ -47,12 +47,12 @@ private class SynchronizeServiceTests {
 
         // Verify logs were created
         List<Product_Synchronization_Log__c> logs = [SELECT Id FROM Product_Synchronization_Log__c];
-        System.assert(true,true);
+        System.assert(true, true);
     }
 
     @IsTest
     static void testSynchronizeProducts_UpdateExistingProducts() {
-        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 2];
+        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, Family, ExternalId FROM Product2 LIMIT 2];
 
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
@@ -69,7 +69,7 @@ private class SynchronizeServiceTests {
 
     @IsTest
     static void testSynchronizeProducts_MixedCreateAndUpdate() {
-        List<Product2> allProducts = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 4];
+        List<Product2> allProducts = [SELECT Id, Name, ProductCode, Description, IsActive, Family, ExternalId FROM Product2 LIMIT 4];
 
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
@@ -83,7 +83,7 @@ private class SynchronizeServiceTests {
 
     @IsTest
     static void testSynchronizeProducts_SuccessfulSynchronization() {
-        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 1];
+        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, Family, ExternalId FROM Product2 LIMIT 1];
 
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 
@@ -98,7 +98,7 @@ private class SynchronizeServiceTests {
 
     @IsTest
     static void testSynchronizeProducts_CompositeRequest() {
-        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, ExternalId FROM Product2 LIMIT 1];
+        List<Product2> products = [SELECT Id, Name, ProductCode, Description, IsActive, Family, ExternalId FROM Product2 LIMIT 1];
 
         Test.setMock(HttpCalloutMock.class, new ProductSyncMockHttpSuccess());
 

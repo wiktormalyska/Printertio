@@ -1,3 +1,4 @@
+@IsTest
 public class ProductSyncMockHttpFailed implements HttpCalloutMock {
     public HttpResponse respond(HttpRequest request) {
         HttpResponse response = new HttpResponse();
