@@ -216,6 +216,7 @@
         <members>Printerio_UtilityBar</members>
         <members>Opportunity_Record_Page</members>
         <members>Discount_Record_Page</members>
+        <members>Complaint_Approval_Request_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
@@ -395,7 +396,6 @@
         <name>Queue</name>
     </types>
     <types>
-        <members>ProductSyncOrg_Connection</members>
         <name>ConnectedApp</name>
     </types>
     <types>
