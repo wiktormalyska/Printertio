@@ -77,28 +77,31 @@ public class CurrencyUpdateQueueable implements Queueable, Database.AllowsCallou
                     LIMIT 1
             ];
 
-            if (existingRates.isEmpty()) {
-                System.debug('No existing rate found for ' + currencyCode + ' for today - skipping update');
-                return;
-            }
-
-            // Update existing record
-            DatedConversionRate existingRate = existingRates[0];
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-
-            request.setEndpoint(URL.getOrgDomainUrl().toExternalForm() + '/services/data/v64.0/sobjects/DatedConversionRate/' + existingRate.Id);
-            request.setBody('{ "ConversionRate": ' + rate + ' }');
             request.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
             request.setHeader('Content-Type', 'application/json');
-            request.setMethod('PATCH');
 
-            HttpResponse res = http.send(request);
+            if (existingRates.isEmpty()) {
+                // Create new record (POST)
+                request.setEndpoint(URL.getOrgDomainUrl().toExternalForm() + '/services/data/v64.0/sobjects/DatedConversionRate');
+                request.setMethod('POST');
 
-            if (res.getStatusCode() == 200 || res.getStatusCode() == 204) {
-                System.debug('Successfully updated currency rate for ' + currencyCode + ' from ' + existingRate.ConversionRate + ' to ' + rate);
-            } else {
-                System.debug(System.LoggingLevel.ERROR, 'Failed to update currency rate for ' + currencyCode + '. Status: ' + res.getStatusCode() + ', Body: ' + res.getBody());
+                String todayStr = String.valueOf(Date.today());
+                Map<String, Object> bodyMap = new Map<String, Object>{
+                        'IsoCode' => currencyCode,
+                        'StartDate' => todayStr,
+                        'ConversionRate' => rate
+                };
+                request.setBody(JSON.serialize(bodyMap));
+
+                HttpResponse res = http.send(request);
+
+                if (res.getStatusCode() == 201 || res.getStatusCode() == 204) {
+                    System.debug('Successfully updated currency rate for ' + currencyCode + ' to ' + rate);
+                } else {
+                    System.debug(System.LoggingLevel.ERROR, 'Failed to update currency rate for ' + currencyCode + '. Status: ' + res.getStatusCode() + ', Body: ' + res.getBody());
+                }
             }
         } catch (Exception e) {
             System.debug(System.LoggingLevel.ERROR, 'Failed to update currency rate for ' + currencyCode + ': ' + e.getMessage());
