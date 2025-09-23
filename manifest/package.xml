@@ -128,6 +128,7 @@
         <members>NBPSuccessHttpMock</members>
         <members>NBPNotFoundHttpMock</members>
         <members>CurrencyUpdateQueueable</members>
+        <members>OpportunityTerritoryAssignmentFilter</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -192,6 +193,7 @@
         <members>Product2</members>
         <members>Product_Deactivation__e</members>
         <members>Product_Synchronization_Log__c</members>
+        <members>TerritoryToStateMap__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
